@@ -14,8 +14,13 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+    <!-- CDN Link Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -34,7 +39,18 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <div class="navbar-nav mr-auto"> <!-- Move navbar-nav to the left side -->
+                            <a href="{{ url('/home') }}"
+                                class="nav-item nav-link {{ request()->is('/home') ? 'active' : '' }}">Home</a>
+                            <a href="{{ url('/about') }}"
+                                class="nav-item nav-link {{ request()->is('/about') ? 'active' : '' }}">About</a>
+                            <a href="{{ url('/service') }}"
+                                class="nav-item nav-link {{ request()->is('/service') ? 'active' : '' }}">Service</a>
+                            <a href="{{ url('/menu') }}"
+                                class="nav-item nav-link {{ request()->is('/menu') ? 'active' : '' }}">Menu</a>
+                            <a href="{{ url('/contact') }}"
+                                class="nav-item nav-link {{ request()->is('/contact') ? 'active' : '' }}">Contact</a>
+                        </div>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -53,19 +69,6 @@
                                 </li>
                             @endif
                         @else
-                            <div class="navbar-nav mr-auto"> <!-- Move navbar-nav to the left side -->
-                                <a href="{{ url('/home') }}"
-                                    class="nav-item nav-link {{ request()->is('/home') ? 'active' : '' }}">Home</a>
-                                <a href="{{ url('/about') }}"
-                                    class="nav-item nav-link {{ request()->is('/about') ? 'active' : '' }}">About</a>
-                                <a href="{{ url('/service') }}"
-                                    class="nav-item nav-link {{ request()->is('/service') ? 'active' : '' }}">Service</a>
-                                <a href="{{ url('/menu') }}"
-                                    class="nav-item nav-link {{ request()->is('/menu') ? 'active' : '' }}">Menu</a>
-                                <a href="{{ url('/contact') }}"
-                                    class="nav-item nav-link {{ request()->is('/contact') ? 'active' : '' }}">Contact</a>
-                            </div>
-
                             <!-- Dropdown Menu -->
                             <div class="dropdown">
                                 <button id="navbarDropdown" class="btn btn-secondary dropdown-toggle" href="#"
@@ -75,19 +78,22 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="" class="dropdown-item">Profile</a>
+                                        <a href="#" class="dropdown-item">Profile</a>
                                     </li>
                                     <li>
-                                        <form action="{{ route('logout') }}" method="POST">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                        <!-- Form for logout -->
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            style="display: none;">
                                             @csrf
-                                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                                onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                                {{ __('Logout') }}
-                                            </a>
                                         </form>
                                     </li>
                                 </ul>
+
                             </div>
                         @endguest
                     </ul>
@@ -96,9 +102,45 @@
         </nav>
 
         <main class="container mt-5">
-            @yield('content')
+            @yield('main')
         </main>
     </div>
+
+    <script>
+        // Delay in milliseconds (1100 ms = 1.1 second)
+        const delayInMilliseconds = 1100;
+
+        // Function to hide the alert after a delay
+        setTimeout(function() {
+            // Check if the alert exists before trying to hide it
+            const statusAlert = document.getElementById('status-alert');
+            if (statusAlert) {
+                statusAlert.style.display = 'none';
+            }
+        }, delayInMilliseconds);
+
+
+        $(document).ready(function() {
+            @if (Session::has('msg'))
+                @if (Session::get('success') == true)
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true
+                    }
+                    toastr.success("{{ Session::get('msg') }}");
+                    success.play();
+                @else
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true
+                    }
+                    toastr.error("{{ Session::get('msg') }}");
+                    error.play();
+                @endif
+            @endif
+
+        });
+    </script>
 </body>
 
 </html>

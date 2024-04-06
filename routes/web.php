@@ -19,16 +19,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+Auth::routes(); 
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('front_home');
-Route::get('/home', [FrontPageController::class, 'index'])->name('front_home');
-Route::get('/about', [FrontPageController::class, 'about'])->name('front_about');
-Route::get('/service', [FrontPageController::class, 'service'])->name('front_service');
-Route::get('/menu', [FrontPageController::class, 'menu'])->name('front_menu');
-Route::get('/reservation', [FrontPageController::class, 'reservation'])->name('front_reservation');
-Route::get('/testimonial', [FrontPageController::class, 'testimonial'])->name('front_testimonial');
-Route::get('/contact', [FrontPageController::class, 'contact'])->name('front_contact');
 
 // Route::group(['middleware' => ['role:super-admin|admin']], function () {
 Route::group(['middleware' => ['isAdmin']], function () {
@@ -46,4 +38,8 @@ Route::group(['middleware' => ['isAdmin']], function () {
     // (User)
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+});
+
+Route::get('/home', function () {
+    return view('layouts.master');
 });

@@ -15,12 +15,28 @@ class PermissionController extends Controller
         $this->middleware('permission:delete permission', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::get();
-        return view('role-permission.permissions.index', [
-            'permissions' => $permissions
-        ]);
+        // $permissions = Permission::get();
+        // return view('role-permission.permissions.index', [
+        //     'permissions' => $permissions
+        // ]);
+
+        $query_param = [];
+
+        $permissions = Permission::when($request->has('search'), function ($query) use ($request) {
+            $key = explode(' ', $request['search']);
+            $query->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('name', 'like', "%{$value}%")
+                        ->orWhere('id', 'like', "%{$value}%");
+                }
+            });
+        })->get();
+
+        $query_param = $request->has('search') ? ['search' => $request['search']] : [];
+
+        return view('role-permission.permissions.index', compact('permissions', 'query_param'));
     }
 
     public function create()

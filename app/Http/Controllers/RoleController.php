@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -17,12 +18,28 @@ class RoleController extends Controller
         $this->middleware('permission:delete role', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::get();
-        return view('role-permission.role.index', [
-            'roles' => $roles
-        ]);
+        // $roles = Role::get();
+        // return view('role-permission.role.index', [
+        //     'roles' => $roles
+        // ]);
+
+        $query_param = [];
+
+        $roles = Role::when($request->has('search'), function ($query) use ($request) {
+            $key = explode(' ', $request['search']);
+            $query->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('name', 'like', "%{$value}%")
+                        ->orWhere('id', 'like', "%{$value}%");
+                }
+            });
+        })->get();
+
+        $query_param = $request->has('search') ? ['search' => $request['search']] : [];
+
+        return view('role-permission.role.index', compact('roles', 'query_param'));
     }
 
     public function create()
@@ -77,6 +94,25 @@ class RoleController extends Controller
         $role->delete();
 
         return redirect('roles')->with('status', 'Role Deleted Successfully');
+
+        // try {
+        //     DB::beginTransaction();
+        //     $role = Role::find($roleId);
+        //     $role->delete();
+
+        //     DB::commit();
+        //     $output = [
+        //         'success' => 1,
+        //         'msg' => __('Delete successfully')
+        //     ];
+        // } catch (Exception $e) {
+        //     DB::rollBack();
+        //     $output = [
+        //         'error' => 01,
+        //         'msg' => __('Something went wrong')
+        //     ];
+        // }
+        // return redirect()->route('roles.index')->with($output);
     }
 
     public function addPermissionToRole($roleId)
@@ -104,6 +140,6 @@ class RoleController extends Controller
         $role = Role::findOrFail($roleId);
         $role->syncPermissions($request->permission);
 
-        return redirect()->back()->with('status', 'Permissions added to role Successfully');
+        return redirect('roles')->with('status', 'Permissions added to role Successfully');
     }
 }

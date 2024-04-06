@@ -1,25 +1,36 @@
-    @extends('layouts.app')
+    @extends('layouts.master')
 
     @section('content')
         @include('role-permission.nav-links')
 
-        <div class="container mt-4">
+        <div class="container mt-1">
             <div class="row">
                 <div class="col-md-12">
 
                     @if (session('status'))
-                        <div class="alert alert-success"> {{ session('status') }} </div>
+                        <div id="status-alert" class="alert alert-success"> {{ session('status') }} </div>
                     @endif
 
                     <div class="card mt-3">
                         <div class="card-header">
-                            <h4>
-                                Roles
-                                <a href="{{ url('roles/create') }}" class="btn btn-primary float-end"> Add Role
-                                </a>
-                            </h4>
+                            <form role="search" action="{{ url()->current() }}" method="GET">
+                                @csrf
+                                <div class="d-flex justify-content-between">
+                                    <h4>
+                                        Roles
+                                    </h4>
+                                    <input type="text" class="form-control search-bar-sm w-25" name="search"
+                                        style="border-radius: 10px" placeholder="Search for something"
+                                        aria-label="Search" />
+
+                                    @can('create role')
+                                        <a href="{{ url('roles/create') }}" class="btn btn-primary float-end"> Add Role
+                                        </a>
+                                    @endcan
+                                </div>
+                            </form>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body responsive">
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>

@@ -17,12 +17,28 @@ class UserController extends Controller
         $this->middleware('permission:delete user', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::get();
-        return view('role-permission.user.index', [
-            'users' => $users
-        ]);
+        // $users = User::get();
+        // return view('role-permission.user.index', [
+        //     'users' => $users
+        // ]);
+
+        $query_param = [];
+
+        $users = User::when($request->has('search'), function ($query) use ($request) {
+            $key = explode(' ', $request['search']);
+            $query->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('name', 'like', "%{$value}%")
+                        ->orWhere('id', 'like', "%{$value}%");
+                }
+            });
+        })->get();
+
+        $query_param = $request->has('search') ? ['search' => $request['search']] : [];
+
+        return view('role-permission.user.index', compact('users', 'query_param'));
     }
 
     public function create()

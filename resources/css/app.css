@@ -1,0 +1,68 @@
+@font-face {
+    font-family: font-title;
+    src: url(Namecat.otf);
+}
+
+body{
+    background-color: #F5F5F5;
+}
+
+.sidebar-container {
+    height: 100vh;
+    border-radius: 0 30px 0 0;
+    background-color: #3559e0;
+}
+
+.sidebar{
+    width: auto;
+}
+
+ .icon ,.logout{
+    border-radius: 20px !important;
+    transition: background-color 0.3s ease;
+}
+
+.icon:hover, .logout:hover {
+    background-color: #ffffff20;
+    border-radius: 20px !important;
+    transition: background-color 0.3s ease;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link{
+    color: white;
+    background-color: #ffffff20;
+    border-radius: 20px;
+}
+
+.title{
+    font-family: font-title;
+    font-size: 50px;
+    color:#3559E0 ;
+}
+.date,.positions,.name{
+    color:#3559E0 ;
+}
+.search-bar{
+    height: 50px;
+    border:1px solid #3559E0;
+    font-size: larger;
+    border-radius: 10px;
+}
+.rounded{
+    width: 800px;
+}
+.admin{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    height: 120px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values for the shadow */
+}
+.profile{
+    width: 100px;
+    border-radius: 15px;
+}
+
+.responsive{
+    max-height: 60vh;
+    overflow: auto;
+}
