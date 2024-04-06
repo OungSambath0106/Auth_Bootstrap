@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,14 +17,17 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+
 <body>
     <div id="app">
-        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -49,32 +53,52 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <div class="navbar-nav mr-auto"> <!-- Move navbar-nav to the left side -->
+                                <a href="{{ url('/home') }}"
+                                    class="nav-item nav-link {{ request()->is('/home') ? 'active' : '' }}">Home</a>
+                                <a href="{{ url('/about') }}"
+                                    class="nav-item nav-link {{ request()->is('/about') ? 'active' : '' }}">About</a>
+                                <a href="{{ url('/service') }}"
+                                    class="nav-item nav-link {{ request()->is('/service') ? 'active' : '' }}">Service</a>
+                                <a href="{{ url('/menu') }}"
+                                    class="nav-item nav-link {{ request()->is('/menu') ? 'active' : '' }}">Menu</a>
+                                <a href="{{ url('/contact') }}"
+                                    class="nav-item nav-link {{ request()->is('/contact') ? 'active' : '' }}">Contact</a>
+                            </div>
+
+                            <!-- Dropdown Menu -->
+                            <div class="dropdown">
+                                <button id="navbarDropdown" class="btn btn-secondary dropdown-toggle" href="#"
+                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    v-pre>
                                     {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="" class="dropdown-item">Profile</a>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         @endguest
                     </ul>
                 </div>
             </div>
-        </nav> --}}
+        </nav>
 
-        <main class="">
+        <main class="container mt-5">
             @yield('content')
         </main>
     </div>
 </body>
+
 </html>
