@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\FrontPageController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +43,5 @@ Route::group(['middleware' => ['isAdmin']], function () {
 Route::get('/home', function () {
     return view('layouts.master');
 });
+
+Route::get('hidding_user', [UserController::class, 'hidding_user'])->name('hidding_user');

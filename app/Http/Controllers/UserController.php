@@ -17,6 +17,30 @@ class UserController extends Controller
         $this->middleware('permission:delete user', ['only' => ['destroy']]);
     }
 
+    public function hidding_user(Request $request)
+    {
+        // $users = User::get();
+        // return view('role-permission.user.index', [
+        //     'users' => $users
+        // ]);
+
+        $query_param = [];
+
+        $users = User::when($request->has('search'), function ($query) use ($request) {
+            $key = explode(' ', $request['search']);
+            $query->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('name', 'like', "%{$value}%")
+                        ->orWhere('id', 'like', "%{$value}%");
+                }
+            });
+        })->get();
+
+        $query_param = $request->has('search') ? ['search' => $request['search']] : [];
+
+        return view('role-permission.user.hidden', compact('users', 'query_param'));
+    }
+
     public function index(Request $request)
     {
         // $users = User::get();
@@ -58,11 +82,22 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' =>Hash::make($request->password),
-        ]);
+        // $user = User::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' =>Hash::make($request->password),
+        // ]);
+        
+        // If validation passes, create a new User instance and save it
+        $user = new User();
+        $user->ishidden = $user == 'on' ? 1 : 0;
+        $user->ishidden = $request->has('ishidden');
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if ($request->has('password') && $request->password !== null) {
+            // Hash the password before storing it
+            $user->password = bcrypt($request->password);
+        }
 
         $user->syncRoles($request->roles);
 
@@ -91,6 +126,7 @@ class UserController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'ishidden' => $request->ishidden == 'on' ? 1 : 0, // Corrected line
         ];
 
         if (!empty($request->password))

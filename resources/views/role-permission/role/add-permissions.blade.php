@@ -1,53 +1,44 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
+    <div class="list-group w-auto p-3 mt-5" style="border-radius: 10px">
+        <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
+            <h4 style="color: #FFFFFF;" class="mt-2"><b>Role : {{ $role->name }}</b></h4>
+        </div>
+        <div class="list-group-item">
+            <div class="p-2 mt-3">
+                <div class="card-body">
+                    <form action="{{ url('roles/' . $role->id . '/give-permissions') }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
 
-                @if (session('status'))
-                    <div class="alert alert-success"> {{ session('status') }} </div>
-                @endif
+                        <div class="mb-5">
+                            @error('permission')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
 
-                <div class="card">
-                    <div class="card-header">
-                        <h4>
-                            Role : {{ $role->name }}
-                            <a href="{{ url('roles') }}" class="btn btn-danger float-end"> Back
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ url('roles/' . $role->id . '/give-permissions') }}" method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="mb-3">
-
-                                @error('permission')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-
-                                <label for=""> Permissions </label>
-
-                                <div class="row">
-                                    @foreach ($permissions as $per)
-                                        <div class="col-md-2">
-                                            <label for="">
-                                                <input type="checkbox" name="permission[]" value="{{ $per->name }}"
-                                                    {{ in_array($per->id, $rolePermissions) ? 'checked' : '' }} />
-                                                {{ $per->name }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-
+                            <label for="" class="form-label mb-3"> Permissions </label>
+                            <div class="row col-auto w-auto justify-content-lg-around mx-5">
+                                @foreach ($permissions as $per)
+                                    <div class="col-md-2 form-check form-switch">
+                                        <label for="" class="form-check-label" for="flexSwitchCheckDefault">
+                                            <input type="checkbox" class="form-check-input" id="flexSwitchCheckDefault"
+                                                name="permission[]" value="{{ $per->name }}"
+                                                {{ in_array($per->id, $rolePermissions) ? 'checked' : '' }} />
+                                            {{ $per->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
                             </div>
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary"> Update </button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="d-grid gap-1 d-md-flex justify-content-md-end" style="padding:0 25px 25px 0">
+                            <button style="border-radius: 20px; width:110px;" type="submit"
+                                class="btn btn-primary">Create</button>
+                            <a href="{{ url('roles') }}" style="border-radius: 20px; width:110px;" class="btn btn-primary"
+                                type="button">Cancel</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

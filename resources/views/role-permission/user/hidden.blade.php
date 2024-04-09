@@ -3,10 +3,9 @@
 @section('content')
     @include('role-permission.nav-links')
 
-
     <div class="list-group w-auto p-3" style="border-radius: 10px">
         <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
-            <h4 style="color: #FFFFFF;" class="mt-2"><b>Users List</b></h4>
+            <h4 style="color: #FFFFFF;" class="mt-2"><b>Users Hidden Lsit</b></h4>
         </div>
         <div class="list-group-item">
             <div class="p-2 mt-3">
@@ -30,20 +29,18 @@
                         </div>
 
                         <div>
-                            <a href="{{ route('hidding_user') }}" class="btn btn-primary "
-                                style="background-color: #3559E0; margin-left: 18vw;"><i class="fas fa-eye-slash"
-                                    style="color: #ffffff;"></i> Hide</a>
-                            @can('create user')
-                                <a href="{{ url('users/create') }}" class="btn btn-primary "
-                                    style="background-color: #3559E0;"><i class="fas fa-plus-circle fa-lg"
-                                        style="color: #ffffff;"></i> Add New User</a>
-                            @endcan
+                            <a href="{{ route('users.index') }}" class="btn btn-primary "
+                                style="background-color: #3559E0; margin-left: 28vw;"><i class="fas fa-eye-slash"
+                                    style="color: #ffffff;"></i> UnHide</a>
                         </div>
                     </div>
                 </form>
             </div>
+
             <div class="table-responsive">
+
                 <table class="table">
+
                     <thead class="sticky">
                         <tr>
                             <th class="p-3 col-2" scope="col"> ID </th>
@@ -53,10 +50,11 @@
                             <th class="p-3 col-auto" scope="col"> Action </th>
                         </tr>
                     </thead>
+
                     <tbody class="tbody">
                         @foreach ($users as $user)
                             <tr>
-                                @if ($user->ishidden == 0)
+                                @if ($user->ishidden != 0)
                                     <td class="p-3" scope="row"> {{ $user->id }} </td>
                                     <td class="p-3" scope="row"> {{ $user->name }} </td>
                                     <td class="p-3" scope="row"> {{ $user->email }} </td>
@@ -85,8 +83,11 @@
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
     </div>
 @endsection
