@@ -82,26 +82,22 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
 
-        // $user = User::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'password' =>Hash::make($request->password),
-        // ]);
-        
-        // If validation passes, create a new User instance and save it
+        // Create a new User instance
         $user = new User();
-        $user->ishidden = $user == 'on' ? 1 : 0;
-        $user->ishidden = $request->has('ishidden');
         $user->name = $request->name;
         $user->email = $request->email;
-        if ($request->has('password') && $request->password !== null) {
-            // Hash the password before storing it
-            $user->password = bcrypt($request->password);
-        }
+        $user->password = bcrypt($request->password);
 
+        // Set ishidden attribute based on the request
+        $user->ishidden = $request->has('ishidden') ? 1 : 0;
+
+        // Save the user
+        $user->save();
+
+        // Sync roles
         $user->syncRoles($request->roles);
 
-        return redirect('/users')->with('status', 'User Created Successfully with roles');
+        return redirect('/users')->with('status', 'User Created Successfully.');
     }
 
     public function edit(User $user)
@@ -129,8 +125,7 @@ class UserController extends Controller
             'ishidden' => $request->ishidden == 'on' ? 1 : 0, // Corrected line
         ];
 
-        if (!empty($request->password))
-        {
+        if (!empty($request->password)) {
             $data += [
                 'password' => Hash::make($request->password),
             ];
@@ -139,7 +134,7 @@ class UserController extends Controller
         $user->update($data);
         $user->syncRoles($request->roles);
 
-        return redirect('/users')->with('status', 'User Updated Successfully with roles');
+        return redirect('/users')->with('status', 'User Updated Successfully.');
     }
 
     public function destroy($userId)
@@ -147,6 +142,6 @@ class UserController extends Controller
         $user = User::findOrFail($userId);
         $user->delete();
 
-        return redirect('/users')->with('satus', 'User Delete Successfully');
+        return redirect('/users');
     }
 }

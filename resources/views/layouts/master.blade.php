@@ -34,6 +34,8 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
+
+    @stack('style')
 </head>
 
 <body>
@@ -70,28 +72,6 @@
                 statusAlert.style.display = 'none';
             }
         }, delayInMilliseconds);
-
-
-        $(document).ready(function() {
-            @if (Session::has('msg'))
-                @if (Session::get('success') == true)
-                    toastr.options = {
-                        "closeButton": true,
-                        "progressBar": true
-                    }
-                    toastr.success("{{ Session::get('msg') }}");
-                    success.play();
-                @else
-                    toastr.options = {
-                        "closeButton": true,
-                        "progressBar": true
-                    }
-                    toastr.error("{{ Session::get('msg') }}");
-                    error.play();
-                @endif
-            @endif
-
-        });
     </script>
 </body>
 

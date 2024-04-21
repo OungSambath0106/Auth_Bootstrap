@@ -90,6 +90,6 @@ class PermissionController extends Controller
         $permission = Permission::find($permissionId);
         $permission->delete();
 
-        return redirect('permissions')->with('status', 'Permission Deleted Successfully');
+        return redirect('permissions');
     }
 }

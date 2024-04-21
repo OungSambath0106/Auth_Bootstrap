@@ -1,6 +1,61 @@
 @extends('layouts.master')
 
 @section('content')
+    @push('style')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+            .swal2-actions button {
+                margin-right: 10px;
+                /* Adjust the margin as needed */
+            }
+        </style>
+    @endpush
+    @if (session('status'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1800,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+                customClass: {
+                    popup: 'swal-toast'
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "{{ session('status') }}"
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1800,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+                customClass: {
+                    popup: 'swal-toast'
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: "{{ session('error') }}"
+            });
+        </script>
+    @endif
+    
     @include('role-permission.nav-links')
 
 
@@ -10,10 +65,6 @@
         </div>
         <div class="list-group-item">
             <div class="p-2 mt-3">
-
-                @if (session('status'))
-                    <div id="status-alert" class="alert alert-success"> {{ session('status') }} </div>
-                @endif
 
                 <form role="search" action="{{ url()->current() }}" method="GET">
                     @csrf
@@ -75,10 +126,11 @@
                                                     style="color: #ffffff;"></i></a>
                                         @endcan
                                         @can('delete user')
-                                            <a class="btn trash" href="{{ url('users/' . $user->id . '/delete') }}"
-                                                onclick="return confirm('ហែងលុបធ្វើអីហាអាប្រកាច់, អាណាអោយហែងលុប ?')"
-                                                style="background-color: #FF0000;border: none;"><i class="fas fa-trash"
-                                                    style="color: #ffffff;"></i></a>
+                                            <a class="btn trash" href="#"
+                                                onclick="event.preventDefault(); confirmDelete({{ $user->id }})"
+                                                style="background-color: #FF0000; border: none;">
+                                                <i class="fas fa-trash" style="color: #ffffff;"></i>
+                                            </a>
                                         @endcan
                                     </td>
                                 @endif
@@ -89,4 +141,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDelete(userId) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
+
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You want to delete this record!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire({
+                        title: "Deleted!",
+                        text: "User has been Deleted Successfully.",
+                        icon: "success",
+                        showConfirmButton: true
+                    }).then(() => {
+                        // Redirect to the delete URL if confirmed
+                        window.location.href = "{{ url('users') }}/" + userId + "/delete";
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Do nothing if cancelled
+                    swalWithBootstrapButtons.fire("Cancelled", "Your imaginary file is safe :)", "error");
+                }
+            });
+        }
+    </script>
+
 @endsection

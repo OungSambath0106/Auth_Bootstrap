@@ -93,7 +93,7 @@ class RoleController extends Controller
         $role = Role::find($roleId);
         $role->delete();
 
-        return redirect('roles')->with('status', 'Role Deleted Successfully');
+        return redirect('roles');
 
         // try {
         //     DB::beginTransaction();
