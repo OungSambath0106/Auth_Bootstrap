@@ -38,10 +38,12 @@ Route::group(['middleware' => ['isAdmin']], function () {
     // (User)
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
+
+    // (Home Page)
+    Route::get('/home', function () {
+        return view('layouts.master');
+    });
 });
 
-Route::get('/home', function () {
-    return view('layouts.master');
-});
 
 Route::get('hidding_user', [UserController::class, 'hidding_user'])->name('hidding_user');

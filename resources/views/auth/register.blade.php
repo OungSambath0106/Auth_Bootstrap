@@ -1,15 +1,26 @@
 @extends('layouts.app')
 
 @section('main')
+    <style>
+        .card-login {
+            box-shadow: 0px 10px 40px #00000056;
+        }
+    </style>
+
     <section style="">
         <div class="container py-5">
-            <div class="row d-flex justify-content-center align-items-center h-80">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-4">
-                    <div class="card shadow-1-strong" style="border-radius: 8px; background-color: #ffffff; color:#687a8a;">
+            <div class="row d-flex justify-content-between h-80">
+                <div class="left-login d-flex col-6 mt-0">
+                    <img src="{{ asset('Image/pic1.png') }}" class="left-login-image" alt="" width="600"
+                        height="600">
+                </div>
+                <div class="col-6 col-md-6 col-lg-6 col-xl-4 mt-1 mx-5">
+                    <div class="card card-login shadow-1-strong"
+                        style="border-radius: 8px; background-color: #ffffff; color:#687a8a; width: 24vw;">
                         <div class="card-body p-4">
                             <h2 class="mb-4 text-center"> REGISTER </h2>
-                            <h4 class="mb-0 "> Adventure starts here &#128640 </h4>
-                            <p> Make your app management easy and fun! </p>
+                            <h4 class="mb-0 "> Welcome to my Cafe Shop &#128640 </h4>
+                            <p> Drink coffee and enjoy with your day!! </p>
                             <form action="{{ route('register') }}" method="POST">
                                 @csrf
                                 <div class="form-outline mb-4">

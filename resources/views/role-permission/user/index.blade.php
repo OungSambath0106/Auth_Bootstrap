@@ -8,6 +8,11 @@
                 margin-right: 10px;
                 /* Adjust the margin as needed */
             }
+
+            .img-thumbnail {
+                width: 30px !important;
+                height: 30px !important;
+            }
         </style>
     @endpush
     @if (session('status'))
@@ -55,35 +60,25 @@
             });
         </script>
     @endif
-    
-    @include('role-permission.nav-links')
 
-
-    <div class="list-group w-auto p-3" style="border-radius: 10px">
+    <div class="list-group w-auto p-3 mt-1" style="border-radius: 10px">
         <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
             <h4 style="color: #FFFFFF;" class="mt-2"><b>Users List</b></h4>
         </div>
         <div class="list-group-item">
-            <div class="p-2 mt-3">
+            <div class="p-2 mt-1">
 
                 <form role="search" action="{{ url()->current() }}" method="GET">
                     @csrf
-                    <div class="input-group inline">
-                        <input type="text" class="form-control search-bar" name="search" style="border-radius: 10px"
-                            placeholder="Search for something" aria-label="Search" />
-
-                        <div>
-                            <!-- Add refresh button -->
-                            <button type="submit" class="btn btn-primary" value="Refresh"
-                                style="background-color: #3559E0; margin-left:1vw;">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
-                        </div>
+                    <div class="input-group inline justify-content-between px-4">
+                        <input type="text" class="form-control search-bar" name="search"
+                            style="border-radius: 10px; color: #3559E0;" placeholder="Search for something..."
+                            aria-label="Search" />
 
                         <div>
                             <a href="{{ route('hidding_user') }}" class="btn btn-primary "
-                                style="background-color: #3559E0; margin-left: 18vw;"><i class="fas fa-eye-slash"
-                                    style="color: #ffffff;"></i> Hide</a>
+                                style="background-color: #3559E0;"><i class="fas fa-eye-slash" style="color: #ffffff;"></i>
+                                Hide</a>
                             @can('create user')
                                 <a href="{{ url('users/create') }}" class="btn btn-primary "
                                     style="background-color: #3559E0;"><i class="fas fa-plus-circle fa-lg"
@@ -97,21 +92,30 @@
                 <table class="table">
                     <thead class="sticky">
                         <tr>
-                            <th class="p-3 col-2" scope="col"> ID </th>
-                            <th class="p-3 col-3" scope="col"> User Name </th>
-                            <th class="p-3 col-3" scope="col"> Email </th>
-                            <th class="p-3 col-2" scope="col"> Role </th>
-                            <th class="p-3 col-auto" scope="col"> Action </th>
+                            <th class="px-3 py-2 col-1" scope="col"> ID </th>
+                            {{-- <th class="px-3 py-2 col-2" scope="col"> Profile </th> --}}
+                            <th class="px-3 py-2 col-3" scope="col"> User Name </th>
+                            <th class="px-3 py-2 col-3" scope="col"> Email </th>
+                            <th class="px-3 py-2 col-3" scope="col"> Role </th>
+                            <th class="px-3 py-2 col-auto" scope="col"> Action </th>
                         </tr>
                     </thead>
                     <tbody class="tbody">
                         @foreach ($users as $user)
                             <tr>
                                 @if ($user->ishidden == 0)
-                                    <td class="p-3" scope="row"> {{ $user->id }} </td>
-                                    <td class="p-3" scope="row"> {{ $user->name }} </td>
-                                    <td class="p-3" scope="row"> {{ $user->email }} </td>
-                                    <td class="p-3" scope="row">
+                                    <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->id }} </td>
+                                    {{-- <td style="padding-left: 23px;">
+                                        <img src="{{ asset('storage/uploads/all_photo/' . $user->image) }}" width="30"
+                                            height="30" class="img rounded-circle" alt="">
+                                    </td> --}}
+                                    <td class="px-3" scope="row">
+                                        <img src="{{ asset('storage/uploads/all_photo/' . $user->image) }}" width="30"
+                                            height="30" class="img rounded-circle" alt="">
+                                        <span class="px-2">{{ $user->name }}</span>
+                                    </td>
+                                    <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->email }} </td>
+                                    <td class="px-3" style="padding-top: 12px;" scope="row">
                                         @if (!empty($user->getRoleNames()))
                                             @foreach ($user->getRoleNames() as $rolename)
                                                 <label class="badge bg-primary mx-1"> {{ $rolename }}
@@ -119,12 +123,20 @@
                                             @endforeach
                                         @endif
                                     </td>
-                                    <td class="p-3" scope="row">
-                                        @can('update user')
+                                    <td class="px-3" scope="row">
+                                        {{-- @can('update user')
                                             <a href="{{ url('users/' . $user->id . '/edit') }}" type="button" class="btn edit"
                                                 style="background-color: #3559E0;border: none;"><i class="fas fa-edit"
                                                     style="color: #ffffff;"></i></a>
-                                        @endcan
+                                        @endcan --}}
+                                        @if (auth()->user()->hasRole('super-admin') ||
+                                                auth()->user()->hasRole('admin') ||
+                                                (auth()->user()->hasRole('user') && auth()->user()->id === $user->id))
+                                            <a href="{{ url('users/' . $user->id . '/edit') }}" type="button"
+                                                class="btn edit" style="background-color: #3559E0;border: none;">
+                                                <i class="fas fa-edit" style="color: #ffffff;"></i>
+                                            </a>
+                                        @endif
                                         @can('delete user')
                                             <a class="btn trash" href="#"
                                                 onclick="event.preventDefault(); confirmDelete({{ $user->id }})"

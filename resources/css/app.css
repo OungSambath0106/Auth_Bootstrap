@@ -69,33 +69,43 @@ th{
     font-weight: 700;
     color: #3559E0;
 }
-.view{
-    background-color: #38E035;
-    border: none;
-}
 .edit{
     background-color: #3559E0;
     border: none;
+    height: 30px !important;
+    padding-top: 5px;
 }
 .trash{
     background-color: #FF0000;
     border: none;
+    height: 30px !important;
+    padding-top: 5px;
+}
+.btn-warning{
+    height: 30px !important;
+    padding-top: 4px;
 }
 .btn{
     border-radius: 7px;
 }
 .search-bar{
-    margin-left: 20px;
     height: 38px;
     max-width: 45vw;
 }
 .table-responsive{
-    max-height: 51vh;
+    max-height: 58vh;
     overflow: auto;
-    }
+}
+.table-responsive::-webkit-scrollbar {
+    display: none;
+}
+.table-responsive {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
 .form-label{
     color: #3559E0;
-    font-size: 1.1rem;
+    /* font-size: 1.1rem; */
     font-weight: 700;
 }
 
@@ -130,4 +140,22 @@ thead.sticky {
 }
 .tbody td {
     color: #3559E0;
+}
+.dropdown-item:hover{
+    color: #3559E0;
+}
+.gap__20{
+    gap: 38px;
+}
+.search-bar::placeholder{
+    color: #3559E0;
+}
+.form-control::placeholder{
+    color: #3559E0;
+}
+.form-control-lg{
+    border-color: #687a8a !important;
+}
+.form-control-lg::placeholder{
+    color: #687a8a;
 }

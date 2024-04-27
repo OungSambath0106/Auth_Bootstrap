@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -73,13 +74,20 @@ class UserController extends Controller
         ]);
     }
 
+    public function uploadImage($image)
+    {
+        $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
+        $image->move(public_path('storage/uploads/all_photo'), $imageName);
+        return $imageName;
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|unique:users,email',
-            'password' => 'required|string|min:6|max:20',
-            'roles' => 'required'
+            'password' => 'required|string|min:4|max:20',
+            'roles' => 'nullable',
         ]);
 
         // Create a new User instance
@@ -90,6 +98,10 @@ class UserController extends Controller
 
         // Set ishidden attribute based on the request
         $user->ishidden = $request->has('ishidden') ? 1 : 0;
+
+        if ($request->hasFile('image')) {
+            $user->image = $this->uploadImage($request->file('image'));
+        }
 
         // Save the user
         $user->save();
@@ -115,14 +127,15 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'password' => 'nullable|string|min:6|max:20',
-            'roles' => 'required'
+            'password' => 'nullable|string|min:4|max:20',
+            'roles' => 'nullable',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif', // Adjust validation rules for image uploads
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'ishidden' => $request->ishidden == 'on' ? 1 : 0, // Corrected line
+            'ishidden' => $request->ishidden == 'on' ? 1 : 0,
         ];
 
         if (!empty($request->password)) {
@@ -131,11 +144,16 @@ class UserController extends Controller
             ];
         }
 
+        if ($request->hasFile('image')) {
+            $user->image = $this->uploadImage($request->file('image'));
+        }
+
         $user->update($data);
         $user->syncRoles($request->roles);
 
         return redirect('/users')->with('status', 'User Updated Successfully.');
     }
+
 
     public function destroy($userId)
     {

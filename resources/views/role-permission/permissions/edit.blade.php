@@ -14,7 +14,7 @@
 
                         <div class="mb-5">
                             <label for="" class="form-label"> Permission Name </label>
-                            <input type="text" name="name" value="{{ $permission->name }}" class="form-control">
+                            <input type="text" name="name" value="{{ $permission->name }}" style="color: #3559E0;" class="form-control" placeholder="Enter Permission">
                         </div>
                         <div class="d-grid gap-1 d-md-flex justify-content-md-end" style="padding:0 25px 25px 0">
                             <button style="border-radius: 20px; width:110px;" type="submit"

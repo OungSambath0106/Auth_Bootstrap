@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="list-group w-auto p-3 mt-5" style="border-radius: 10px">
+    <div class="list-group w-auto p-3 mt-4" style="border-radius: 10px">
         <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
             <h4 style="color: #FFFFFF;" class="mt-2"><b>Role : {{ $role->name }}</b></h4>
         </div>
@@ -18,16 +18,16 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            <label for="" class="form-label mb-3"> Permissions </label>
-                            <div class="row col-auto w-auto justify-content-lg-around mx-5">
+                            <h4 for="" class="form-label mx-5 mb-3"> Permissions : </h4>
+                            <div class="row gap__20 col-12 w-auto justify-content-evenly mx-5">
                                 @foreach ($permissions as $per)
                                     <div class="col-md-2 form-check form-switch">
-                                        <label for="" class="form-check-label" for="flexSwitchCheckDefault">
+                                        <h5 class="form-label" for="flexSwitchCheckDefault">
                                             <input type="checkbox" class="form-check-input" id="flexSwitchCheckDefault"
                                                 name="permission[]" value="{{ $per->name }}"
                                                 {{ in_array($per->id, $rolePermissions) ? 'checked' : '' }} />
                                             {{ $per->name }}
-                                        </label>
+                                        </h5>
                                     </div>
                                 @endforeach
                             </div>
