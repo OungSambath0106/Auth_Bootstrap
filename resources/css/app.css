@@ -93,7 +93,7 @@ th{
     max-width: 45vw;
 }
 .table-responsive{
-    max-height: 58vh;
+    max-height: 68vh;
     overflow: auto;
 }
 .table-responsive::-webkit-scrollbar {

@@ -77,8 +77,10 @@
                                 </div>
                                 <div class="form-check form-switch mt-3">
                                     <input name="ishidden" class="form-check-input" type="checkbox" role="switch"
-                                        id="ishidden" style=" border-color: #3559E0;">
-                                    <label class="form-check-label form-label" for="flexSwitchCheckDefault"> Hidding</label>
+                                        id="ishidden flexSwitchCheckChecked" style=" border-color: #3559E0;" checked>
+                                    <label class="form-check-label form-label" for="flexSwitchCheckChecked"> 
+                                        Active or InActive 
+                                    </label>
                                 </div>
                                 <div class="d-grid gap-1 d-md-flex justify-content-md-end position-absolute bottom-0 end-0"
                                     style="padding:0 25px 25px 0">

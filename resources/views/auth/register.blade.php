@@ -54,8 +54,9 @@
                                     <button class="btn btn-primary" id="registerButton" type="submit"
                                         disabled>Register</button>
                                 </div>
-                                <p class="text-center pt-3">Already have an account? <a href="{{ route('login') }}"
-                                        style="text-decoration: none;"> Sign in Instead </a> </p>
+                                <p class="text-center pt-3">Already have an account? 
+                                    <a href="{{ route('login') }}" style="text-decoration: none;"> Sign in Instead </a> 
+                                </p>
                             </form>
                         </div>
                     </div>

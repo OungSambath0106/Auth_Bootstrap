@@ -16,4 +16,10 @@
             <i class="fas fa-user-circle"></i> Users
         </a>
     @endcan
+
+    {{-- @can('view user')
+        <a href="{{ route('hidding_user') }}" class="dropdown-item">
+            <i class="fas fa-user-circle"></i> Users Hiiden
+        </a>
+    @endcan --}}
 </div>

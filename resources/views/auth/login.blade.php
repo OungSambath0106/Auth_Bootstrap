@@ -10,11 +10,7 @@
     <section style="">
         <div class="container py-5">
             <div class="row d-flex justify-content-between h-80">
-                <div class="left-login d-flex col-6 mt-0">
-                    <img src="{{ asset('Image/pic1.png') }}" class="left-login-image" alt="" width="600"
-                        height="600">
-                </div>
-                <div class="col-6 col-md-6 col-lg-6 col-xl-4 mt-5 mx-5">
+                <div class="col-6 col-md-6 col-lg-6 col-xl-4 mt-5 px-5 mx-5">
                     <div class="card card-login shadow-1-strong"
                         style="border-radius: 8px; background-color: #ffffff; color:#687a8a; width: 24vw;">
                         <div class="card-body p-4">
@@ -56,11 +52,16 @@
                                 <div class="d-grid col-12 mx-auto">
                                     <button class="btn btn-primary" id="registerButton" type="submit">Login</button>
                                 </div>
-                                <p class="text-center pt-3">I don't have account? <a href="{{ route('register') }}"
-                                        style="text-decoration: none;"> Register </a> </p>
+                                <p class="text-center pt-3">I don't have account? 
+                                    <a href="{{ route('register') }}" style="text-decoration: none;"> Register </a> 
+                                </p>
                             </form>
                         </div>
                     </div>
+                </div>
+                <div class="left-login d-flex col-6 mt-0">
+                    <img src="{{ asset('Image/pic1.png') }}" class="left-login-image" alt="" width="600"
+                        height="600">
                 </div>
             </div>
         </div>

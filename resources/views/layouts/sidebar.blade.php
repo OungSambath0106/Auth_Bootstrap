@@ -11,15 +11,15 @@
     <div class="d-flex flex-column flex-shrink-0 text-white sidebar-container">
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
             <li>
-                <a href="#" class="nav-link py-4 mb-5 icon"><i class="fa-solid fa-shop fa-3x"
+                <a href="#" class="nav-link py-4 mb-4 mt-3 icon"><i class="fa-solid fa-shop fa-3x"
                         style="color: #ffffff;"></i></a>
             </li>
             <li>
-                <a href="#" class="nav-link py-4 mb-5 icon"><i class="fa-solid fa-pen-to-square fa-3x"
+                <a href="#" class="nav-link py-4 mb-4 icon"><i class="fa-solid fa-pen-to-square fa-3x"
                         style="color: #ffffff;"></i></a>
             </li>
             <li>
-                <a href="#" class="nav-link py-4 mb-5 icon"><i class="fa-solid fa fa-users fa-3x"
+                <a href="#" class="nav-link py-4 mb-4 icon"><i class="fa-solid fa fa-users fa-3x"
                         style="color: #ffffff;"></i></a>
             </li>
             <li class="nav-item dropdown" onmouseover="showDropdownMenu()" onmouseout="hideDropdownMenu()">
@@ -33,7 +33,7 @@
             </li>
         </ul>
         <a class="nav-link py-4 d-flex justify-content-center align-items-center logout" href="{{ route('logout') }}"
-            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            onclick="event.preventDefault(); confirmLogout();">
             <i class="fa-solid fa-right-from-bracket fa-3x" style="color: #ffffff;"></i>
         </a>
         <!-- Form for logout -->
@@ -52,5 +52,27 @@
     function hideDropdownMenu() {
         document.getElementById('navbarDropdown').classList.remove('show');
         document.getElementById('dropdownMenu').classList.remove('show');
+    }
+</script>
+
+<!-- Include SweetAlert script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- JavaScript to show confirmation dialog -->
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3559E0",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, log out"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
     }
 </script>

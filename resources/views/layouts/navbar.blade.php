@@ -1,5 +1,5 @@
 <style>
-    .profile{
+    .profile {
         width: 100px !important;
         height: 100px !important;
     }
@@ -16,18 +16,28 @@
             </div>
             <div class="col-4">
                 <div class="row admin">
-                    <a href="{{ route('users.edit', ['user' => Auth::user()]) }}" class="col-2" style="padding-top: 10px">
-                        @if(Auth::user()->image)
-                            <img class="profile" src="{{ asset('storage/uploads/all_photo/' . Auth::user()->image) }}" alt="Profile Image">
+                    <a href="{{ route('users.edit', ['user' => Auth::user()]) }}" class="col-3"
+                        style="padding-top: 10px">
+                        {{-- <i class="fas fa-pen position-absolute"
+                                style="font-size: 12px; background-color: #3559E0; 
+                                color: #ffffff; padding: 6px; border-radius: 50%; 
+                                margin-left: 85px; margin-top: -5px;"></i> --}}
+                        @if (Auth::user()->image)
+                            <img class="profile" src="{{ asset('storage/uploads/all_photo/' . Auth::user()->image) }}"
+                                alt="Profile Image">
                         @else
-                            <img class="profile" src="{{ asset('Image/default_profile.jpg') }}" alt="Default Profile Image">
+                            <img class="profile" src="{{ asset('Image/default_profile.jpg') }}"
+                                alt="Default Profile Image">
                         @endif
-                    </a>                    
-                    <div class="col-8" style="padding-top: 25px; padding-left:60px">
-                        <h5 class="positions">{{ implode(', ', Auth::user()->roles()->pluck('name')->toArray()) }}</h5>
-                        <h4 class="name"><strong>{{ Auth::user()->name }}</strong></h4>
+                    </a>
+                    <div class="col-7" style="padding-top: 35px; padding-left:25px">
+                        <h4 class="name">
+                            <strong>{{ Auth::user()->name }}</strong>
+                        </h4>
+                        <h5 class="positions" style="color: #839bf2">
+                            {{ implode(', ', Auth::user()->roles()->pluck('name')->toArray()) }}</h5>
                     </div>
-                    
+
                     <div class="col-2 p-0 d-flex justify-content-end p-3">
                         <i class="fa-regular fa-bell" style="color: #3559E0; font-size:25px"></i>
                     </div>
