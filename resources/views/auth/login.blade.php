@@ -14,9 +14,7 @@
                     <div class="card card-login shadow-1-strong"
                         style="border-radius: 8px; background-color: #ffffff; color:#687a8a; width: 24vw;">
                         <div class="card-body p-4">
-                            <h2 class="mb-4 text-center"> LOGIN </h2>
-                            <h4 class="mb-0 "> Welcome to my Cafe Shop &#128640 </h4>
-                            <p> Drink coffee and enjoy with your day!! </p>
+                            <h2 class="mb-5 mt-3 text-center" style="font-weight: 700"> LOGIN </h2>
                             <form action="{{ route('login') }}" method="POST">
                                 @csrf
                                 <div class="form-outline mb-4">
@@ -35,12 +33,6 @@
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
                                 </div>
-                                {{-- <div class="form-check d-flex justify-content mb-4">
-                                    <input type="checkbox" name="remember" class="form-check-input me-2" value=""
-                                        id="form1Example3" />
-                                    <label for="form1Example3" class="form-check-label">I agree to <span
-                                            style="color: #0b5ed7">privacy policy & terms</span> </label>
-                                </div> --}}
                                 <div class="form-check d-flex justify-content mb-4">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember"
                                         {{ old('remember') ? 'checked' : '' }}>

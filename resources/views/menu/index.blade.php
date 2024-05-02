@@ -1,5 +1,4 @@
 @extends('layouts.master')
-
 @section('content')
     @push('style')
         <!-- DataTables -->
@@ -50,6 +49,9 @@
                 background-color: #3559e0;
                 border: none
             }
+
+            .filter{
+            }
         </style>
     @endpush
     @if (session('status'))
@@ -99,108 +101,86 @@
     @endif
 
     <div class="list-group w-auto p-3 mt-1" style="border-radius: 10px">
-        <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
-            <h4 style="color: #FFFFFF;" class="mt-2"><b>Users List</b></h4>
+        <div class="list-group-item d-flex justify-content-between" style="background-color: #3559E0" aria-current="true">
+            <h4 style="color: #FFFFFF;" class=" mt-2 col-0"><b>Menus List</b></h4>
+            <div class="col-sm-3 filter mt-1">
+                <select id="catelog-filter" class="form-control">
+                    <option value="" {{ !request()->filled('menu_type') ? 'selected' : '' }}>All Catalog</option>
+                    @foreach ($menu_types as $type)
+                        <option value="{{ $type }}" {{ request('menu_type') == $type ? 'selected' : '' }}>
+                            {{ $type }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class=" col-3"></div>
         </div>
         <div class="list-group-item">
-            {{-- <div class="p-2 mt-1">
-
-                <form role="search" action="{{ url()->current() }}" method="GET">
-                    @csrf
-                    <div class="input-group inline justify-content-between px-4">
-                        <input type="text" class="form-control search-bar" name="search"
-                            style="border-radius: 10px; color: #3559E0;" placeholder="Search for something..."
-                            aria-label="Search" />
-
-                        <div>
-                            <a href="{{ route('hidding_user') }}" class="btn btn-primary "
-                                style="background-color: #3559E0;"><i class="fas fa-eye-slash" style="color: #ffffff;"></i>
-                                Hide</a>
-                            @can('create user')
-                                <a href="{{ url('users/create') }}" class="btn btn-primary "
-                                    style="background-color: #3559E0;"><i class="fas fa-plus-circle fa-lg"
-                                        style="color: #ffffff;"></i> Add New User</a>
-                            @endcan
-                        </div>
-                    </div>
-                </form>
-            </div> --}}
             <div class="table-responsive">
+
                 <table id="example1" class="table">
+
                     <thead class="sticky">
                         <tr>
-                            <th class="px-3 py-2 col-1" scope="col"> ID </th>
-                            {{-- <th class="px-3 py-2 col-2" scope="col"> Profile </th> --}}
-                            <th class="px-3 py-2 col-3" scope="col"> User Name </th>
-                            <th class="px-3 py-2 col-2" scope="col"> Email </th>
-                            <th class="px-3 py-2 col-2" scope="col"> Role </th>
-                            <th class="px-3 py-2 col-2" scope="col">Status</th>
-                            <th class="px-3 py-2 col-auto" scope="col"> Action </th>
+                            <th class="px-3 py-2 col-1" scope="col">#</th>
+                            <th class="px-3 py-2 col-2" scope="col">Menu Name</th>
+                            <th class="px-3 py-2 col-2" scope="col">Menu Type</th>
+                            <th class="px-3 py-2 col-2" scope="col">Sale Price</th>
+                            <th class="px-3 py-2 col-2" scope="col">Description</th>
+                            <th class="px-3 py-2 col-1" scope="col">Status</th>
+                            <th class="px-3 py-2 col-auto" scope="col">Action</th>
                         </tr>
                     </thead>
+
                     <tbody class="tbody">
-                        @foreach ($users as $user)
+                        @foreach ($menus as $menu)
                             <tr>
-                                {{-- @if ($user->ishidden != 0) --}}
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->id }} </td>
-                                {{-- <td style="padding-left: 23px;">
-                                        <img src="{{ asset('storage/uploads/all_photo/' . $user->image) }}" width="30"
-                                            height="30" class="img rounded-circle" alt="">
-                                    </td> --}}
-                                <td class="px-3" scope="row">
-                                    <img src="{{ asset('storage/uploads/all_photo/' . $user->image) }}" width="30"
-                                        height="30" class="img rounded-circle" alt="">
-                                    <span class="px-2">{{ $user->name }}</span>
-                                </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->email }} </td>
+                                <td class="px-3" scope="row"> {{ $menu->id }} </td>
+                                <td class="px-3" scope="row"> {{ $menu->menuname }} </td>
+                                <td class="px-3" scope="row"> {{ $menu->menutype }} </td>
+                                <td class="px-3" scope="row">$ {{ $menu->price }} </td>
+                                <td class="px-3" scope="row"> {{ $menu->description }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
-                                    @if (!empty($user->getRoleNames()))
-                                        @foreach ($user->getRoleNames() as $rolename)
-                                            <label class="badge bg-primary mx-1"> {{ $rolename }}
-                                            </label>
-                                        @endforeach
-                                    @endif
-                                </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row">
-                                    @if ($user->ishidden == 1)
+                                    @if ($menu->ishidden == 1)
                                         <span class="badge bg-success badge-xl mx-1">Active</span>
                                     @else
                                         <span class="badge bg-danger badge-xl mx-1">Inactive</span>
                                     @endif
                                 </td>
                                 <td class="px-3" scope="row">
-                                    {{-- @can('update user')
-                                            <a href="{{ url('users/' . $user->id . '/edit') }}" type="button" class="btn edit"
-                                                style="background-color: #3559E0;border: none;"><i class="fas fa-edit"
-                                                    style="color: #ffffff;"></i></a>
-                                        @endcan --}}
-                                    @if (auth()->user()->hasRole('super-admin') ||
-                                            auth()->user()->hasRole('admin') ||
-                                            (auth()->user()->hasRole('user') && auth()->user()->id === $user->id))
-                                        <a href="{{ url('users/' . $user->id . '/edit') }}" type="button" class="btn edit"
+                                    @can('view menu')
+                                        <a href="{{ url('menus/' . $menu->id) }}" type="button" class="btn view"
+                                            style="background-color: #38E035;border: none;">
+                                            <i class="fas fa-eye" style="color: #ffffff;"></i>
+                                        </a>
+                                    @endcan
+                                    @can('update menu')
+                                        <a href="{{ url('menus/' . $menu->id . '/edit') }}" type="button" class="btn edit"
                                             style="background-color: #3559E0;border: none;">
                                             <i class="fas fa-edit" style="color: #ffffff;"></i>
                                         </a>
-                                    @endif
-                                    @can('delete user')
+                                    @endcan
+                                    @can('delete menu')
                                         <a class="btn trash" href="#"
-                                            onclick="event.preventDefault(); confirmDelete({{ $user->id }})"
+                                            onclick="event.preventDefault(); confirmDelete({{ $menu->id }})"
                                             style="background-color: #FF0000; border: none;">
                                             <i class="fas fa-trash" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
                                 </td>
-                                {{-- @endif --}}
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
     </div>
 
     <script>
-        function confirmDelete(userId) {
+        function confirmDelete(menuId) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: "btn btn-success",
@@ -221,12 +201,12 @@
                 if (result.isConfirmed) {
                     swalWithBootstrapButtons.fire({
                         title: "Deleted!",
-                        text: "User has been Deleted Successfully.",
+                        text: "Menu has been Deleted Successfully.",
                         icon: "success",
                         showConfirmButton: true
                     }).then(() => {
                         // Redirect to the delete URL if confirmed
-                        window.location.href = "{{ url('users') }}/" + userId + "/delete";
+                        window.location.href = "{{ url('menus') }}/" + menuId + "/delete";
                     });
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     // Do nothing if cancelled
@@ -253,17 +233,23 @@
     <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script>
         $(function() {
+            $("#catelog-filter").change(function() {
+                var selectedValue = $(this).val();
+                $("#example1").DataTable().column(2).search(selectedValue).draw();
+            });
+
             $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": [ // Custom button configuration
-                    @can('create user')
+                    @can('create menu')
                         {
-                            text: 'Create New Customer',
+
+                            text: 'Create New Menu',
                             className: 'btn btn-primary btn-default',
                             action: function() {
-                                window.location.href = "{{ url('users/create') }}";
+                                window.location.href = "{{ url('menus/create') }}";
                             }
                         }
                     @endcan
@@ -277,7 +263,6 @@
                     "<'row mt-2 mb-2 px-3'<'col-md-6 d-flex justify-content-between'f>B>" +
                     "<'row'<'col-md-12'tr>>" +
                     "<'row'<'col-md-5'i><'col-md-7'p>>"
-
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
             // Add custom search icon

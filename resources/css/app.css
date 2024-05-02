@@ -81,6 +81,12 @@ th{
     height: 30px !important;
     padding-top: 5px;
 }
+.view{
+    background-color: #38E035;
+    border: none;
+    height: 30px !important;
+    padding-top: 5px;
+}
 .btn-warning{
     height: 30px !important;
     padding-top: 4px;
@@ -114,6 +120,9 @@ th{
     border-radius: 10px;
 }
 .form-control[readonly] {
+    background-color: #FFFFFF;
+}
+.role-form:disabled{
     background-color: #FFFFFF;
 }
 .btn-search{
@@ -158,4 +167,13 @@ thead.sticky {
 }
 .form-control-lg::placeholder{
     color: #687a8a;
+}
+.bg-success{
+    background-color: #38E035 !important;
+}
+.bg-danger{
+    background-color: #FF0000 !important;
+}
+#profileImage{
+    border-radius: 10px !important;
 }

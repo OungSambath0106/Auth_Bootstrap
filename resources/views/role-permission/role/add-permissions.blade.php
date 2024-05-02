@@ -1,19 +1,19 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="list-group w-auto p-3 mt-4" style="border-radius: 10px">
+    <div class="list-group w-auto p-3 mt-1" style="border-radius: 10px">
         <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
             <h4 style="color: #FFFFFF;" class="mt-2"><b>Role : {{ $role->name }}</b></h4>
         </div>
         <div class="list-group-item">
-            <div class="p-2 mt-3">
+            <div class="p-2 mt-1">
                 <div class="card-body">
                     <form action="{{ url('roles/' . $role->id . '/give-permissions') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
-                        <div class="mb-5">
+                        <div class="mb-4">
                             @error('permission')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

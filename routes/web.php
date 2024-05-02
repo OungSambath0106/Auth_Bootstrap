@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes(); 
+Auth::routes();
 
 
 // Route::group(['middleware' => ['role:super-admin|admin']], function () {
@@ -39,10 +39,21 @@ Route::group(['middleware' => ['isAdmin']], function () {
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
+    // (Menu)
+    Route::resource('menus', App\Http\Controllers\MenuController::class);
+    Route::get('menus/{menuId}/delete', [App\Http\Controllers\MenuController::class, 'destroy']);
+
+    // (Customer)
+    Route::resource('customers', App\Http\Controllers\CustomerController::class);
+    Route::get('customers/{customerId}/delete', [App\Http\Controllers\CustomerController::class, 'destroy']);
+
     // (Home Page)
     Route::get('/home', function () {
         return view('layouts.master');
     });
+
+    // (Dashboard Page)
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 });
 
 

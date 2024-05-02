@@ -18,9 +18,7 @@
                     <div class="card card-login shadow-1-strong"
                         style="border-radius: 8px; background-color: #ffffff; color:#687a8a; width: 24vw;">
                         <div class="card-body p-4">
-                            <h2 class="mb-4 text-center"> REGISTER </h2>
-                            <h4 class="mb-0 "> Welcome to my Cafe Shop &#128640 </h4>
-                            <p> Drink coffee and enjoy with your day!! </p>
+                            <h2 class="mb-5 mt-3 text-center" style="font-weight: 700"> REGISTER </h2>
                             <form action="{{ route('register') }}" method="POST">
                                 @csrf
                                 <div class="form-outline mb-4">

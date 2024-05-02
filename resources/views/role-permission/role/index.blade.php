@@ -103,25 +103,6 @@
                 <h4 style="color: #FFFFFF;" class="mt-2"><b>Role List</b></h4>
             </div>
             <div class="list-group-item">
-                {{-- <div class="p-2 mt-1">
-
-                    <form role="search" action="{{ url()->current() }}" method="GET">
-                        @csrf
-                        <div class="input-group inline justify-content-between px-4">
-                            <input type="text" class="form-control search-bar" name="search"
-                                style="border-radius: 10px; color: #3559E0;" placeholder="Search for something..."
-                                aria-label="Search" />
-
-                            <div>
-                                @can('create user')
-                                    <a href="{{ url('roles/create') }}" class="btn btn-primary "
-                                        style="background-color: #3559E0;"><i class="fas fa-plus-circle fa-lg"
-                                            style="color: #ffffff;"></i> Add New Role</a>
-                                @endcan
-                            </div>
-                        </div>
-                    </form>
-                </div> --}}
                 <div class="table-responsive">
                     <table id="example1" class="table">
                         <thead class="sticky">
@@ -223,13 +204,15 @@
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": [ // Custom button configuration
-                        {
-                            text: 'Create New Customer',
-                            className: 'btn btn-primary btn-default',
-                            action: function() {
-                                window.location.href = "{{ url('users/create') }}";
+                        @can('create role')
+                            {
+                                text: 'Create New Role',
+                                className: 'btn btn-primary btn-default',
+                                action: function() {
+                                    window.location.href = "{{ url('roles/create') }}";
+                                }
                             }
-                        }
+                        @endcan
                     ],
                     "language": {
                         "search": "",

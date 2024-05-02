@@ -20,26 +20,10 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
-        // $roles = Role::get();
-        // return view('role-permission.role.index', [
-        //     'roles' => $roles
-        // ]);
-
-        $query_param = [];
-
-        $roles = Role::when($request->has('search'), function ($query) use ($request) {
-            $key = explode(' ', $request['search']);
-            $query->where(function ($q) use ($key) {
-                foreach ($key as $value) {
-                    $q->orWhere('name', 'like', "%{$value}%")
-                        ->orWhere('id', 'like', "%{$value}%");
-                }
-            });
-        })->get();
-
-        $query_param = $request->has('search') ? ['search' => $request['search']] : [];
-
-        return view('role-permission.role.index', compact('roles', 'query_param'));
+        $roles = Role::get();
+        return view('role-permission.role.index', [
+            'roles' => $roles
+        ]);
     }
 
     public function create()

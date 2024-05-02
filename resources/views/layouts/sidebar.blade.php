@@ -11,17 +11,21 @@
     <div class="d-flex flex-column flex-shrink-0 text-white sidebar-container">
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
             <li>
-                <a href="#" class="nav-link py-4 mb-4 mt-3 icon"><i class="fa-solid fa-shop fa-3x"
+                <a href="{{ route('dashboard') }}" class="nav-link py-4 mb-4 mt-3 icon"><i class="fa-solid fa-shop fa-3x"
                         style="color: #ffffff;"></i></a>
             </li>
+            @can('view menu')
             <li>
-                <a href="#" class="nav-link py-4 mb-4 icon"><i class="fa-solid fa-pen-to-square fa-3x"
+                <a href="{{ url('menus') }}" class="nav-link py-4 mb-4 icon"><i class="fa-solid fa-list fa-3x"
                         style="color: #ffffff;"></i></a>
             </li>
+            @endcan
+            @can('view customer')
             <li>
-                <a href="#" class="nav-link py-4 mb-4 icon"><i class="fa-solid fa fa-users fa-3x"
+                <a href="{{ url('customers') }}" class="nav-link py-4 mb-4 icon"><i class="fa-solid fa fa-users fa-3x"
                         style="color: #ffffff;"></i></a>
             </li>
+            @endcan
             <li class="nav-item dropdown" onmouseover="showDropdownMenu()" onmouseout="hideDropdownMenu()">
                 <a class="nav-link dropdown-toggle py-4 mb-5 icon" href="#" id="navbarDropdown" role="button"
                     aria-haspopup="true" aria-expanded="false">

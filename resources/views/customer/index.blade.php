@@ -1,5 +1,4 @@
 @extends('layouts.master')
-
 @section('content')
     @push('style')
         <!-- DataTables -->
@@ -100,107 +99,71 @@
 
     <div class="list-group w-auto p-3 mt-1" style="border-radius: 10px">
         <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
-            <h4 style="color: #FFFFFF;" class="mt-2"><b>Users List</b></h4>
+            <h4 style="color: #FFFFFF;" class=" mt-2"><b>Customers List</b></h4>
         </div>
         <div class="list-group-item">
-            {{-- <div class="p-2 mt-1">
 
-                <form role="search" action="{{ url()->current() }}" method="GET">
-                    @csrf
-                    <div class="input-group inline justify-content-between px-4">
-                        <input type="text" class="form-control search-bar" name="search"
-                            style="border-radius: 10px; color: #3559E0;" placeholder="Search for something..."
-                            aria-label="Search" />
-
-                        <div>
-                            <a href="{{ route('hidding_user') }}" class="btn btn-primary "
-                                style="background-color: #3559E0;"><i class="fas fa-eye-slash" style="color: #ffffff;"></i>
-                                Hide</a>
-                            @can('create user')
-                                <a href="{{ url('users/create') }}" class="btn btn-primary "
-                                    style="background-color: #3559E0;"><i class="fas fa-plus-circle fa-lg"
-                                        style="color: #ffffff;"></i> Add New User</a>
-                            @endcan
-                        </div>
-                    </div>
-                </form>
-            </div> --}}
             <div class="table-responsive">
+
                 <table id="example1" class="table">
+
                     <thead class="sticky">
                         <tr>
-                            <th class="px-3 py-2 col-1" scope="col"> ID </th>
-                            {{-- <th class="px-3 py-2 col-2" scope="col"> Profile </th> --}}
-                            <th class="px-3 py-2 col-3" scope="col"> User Name </th>
-                            <th class="px-3 py-2 col-2" scope="col"> Email </th>
-                            <th class="px-3 py-2 col-2" scope="col"> Role </th>
-                            <th class="px-3 py-2 col-2" scope="col">Status</th>
-                            <th class="px-3 py-2 col-auto" scope="col"> Action </th>
+                            <th class="px-3 py-2 col-0" scope="col">#</th>
+                            <th class="px-3 py-2 col-2" scope="col">Customer Name</th>
+                            <th class="px-3 py-2 col-2" scope="col">Company Name</th>
+                            <th class="px-3 py-2 col-1" scope="col">Email</th>
+                            <th class="px-3 py-2 col-2" scope="col">Phone</th>
+                            <th class="px-3 py-2 col-2" scope="col">Address</th>
+                            <th class="px-3 py-2 col-1" scope="col">Status</th>
+                            <th class="px-3 py-2 col-auto" scope="col">Action</th>
                         </tr>
                     </thead>
+
                     <tbody class="tbody">
-                        @foreach ($users as $user)
+                        @foreach ($customers as $cus)
                             <tr>
-                                {{-- @if ($user->ishidden != 0) --}}
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->id }} </td>
-                                {{-- <td style="padding-left: 23px;">
-                                        <img src="{{ asset('storage/uploads/all_photo/' . $user->image) }}" width="30"
-                                            height="30" class="img rounded-circle" alt="">
-                                    </td> --}}
-                                <td class="px-3" scope="row">
-                                    <img src="{{ asset('storage/uploads/all_photo/' . $user->image) }}" width="30"
-                                        height="30" class="img rounded-circle" alt="">
-                                    <span class="px-2">{{ $user->name }}</span>
-                                </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->email }} </td>
+                                <td class="px-3" scope="row"> {{ $cus->id }} </td>
+                                <td class="px-3" scope="row"> {{ $cus->customername }} </td>
+                                <td class="px-3" scope="row"> {{ $cus->companyname }} </td>
+                                <td class="px-3" scope="row"> {{ $cus->email }} </td>
+                                <td class="px-3" scope="row"> {{ $cus->phone }} </td>
+                                <td class="px-3" scope="row"> {{ $cus->address }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
-                                    @if (!empty($user->getRoleNames()))
-                                        @foreach ($user->getRoleNames() as $rolename)
-                                            <label class="badge bg-primary mx-1"> {{ $rolename }}
-                                            </label>
-                                        @endforeach
-                                    @endif
-                                </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row">
-                                    @if ($user->ishidden == 1)
+                                    @if ($cus->ishidden == 1)
                                         <span class="badge bg-success badge-xl mx-1">Active</span>
                                     @else
                                         <span class="badge bg-danger badge-xl mx-1">Inactive</span>
                                     @endif
                                 </td>
                                 <td class="px-3" scope="row">
-                                    {{-- @can('update user')
-                                            <a href="{{ url('users/' . $user->id . '/edit') }}" type="button" class="btn edit"
-                                                style="background-color: #3559E0;border: none;"><i class="fas fa-edit"
-                                                    style="color: #ffffff;"></i></a>
-                                        @endcan --}}
-                                    @if (auth()->user()->hasRole('super-admin') ||
-                                            auth()->user()->hasRole('admin') ||
-                                            (auth()->user()->hasRole('user') && auth()->user()->id === $user->id))
-                                        <a href="{{ url('users/' . $user->id . '/edit') }}" type="button" class="btn edit"
+                                    @can('update customer')
+                                        <a href="{{ url('customers/' . $cus->id . '/edit') }}" type="button" class="btn edit"
                                             style="background-color: #3559E0;border: none;">
                                             <i class="fas fa-edit" style="color: #ffffff;"></i>
                                         </a>
-                                    @endif
-                                    @can('delete user')
+                                    @endcan
+                                    @can('delete customer')
                                         <a class="btn trash" href="#"
-                                            onclick="event.preventDefault(); confirmDelete({{ $user->id }})"
+                                            onclick="event.preventDefault(); confirmDelete({{ $cus->id }})"
                                             style="background-color: #FF0000; border: none;">
                                             <i class="fas fa-trash" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
                                 </td>
-                                {{-- @endif --}}
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
     </div>
 
     <script>
-        function confirmDelete(userId) {
+        function confirmDelete(customerId) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: "btn btn-success",
@@ -221,12 +184,12 @@
                 if (result.isConfirmed) {
                     swalWithBootstrapButtons.fire({
                         title: "Deleted!",
-                        text: "User has been Deleted Successfully.",
+                        text: "Customer has been Deleted Successfully.",
                         icon: "success",
                         showConfirmButton: true
                     }).then(() => {
-                        // Redirect to the delete URL if confirmed
-                        window.location.href = "{{ url('users') }}/" + userId + "/delete";
+                        // Submit the form
+                        document.getElementById('deleteForm_' + customerId).submit();
                     });
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     // Do nothing if cancelled
@@ -258,12 +221,12 @@
                 "lengthChange": false,
                 "autoWidth": false,
                 "buttons": [ // Custom button configuration
-                    @can('create user')
+                    @can('create customer')
                         {
                             text: 'Create New Customer',
                             className: 'btn btn-primary btn-default',
                             action: function() {
-                                window.location.href = "{{ url('users/create') }}";
+                                window.location.href = "{{ url('customers/create') }}";
                             }
                         }
                     @endcan
