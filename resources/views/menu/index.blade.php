@@ -50,8 +50,7 @@
                 border: none
             }
 
-            .filter{
-            }
+            .filter {}
         </style>
     @endpush
     @if (session('status'))
@@ -135,14 +134,15 @@
                     <tbody class="tbody">
                         @foreach ($menus as $menu)
                             <tr>
-                                <td class="px-3" scope="row"> {{ $menu->id }} </td>
-                                <td class="px-3" scope="row"> {{ $menu->menuname }} </td>
-                                <td class="px-3" scope="row"> {{ $menu->menutype }} </td>
-                                <td class="px-3" scope="row">$ {{ $menu->price }} </td>
-                                <td class="px-3" scope="row"> {{ $menu->description }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $menu->id }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $menu->menuname }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $menu->menutype }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">$ {{ $menu->price }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">
+                                    {{ Str::limit($menu->description, 15) }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     @if ($menu->ishidden == 1)
-                                        <span class="badge bg-success badge-xl mx-1">Active</span>
+                                        <span class="badge bg-primary badge-xl mx-1">Active</span>
                                     @else
                                         <span class="badge bg-danger badge-xl mx-1">Inactive</span>
                                     @endif
@@ -150,20 +150,20 @@
                                 <td class="px-3" scope="row">
                                     @can('view menu')
                                         <a href="{{ url('menus/' . $menu->id) }}" type="button" class="btn view"
-                                            style="background-color: #38E035;border: none;">
+                                            title="@lang('View')" style="background-color: #38E035;border: none;">
                                             <i class="fas fa-eye" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
                                     @can('update menu')
                                         <a href="{{ url('menus/' . $menu->id . '/edit') }}" type="button" class="btn edit"
-                                            style="background-color: #3559E0;border: none;">
+                                            title="@lang('Edit')" style="background-color: #3559E0;border: none;">
                                             <i class="fas fa-edit" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
                                     @can('delete menu')
                                         <a class="btn trash" href="#"
                                             onclick="event.preventDefault(); confirmDelete({{ $menu->id }})"
-                                            style="background-color: #FF0000; border: none;">
+                                            title="@lang('Delete')" style="background-color: #FF0000; border: none;">
                                             <i class="fas fa-trash" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
@@ -196,7 +196,7 @@
                 showCancelButton: true,
                 confirmButtonText: "Yes, delete it!",
                 cancelButtonText: "No, cancel!",
-                reverseButtons: true
+                reverseButtons: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     swalWithBootstrapButtons.fire({
@@ -208,9 +208,6 @@
                         // Redirect to the delete URL if confirmed
                         window.location.href = "{{ url('menus') }}/" + menuId + "/delete";
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Do nothing if cancelled
-                    swalWithBootstrapButtons.fire("Cancelled", "Your imaginary file is safe :)", "error");
                 }
             });
         }

@@ -3,13 +3,17 @@
         width: 100px !important;
         height: 100px !important;
     }
+
+    .container-fluid{
+        
+    }
 </style>
 
 <nav>
     <div class="container-fluid pt-3">
         <div class="row">
             <div class="col-7">
-                <h1 class="title">Jib Poch Coffee Shop</h1>
+                <h1 class="title">{{config('app.name')}}</h1>
                 <h4 class="date">Date: {{ now()->format('l, F j, Y') }}</h4>
             </div>
             <div class="col-1 p-0 mt-3 d-flex justify-content-center">
@@ -23,10 +27,10 @@
                                 color: #ffffff; padding: 6px; border-radius: 50%; 
                                 margin-left: 85px; margin-top: -5px;"></i> --}}
                         @if (Auth::user()->image)
-                            <img class="profile" src="{{ asset('storage/uploads/all_photo/' . Auth::user()->image) }}"
+                            <img class="profile" src="{{ asset('storage/uploads/users_photo/' . Auth::user()->image) }}"
                                 alt="Profile Image">
                         @else
-                            <img class="profile" src="{{ asset('Image/default_profile.jpg') }}"
+                            <img class="profile" src="{{ asset('Image/default-image.png') }}"
                                 alt="Default Profile Image">
                         @endif
                     </a>
@@ -39,7 +43,7 @@
                     </div>
 
                     <div class="col-2 p-0 d-flex justify-content-end p-3">
-                        <i class="fa-regular fa-bell" style="color: #3559E0; font-size:25px"></i>
+                        <i class="fas fa-regular fa-bell" style="color: #3559E0; font-size:25px"></i>
                     </div>
                 </div>
             </div>

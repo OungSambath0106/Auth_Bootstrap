@@ -21,7 +21,7 @@
                 width: 100% !important;
             }
 
-            .img-thumbnail {
+            .img {
                 width: 30px !important;
                 height: 30px !important;
             }
@@ -148,10 +148,16 @@
                                             height="30" class="img rounded-circle" alt="">
                                     </td> --}}
                                 <td class="px-3" scope="row">
-                                    <img src="{{ asset('storage/uploads/all_photo/' . $user->image) }}" width="30"
-                                        height="30" class="img rounded-circle" alt="">
+                                    @if ($user->image)
+                                        <img src="{{ asset('storage/uploads/users_photo/' . $user->image) }}" width="30"
+                                            height="30" class="img rounded-circle" alt="">
+                                    @else
+                                        <img src="{{ asset('Image/default-image.png') }}" width="30" height="30"
+                                            class="img rounded-circle" alt="Default Image">
+                                    @endif
                                     <span class="px-2">{{ $user->name }}</span>
                                 </td>
+
                                 <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->email }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     @if (!empty($user->getRoleNames()))
@@ -163,7 +169,7 @@
                                 </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     @if ($user->ishidden == 1)
-                                        <span class="badge bg-success badge-xl mx-1">Active</span>
+                                        <span class="badge bg-primary badge-xl mx-1">Active</span>
                                     @else
                                         <span class="badge bg-danger badge-xl mx-1">Inactive</span>
                                     @endif
@@ -176,16 +182,17 @@
                                         @endcan --}}
                                     @if (auth()->user()->hasRole('super-admin') ||
                                             auth()->user()->hasRole('admin') ||
+                                            auth()->user()->hasRole('developer') ||
                                             (auth()->user()->hasRole('user') && auth()->user()->id === $user->id))
                                         <a href="{{ url('users/' . $user->id . '/edit') }}" type="button" class="btn edit"
-                                            style="background-color: #3559E0;border: none;">
+                                            title="@lang('Edit')" style="background-color: #3559E0;border: none;">
                                             <i class="fas fa-edit" style="color: #ffffff;"></i>
                                         </a>
                                     @endif
                                     @can('delete user')
                                         <a class="btn trash" href="#"
                                             onclick="event.preventDefault(); confirmDelete({{ $user->id }})"
-                                            style="background-color: #FF0000; border: none;">
+                                            title="@lang('Delete')" style="background-color: #FF0000; border: none;">
                                             <i class="fas fa-trash" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
@@ -216,7 +223,7 @@
                 showCancelButton: true,
                 confirmButtonText: "Yes, delete it!",
                 cancelButtonText: "No, cancel!",
-                reverseButtons: true
+                reverseButtons: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     swalWithBootstrapButtons.fire({
@@ -228,9 +235,6 @@
                         // Redirect to the delete URL if confirmed
                         window.location.href = "{{ url('users') }}/" + userId + "/delete";
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Do nothing if cancelled
-                    swalWithBootstrapButtons.fire("Cancelled", "Your imaginary file is safe :)", "error");
                 }
             });
         }

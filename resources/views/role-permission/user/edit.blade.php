@@ -39,10 +39,10 @@
                                         <div class="mb-3">
                                             <label for="disabledTextInput" class="form-label"> Role </label>
                                             <select name="roles[]" class="form-control role-form" style="color: #3559E0;"
-                                                @if (!auth()->user()->hasRole('super-admin')) readonly @endif>
+                                                @if (!auth()->user()->hasRole('super-admin') || !auth()->user()->hasRole('developer')) readonly @endif>
                                                 <option value="" disabled> Select Role </option>
                                                 @foreach ($roles as $role)
-                                                    @if (auth()->user()->hasRole('super-admin') || in_array($role, $userRoles))
+                                                    @if (auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('developer') || in_array($role, $userRoles))
                                                         <option value="{{ $role }}" style="color: #3559E0;"
                                                             {{ in_array($role, $userRoles) ? 'selected' : '' }}>
                                                             {{ $role }}
@@ -85,7 +85,7 @@
                                                         <img id="profileImage" class=" m-3"
                                                             style="border-radius: 10px; width: auto; height: auto; max-width: 100%; max-height: 38vh;"
                                                             alt=""
-                                                            src="{{ asset('storage/uploads/all_photo/' . $user->image) }}">
+                                                            src="{{ asset('storage/uploads/users_photo/' . $user->image) }}">
                                                     </div>
                                                     <input name="image" class="form-control me-2 mb-3"
                                                         style=" color: #3559E0;" type="file" id="formFile"

@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="disabledTextInput" class="form-label">Phone Number</label>
-                                    <input type="text" name="phone" id="phone" class="form-control"
+                                    <input type="number" name="phone" id="phone" class="form-control"
                                         placeholder="Enter Phone Number" style=" color: #3559E0;">
                                 </div>
                                 <div class="mb-3">

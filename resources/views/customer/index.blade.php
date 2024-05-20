@@ -109,29 +109,29 @@
 
                     <thead class="sticky">
                         <tr>
-                            <th class="px-3 py-2 col-0" scope="col">#</th>
-                            <th class="px-3 py-2 col-2" scope="col">Customer Name</th>
-                            <th class="px-3 py-2 col-2" scope="col">Company Name</th>
-                            <th class="px-3 py-2 col-1" scope="col">Email</th>
-                            <th class="px-3 py-2 col-2" scope="col">Phone</th>
-                            <th class="px-3 py-2 col-2" scope="col">Address</th>
-                            <th class="px-3 py-2 col-1" scope="col">Status</th>
-                            <th class="px-3 py-2 col-auto" scope="col">Action</th>
+                            <th class="px-3 py-2" scope="col">#</th>
+                            <th class="px-3 py-2" scope="col">Customer Name</th>
+                            <th class="px-3 py-2" scope="col">Company Name</th>
+                            <th class="px-3 py-2" scope="col">Email</th>
+                            <th class="px-3 py-2" scope="col">Phone</th>
+                            <th class="px-3 py-2" scope="col">Address</th>
+                            <th class="px-3 py-2" scope="col">Status</th>
+                            <th class="px-3 py-2" scope="col">Action</th>
                         </tr>
                     </thead>
 
                     <tbody class="tbody">
                         @foreach ($customers as $cus)
                             <tr>
-                                <td class="px-3" scope="row"> {{ $cus->id }} </td>
-                                <td class="px-3" scope="row"> {{ $cus->customername }} </td>
-                                <td class="px-3" scope="row"> {{ $cus->companyname }} </td>
-                                <td class="px-3" scope="row"> {{ $cus->email }} </td>
-                                <td class="px-3" scope="row"> {{ $cus->phone }} </td>
-                                <td class="px-3" scope="row"> {{ $cus->address }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->id }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->customername }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->companyname }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ Str::limit($cus->email,15) }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->phone }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ Str::limit($cus->address,10) }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     @if ($cus->ishidden == 1)
-                                        <span class="badge bg-success badge-xl mx-1">Active</span>
+                                        <span class="badge bg-primary badge-xl mx-1">Active</span>
                                     @else
                                         <span class="badge bg-danger badge-xl mx-1">Inactive</span>
                                     @endif
@@ -139,14 +139,14 @@
                                 <td class="px-3" scope="row">
                                     @can('update customer')
                                         <a href="{{ url('customers/' . $cus->id . '/edit') }}" type="button" class="btn edit"
-                                            style="background-color: #3559E0;border: none;">
+                                            title="@lang('Edit')" style="background-color: #3559E0;border: none;">
                                             <i class="fas fa-edit" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
                                     @can('delete customer')
                                         <a class="btn trash" href="#"
                                             onclick="event.preventDefault(); confirmDelete({{ $cus->id }})"
-                                            style="background-color: #FF0000; border: none;">
+                                            title="@lang('Delete')" style="background-color: #FF0000; border: none;">
                                             <i class="fas fa-trash" style="color: #ffffff;"></i>
                                         </a>
                                     @endcan
@@ -179,7 +179,7 @@
                 showCancelButton: true,
                 confirmButtonText: "Yes, delete it!",
                 cancelButtonText: "No, cancel!",
-                reverseButtons: true
+                reverseButtons: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     swalWithBootstrapButtons.fire({
@@ -191,9 +191,6 @@
                         // Submit the form
                         document.getElementById('deleteForm_' + customerId).submit();
                     });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Do nothing if cancelled
-                    swalWithBootstrapButtons.fire("Cancelled", "Your imaginary file is safe :)", "error");
                 }
             });
         }

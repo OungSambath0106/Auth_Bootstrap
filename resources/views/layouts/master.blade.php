@@ -8,7 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('page_title', 'Jib Poch Coffee Shop')</title>
+
+    <link rel="icon" type="image/x-icon"
+        href="{{ config('settings.web_icon') && file_exists(public_path('storage/uploads/web_icon/' . config('settings.web_icon'))) ? asset('storage/uploads/web_icon/' . config('settings.web_icon')) : asset('storage/uploads/default') }}">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('bootstrap') }}/css/bootstrap.min.css" rel="stylesheet">
@@ -26,10 +29,6 @@
         integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Scripts -->
@@ -41,11 +40,11 @@
 <body>
     <div id="app">
 
-        <div class="row col-12">
-            <div class="col-1">
+        <div class="row m-0">
+            <div class=" col-md-1 sidebar" style="padding: 0;">
                 @include('layouts.sidebar')
             </div>
-            <div class="col-11">
+            <div class="col-md-11" style="padding-right: 0;">
                 @include('layouts.navbar')
 
                 @yield('content')
@@ -73,7 +72,7 @@
             }
         }, delayInMilliseconds);
     </script>
-    
+
     @stack('script')
 </body>
 

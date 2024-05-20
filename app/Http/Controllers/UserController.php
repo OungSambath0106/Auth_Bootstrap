@@ -18,30 +18,6 @@ class UserController extends Controller
         $this->middleware('permission:delete user', ['only' => ['destroy']]);
     }
 
-    public function hidding_user(Request $request)
-    {
-        // $users = User::get();
-        // return view('role-permission.user.index', [
-        //     'users' => $users
-        // ]);
-
-        // $query_param = [];
-
-        // $users = User::when($request->has('search'), function ($query) use ($request) {
-        //     $key = explode(' ', $request['search']);
-        //     $query->where(function ($q) use ($key) {
-        //         foreach ($key as $value) {
-        //             $q->orWhere('name', 'like', "%{$value}%")
-        //                 ->orWhere('id', 'like', "%{$value}%");
-        //         }
-        //     });
-        // })->get();
-
-        // $query_param = $request->has('search') ? ['search' => $request['search']] : [];
-
-        // return view('role-permission.user.hidden', compact('users', 'query_param'));
-    }
-
     public function index(Request $request)
     {
         $users = User::get();
@@ -61,15 +37,15 @@ class UserController extends Controller
     public function uploadImage($image)
     {
         $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
-        $image->move(public_path('storage/uploads/all_photo'), $imageName);
+        $image->move(public_path('storage/uploads/users_photo'), $imageName);
         return $imageName;
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:users,email',
+            'name' => 'required|string|max:25',
+            'email' => 'required|string|max:100|unique:users,email',
             'password' => 'required|string|min:4|max:20',
             'roles' => 'nullable',
         ]);
@@ -110,7 +86,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:4|max:25',
             'password' => 'nullable|string|min:4|max:20',
             'roles' => 'nullable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif', // Adjust validation rules for image uploads
@@ -142,8 +118,35 @@ class UserController extends Controller
     public function destroy($userId)
     {
         $user = User::findOrFail($userId);
-        $user->delete();
 
-        return redirect('/users');
+        // Check if the user has an image
+        if ($user->image) {
+            // Get the image path
+            $imagePath = public_path('storage/uploads/users_photo/' . $user->image);
+
+            // Check if the file exists
+            if (file_exists($imagePath)) {
+                // Attempt to delete the file
+                if (unlink($imagePath)) {
+                    // File deleted successfully
+                    // Proceed to delete the user
+                    $user->delete();
+                    return redirect('/users');
+                } else {
+                    // Error occurred while deleting the file
+                    // Handle the error or log it for further investigation
+                    dd('Error: Unable to delete file');
+                }
+            } else {
+                // File does not exist at the specified path
+                // Handle this case accordingly
+                dd('Error: File does not exist');
+            }
+        } else {
+            // User does not have an image
+            // Proceed to delete the user without attempting to delete the image
+            $user->delete();
+            return redirect('/users');
+        }
     }
 }

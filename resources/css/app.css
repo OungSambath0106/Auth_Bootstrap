@@ -1,3 +1,8 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 @font-face {
     font-family: font-title;
     src: url(Namecat.otf);
@@ -11,18 +16,23 @@ body{
     height: 100vh;
     border-radius: 0 30px 0 0;
     background-color: #3559e0;
+    position: static;
 }
 
 .sidebar{
     width: auto;
 }
 
- .icon ,.logout{
+.icon,
+.logout {
     border-radius: 20px !important;
     transition: background-color 0.3s ease;
 }
 
-.icon:hover, .logout:hover {
+.icon:hover,
+.logout:hover,
+.icon.active,
+.logout.active {
     background-color: #ffffff20;
     border-radius: 20px !important;
     transition: background-color 0.3s ease;
@@ -65,9 +75,10 @@ tr{
     color: #3559E0;
 }
 th{
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #3559E0;
+    text-transform: uppercase;
 }
 .edit{
     background-color: #3559E0;
@@ -168,12 +179,268 @@ thead.sticky {
 .form-control-lg::placeholder{
     color: #687a8a;
 }
-.bg-success{
-    background-color: #38E035 !important;
-}
 .bg-danger{
     background-color: #FF0000 !important;
 }
 #profileImage{
     border-radius: 10px !important;
+}
+/*Menu Start*/
+@font-face {
+    font-family: font-categories;
+    src: url(KH\ BAPHNOM\ 06\ VEAL-SBOUV\ VERSION\ 2.30\ SEPTEMBER\ 07\,\ 2016.TTF);
+}
+.categories{
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 17px;
+    margin-right: 80px;
+    text-decoration: none;
+}
+
+.nav-pills .nav-item a.active {
+    border-bottom: 4px solid #3559E0;
+    border-radius: 1px;
+}
+
+.nav-pills .nav-item a:hover {
+    border-bottom: 4px solid #3559E0;
+    border-radius: 1px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+    margin-bottom: 20px; /* Adjust margin as needed */
+}
+
+#myTab {
+    background-color: #F5F5F5;
+    z-index: 1000;
+}
+
+.card-menu{
+    max-width: 220px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values for the shadow */
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.cart-button{
+    border: none;
+    width: 30px;
+    height: 30px;
+    background-color: #3559E0;
+    border-radius: 5px;
+    color: #F5F5F5;
+}
+
+.card-img{
+    max-width: 75px;
+}
+
+.title-price{
+    font-family: font-categories;
+    color:#3559E0 ;
+}
+
+.ice-sugar{
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 15px;
+}
+
+.percentage{
+    color:#3559E0 ;
+    font-size: 12px;
+}
+
+.ice{
+    margin-right: 5px;
+}
+
+.sugar{
+    margin-right: 5px;
+}
+
+.percentage .sugar,
+.percentage .ice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid transparent; /* Start with transparent border */
+}
+
+.percentage .sugar.selected,
+.percentage .ice.selected {
+    border-color: #3559E0; /* Color of the border when selected */
+}
+
+/*Menu End*/
+
+/*Checkout Start*/
+.card-checkout{
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values for the shadow */
+    border-radius: 20px;
+}
+
+.img-container{
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values for the shadow */
+    border-radius: 10px;
+}
+
+.card-img-checkout{
+    width: 40px;
+    height: 80px;
+}
+
+.checkout-title{
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 15px;
+}
+
+.icetitle {
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 14px;
+}
+.sugartitle {
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 14px;
+}
+.quantity{
+    color: #3559E0;
+}
+.counter-btn{
+    background-color: #3559E0;
+    border: none;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    color: #FFFFFF;
+}
+.btn-delete{
+    background-color: red;
+    border: none;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    color: #FFFFFF;
+}
+.percentage .sugaractive,
+.percentage .iceactive {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid transparent; /* Start with transparent border */
+    border-color: #3559E0; /* Color of the border when selected */
+    font-size:11px;
+}
+.ineach{
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 15px;
+}
+.invoicenum{
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 25px;
+}
+.ordernum{
+    font-family: font-categories;
+    color:#3559E0 ;
+    font-size: 15px;
+}
+.checkouttitle{
+    border-bottom: 3px solid #3559E0;
+}
+
+.subnav-container {
+    top: 130px;
+    width: 437px;
+    height: 75px;
+    background-color: #F5F5F5;
+    z-index: 1000;
+    margin-top: 25px;
+}
+
+.checkout-content {
+    position: fixed;
+    height: 280px;
+    padding-left: 5px;
+    overflow-x: hidden; /* Hide the horizontal scrollbar */
+    overflow-y: auto; /* Hide the vertical scrollbar */
+    max-height: 500px; /* Set your desired height */
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.checkout-content::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
+.checkout-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.checkout-content::-webkit-scrollbar-thumb {
+    background: #cecece;
+    border-radius: 5px;
+}
+
+.checkout-content::-webkit-scrollbar-thumb:hover {
+    background: #9c9c9c;
+}
+
+.checkout-bill{
+    width: 437px;
+    margin-top: 280px;
+    position: fixed;
+    height: 480px;
+    color:#3559E0;
+    padding: 15px;
+    font-family: font-categories;
+}
+
+.btn-custom {
+    color: white;
+    background-color: #3559E0;
+    border-radius: 20px;
+}
+.btn-custom:hover {
+    color: white;
+    background-color: #1f3a9d;
+}
+
+.fa-3x{
+    font-size: 35px;
+}
+
+.fa-3xs{
+    font-size: 10px;
+}
+
+.fa-2xs{
+    font-size: 18px;
+}
+
+.counter-value{
+    background: none;
+    border: none;
+    width: 18px;
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,11 @@ Route::group(['middleware' => ['isAdmin']], function () {
 
     // (Dashboard Page)
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+    // (Order Page)
+    Route::get('/order', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
+
+    // (Settings Page)
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
 });
-
-
-Route::get('hidding_user', [UserController::class, 'hidding_user'])->name('hidding_user');

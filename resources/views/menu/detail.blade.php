@@ -78,7 +78,7 @@
                                                         <img id="profileImage" class=" m-3"
                                                             style="border-radius: 10px; width: auto; height: auto; max-width: 100%; max-height: 43vh;"
                                                             alt=""
-                                                            src="{{ asset('storage/uploads/all_photo/' . $menus->image) }}">
+                                                            src="{{ asset('storage/uploads/menus_photo/' . $menus->image) }}">
                                                     </div>
                                                 </div>
                                             </div>

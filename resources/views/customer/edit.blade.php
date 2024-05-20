@@ -55,9 +55,6 @@
                                     <textarea name="address" style="height: 150px; vertical-align: top; color: #3559E0;" id="address" class="form-control"
                                         placeholder="">{{ ($customers->address) }}</textarea>
                                 </div>
-
-
-
                                 <div class="form-check form-switch">
                                     <input name="ishidden" class="form-check-input" type="checkbox"
                                         role="switch flexSwitchCheckChecked" id="ishidden"

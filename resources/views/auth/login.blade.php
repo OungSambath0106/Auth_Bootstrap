@@ -14,26 +14,26 @@
                     <div class="card card-login shadow-1-strong"
                         style="border-radius: 8px; background-color: #ffffff; color:#687a8a; width: 24vw;">
                         <div class="card-body p-4">
-                            <h2 class="mb-5 mt-3 text-center" style="font-weight: 700"> LOGIN </h2>
-                            <form action="{{ route('login') }}" method="POST">
+                            <h2 class="mb-4 mt-3 text-center" style="font-weight: 700"> LOGIN </h2>
+                            <form class="needs-validation" action="{{ route('login') }}" method="POST" novalidate>
                                 @csrf
-                                <div class="form-outline mb-4">
-                                    <label for="email" class="mb-2">EMAIL</label>
+                                <div class="form-outline mb-3">
+                                    <label for="validationEmail" class="mb-2">EMAIL</label>
                                     <input type="email" name="email" class="form-control form-control-lg"
-                                        placeholder="Enter your email" />
+                                        id="validationEmail" placeholder="Enter your email" required />
                                     @error('email')
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
                                 </div>
-                                <div class="form-outline mb-4">
-                                    <label for="password" class="mb-2">PASSWORD</label>
+                                <div class="form-outline mb-3">
+                                    <label for="validationPassword" class="mb-2">PASSWORD</label>
                                     <input type="password" name="password" class="form-control form-control-lg"
-                                        placeholder="Enter your password" />
+                                        id="validationPassword" placeholder="Enter your password" required />
                                     @error('password')
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
                                 </div>
-                                <div class="form-check d-flex justify-content mb-4">
+                                <div class="form-check d-flex justify-content mb-3">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember"
                                         {{ old('remember') ? 'checked' : '' }}>
 
@@ -44,8 +44,8 @@
                                 <div class="d-grid col-12 mx-auto">
                                     <button class="btn btn-primary" id="registerButton" type="submit">Login</button>
                                 </div>
-                                <p class="text-center pt-3">I don't have account? 
-                                    <a href="{{ route('register') }}" style="text-decoration: none;"> Register </a> 
+                                <p class="text-center pt-3">I don't have account?
+                                    <a href="{{ route('register') }}" style="text-decoration: none;"> Register </a>
                                 </p>
                             </form>
                         </div>
@@ -58,4 +58,27 @@
             </div>
         </div>
     </section>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
 @endsection

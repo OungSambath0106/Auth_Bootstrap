@@ -27,8 +27,9 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::count();
+        $usersInactive = User::where('ishidden', 0)->count();
         $menus = Menu::count();
         $customers = Customer::count();
-        return view('dashboard', compact('users', 'menus', 'customers'));
+        return view('dashboard', compact('users', 'usersInactive', 'menus', 'customers'));
     }
 }

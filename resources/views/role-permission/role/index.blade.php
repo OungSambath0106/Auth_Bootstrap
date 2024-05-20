@@ -118,21 +118,23 @@
                                     <td class="px-3" style="padding-top: 12px; scope="row"> {{ $role->id }} </td>
                                     <td class="px-3" style="padding-top: 12px; scope="row"> {{ $role->name }} </td>
                                     <td class="px-3" scope="row">
-                                        @role('super-admin')
+                                        @role('super-admin|developer')
                                             <a href="{{ url('roles/' . $role->id . '/give-permissions') }}"
                                                 class="btn btn-warning">
                                                 Add / Edit Role Permission
                                             </a>
                                         @endrole
-                                        @role('super-admin')
+                                        @role('super-admin|developer')
                                             <a href="{{ url('roles/' . $role->id . '/edit') }}" type="button" class="btn edit"
-                                                style="background-color: #3559E0;border: none;"><i class="fas fa-edit"
-                                                    style="color: #ffffff;"></i></a>
+                                                title="@lang('Edit')" style="background-color: #3559E0;border: none;">
+                                                <i class="fas fa-edit" style="color: #ffffff;"></i>
+                                            </a>
                                         @endrole
+
                                         @can('delete role')
                                             <a class="btn trash" href="#"
                                                 onclick="event.preventDefault(); confirmDelete({{ $role->id }})"
-                                                style="background-color: #FF0000; border: none;">
+                                                title="@lang('Delete')" style="background-color: #FF0000; border: none;">
                                                 <i class="fas fa-trash" style="color: #ffffff;"></i>
                                             </a>
                                         @endcan
@@ -162,7 +164,7 @@
                     showCancelButton: true,
                     confirmButtonText: "Yes, delete it!",
                     cancelButtonText: "No, cancel!",
-                    reverseButtons: true
+                    reverseButtons: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         swalWithBootstrapButtons.fire({
@@ -174,9 +176,6 @@
                             // Redirect to the delete URL if confirmed
                             window.location.href = "{{ url('roles') }}/" + roleId + "/delete";
                         });
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        // Do nothing if cancelled
-                        swalWithBootstrapButtons.fire("Cancelled", "Your imaginary file is safe :)", "error");
                     }
                 });
             }

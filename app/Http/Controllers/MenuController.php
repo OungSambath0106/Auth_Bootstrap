@@ -34,7 +34,7 @@ class MenuController extends Controller
     public function uploadImage($image)
     {
         $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
-        $image->move(public_path('storage/uploads/all_photo'), $imageName);
+        $image->move(public_path('storage/uploads/menus_photo'), $imageName);
         return $imageName;
     }
 
@@ -119,9 +119,41 @@ class MenuController extends Controller
      */
     public function destroy($menuId)
     {
-        $menu = Menu::findOrFail($menuId);
-        $menu->delete();
+        // $menu = Menu::findOrFail($menuId);
+        // $menu->delete();
 
-        return redirect('/menus');
+        // return redirect('/menus');
+
+        $menu = Menu::findOrFail($menuId);
+
+        // Check if the menu has an image
+        if ($menu->image) {
+            // Get the image path
+            $imagePath = public_path('storage/uploads/menus_photo/' . $menu->image);
+
+            // Check if the file exists
+            if (file_exists($imagePath)) {
+                // Attempt to delete the file
+                if (unlink($imagePath)) {
+                    // File deleted successfully
+                    // Proceed to delete the menu
+                    $menu->delete();
+                    return redirect('/menus');
+                } else {
+                    // Error occurred while deleting the file
+                    // Handle the error or log it for further investigation
+                    dd('Error: Unable to delete file');
+                }
+            } else {
+                // File does not exist at the specified path
+                // Handle this case accordingly
+                dd('Error: File does not exist');
+            }
+        } else {
+            // Menu does not have an image
+            // Proceed to delete the menu without attempting to delete the image
+            $menu->delete();
+            return redirect('/menus');
+        }
     }
 }

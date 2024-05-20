@@ -18,42 +18,55 @@
                     <div class="card card-login shadow-1-strong"
                         style="border-radius: 8px; background-color: #ffffff; color:#687a8a; width: 24vw;">
                         <div class="card-body p-4">
-                            <h2 class="mb-5 mt-3 text-center" style="font-weight: 700"> REGISTER </h2>
-                            <form action="{{ route('register') }}" method="POST">
+                            <h2 class="mb-4 mt-3 text-center" style="font-weight: 700"> REGISTER </h2>
+                            <form class="needs-validation" action="{{ route('register') }}" method="POST" novalidate>
                                 @csrf
-                                <div class="form-outline mb-4">
-                                    <label for="username" class="mb-2">USERNAME</label>
+                                <div class="form-outline mb-3">
+                                    <label for="validationUsername" class="mb-2">USERNAME</label>
                                     <input type="text" name="name" class="form-control form-control-lg"
-                                        placeholder="Enter your username" />
+                                        id="validationUsername" placeholder="Enter your username" required />
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Username must be between 4 and 25 characters.
+                                    </div>
                                 </div>
-                                <div class="form-outline mb-4">
-                                    <label for="email" class="mb-2">EMAIL</label>
+                                <div class="form-outline mb-3">
+                                    <label for="validationEmail" class="mb-2">EMAIL</label>
                                     <input type="email" name="email" class="form-control form-control-lg"
-                                        placeholder="Enter your email" />
-                                    @error('email')
-                                        <span class="text-danger"> {{ $message }} </span>
-                                    @enderror
+                                        id="validationEmail" placeholder="Enter your email" required />
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid email address.
+                                    </div>
                                 </div>
-                                <div class="form-outline mb-4">
-                                    <label for="password" class="mb-2">PASSWORD</label>
+                                <div class="form-outline mb-3">
+                                    <label for="validationPassword" class="mb-2">PASSWORD</label>
                                     <input type="password" name="password" class="form-control form-control-lg"
-                                        placeholder="Enter your password" />
-                                    @error('password')
-                                        <span class="text-danger"> {{ $message }} </span>
-                                    @enderror
+                                        id="validationPassword" placeholder="Enter your password" required />
+                                    <div class="valid-feedback">
+                                        Your Password is Strong.
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Password must be at least 4 characters.
+                                    </div>
                                 </div>
                                 <div class="form-check d-flex justify-content mb-4">
                                     <input type="checkbox" name="remember" class="form-check-input me-2" value=""
-                                        id="form1Example3" />
-                                    <label for="form1Example3" class="form-check-label">I agree to <span
-                                            style="color: #0b5ed7">privacy policy & terms</span> </label>
+                                        id="form1Example3" required />
+                                    <label for="form1Example3" class="form-check-label">
+                                        I agree to <span style="color: #0b5ed7">privacy policy & terms</span>
+                                    </label>
                                 </div>
                                 <div class="d-grid col-12 mx-auto">
                                     <button class="btn btn-primary" id="registerButton" type="submit"
                                         disabled>Register</button>
                                 </div>
-                                <p class="text-center pt-3">Already have an account? 
-                                    <a href="{{ route('login') }}" style="text-decoration: none;"> Sign in Instead </a> 
+                                <p class="text-center pt-3">Already have an account?
+                                    <a href="{{ route('login') }}" style="text-decoration: none;"> Sign in Instead </a>
                                 </p>
                             </form>
                         </div>
@@ -72,6 +85,64 @@
         checkbox.addEventListener('change', function() {
             // If checkbox is checked, enable the button; otherwise, disable it
             registerButton.disabled = !this.checked;
+        });
+    </script>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+
+    <!--Input Username-->
+    <script>
+        document.getElementById("validationUsername").addEventListener("input", function() {
+            var usernameInput = document.getElementById("validationUsername");
+            var errorFeedback = usernameInput.nextElementSibling;
+
+            if (usernameInput.value.length < 4 || usernameInput.value.length > 25) {
+                errorFeedback.innerText = "Username must be between 4 and 25 characters.";
+                usernameInput.setCustomValidity("Invalid");
+            } else {
+                errorFeedback.innerText = "Looks good!";
+                usernameInput.setCustomValidity("");
+            }
+        });
+    </script>
+
+    <!--Input Password-->
+    <script>
+        document.getElementById("validationPassword").addEventListener("input", function() {
+            var passwordInput = document.getElementById("validationPassword");
+            var errorFeedback = passwordInput.nextElementSibling;
+
+            if (passwordInput.value.length < 4) {
+                errorFeedback.innerText = "Password must be at least 4 characters.";
+                passwordInput.setCustomValidity("Invalid");
+            } else if (passwordInput.value.length < 6) {
+                errorFeedback.innerText = "Your Password is too weak!";
+                passwordInput.setCustomValidity("");
+            } else if (passwordInput.value.length > 5) {
+                errorFeedback.innerText = "Your Password is Strong.";
+                passwordInput.setCustomValidity("");
+            }
         });
     </script>
 @endsection
