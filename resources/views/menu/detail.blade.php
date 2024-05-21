@@ -12,7 +12,6 @@
                     </div>
                     <div class="list-group-item">
                         <div class="p-2 mt-1">
-
                             <div class="col-12">
                                 <fieldset>
                                     <div class="mb-3">
@@ -25,6 +24,15 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
+                                        <label for="menutype" class="form-label"> Menu Type </label>
+                                        <input type="text" name="menutype" id="menutype" class="form-control"
+                                            value="{{ optional($menus->menu_types)->name }}" style="color: #3559E0;"
+                                            placeholder="Enter UserName" readonly>
+                                        @error('menutype')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                    </div>                                    
+                                    {{-- <div class="mb-3">
                                         <label for="menutype" class="form-label">Menu Type</label>
                                         <select name="menutype_id" id="menutype" class="form-control"
                                             style="color: #3559E0;">
@@ -39,7 +47,7 @@
                                         @error('menutype_id')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="mb-3">
                                         <label for="disabledTextInput" class="form-label"> Sale Price </label>
                                         <input type="number" name="price" id="price" class="form-control"
@@ -54,14 +62,6 @@
                                         @error('description')
                                             <span class="text-danger"> {{ $message }}</span>
                                         @enderror
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input name="ishidden" class="form-check-input" type="checkbox" role="switch"
-                                            id="ishidden flexSwitchCheckChecked" style=" border-color: #3559E0;" disabled
-                                            @if ($menus->ishidden) checked @endif>
-                                        <label class="form-check-label form-label" for="flexSwitchCheckChecked">
-                                            Active or InActive
-                                        </label>
                                     </div>
                                 </fieldset>
                             </div>

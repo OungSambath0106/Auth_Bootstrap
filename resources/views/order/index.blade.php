@@ -45,6 +45,11 @@
                 border: none;
                 outline: none;
             }
+
+            .card-img {
+                min-height: 130px !important;
+                width: auto !important;
+            }
         </style>
     @endpush
     <div class="container-fluid content">
@@ -54,27 +59,27 @@
                     <ul class="nav nav-pills d-inline-flex mt-4" id="myTab">
                         <li class="nav-item">
                             <a class="categories pill active" data-bs-toggle="pill" href="#icecoffee">
-                                <span>Ice Coffee</span>
+                                <span class="nav-text">Ice Coffee</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="categories pill" data-bs-toggle="pill" href="#hotcoffee">
-                                <span>Hot Coffee</span>
+                                <span class="nav-text">Hot Coffee</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="categories pill" data-bs-toggle="pill" href="#tea">
-                                <span>Tea</span>
+                                <span class="nav-text">Tea</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="categories pill" data-bs-toggle="pill" href="#smoothie">
-                                <span>Smoothie</span>
+                                <span class="nav-text">Smoothie</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="categories pill" data-bs-toggle="pill" href="#dessert">
-                                <span>Dessert</span>
+                                <span class="nav-text">Dessert</span>
                             </a>
                         </li>
                     </ul>
@@ -82,19 +87,59 @@
 
                 <div class="tab-content mt-4">
                     <div id="icecoffee" class="tab-pane fade show p-0 active">
-                        @include('order.partial.ice')
-                    </div>
-                    <div id="hotcoffee" class="tab-pane fade show p-0">
-                        @include('order.partial.hot')
-                    </div>
-                    <div id="tea" class="tab-pane fade show p-0">
-                        @include('order.partial.tea')
-                    </div>
-                    <div id="smoothie" class="tab-pane fade show p-0">
-                        @include('order.partial.smoothie')
-                    </div>
-                    <div id="dessert" class="tab-pane fade show p-0">
-                        @include('order.partial.dessert')
+                        <div class="card-container justify-content-start">
+                            @foreach ($menus as $menu)
+                                <div class="card card-menu">
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-end text-center">
+                                            <div class="container-item m-3">
+                                                <button class="cart-button">
+                                                    <i class="fa-solid fas fa-shopping-cart add-item"
+                                                        style="color: #ffffff;"></i>
+                                                    <span class="item-counter" style="display: none;"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            @if ($menu->image)
+                                                <img class="card-img"
+                                                    src="{{ asset('storage/uploads/menus_photo/' . $menu->image) }}"
+                                                    alt="{{ $menu->menuname }}" height="130">
+                                            @else
+                                                <img class="card-img" src="{{ asset('storage/uploads/default.png') }}"
+                                                    alt="Default Image">
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-8 title-price">{{ $menu->menuname }}</div>
+                                            <div class="col-4 title-price d-flex justify-content-end">
+                                                <span>{{ config('settings.currency_symbol') }} {{ $menu->price }}</span>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="row pt-2">
+                                            <div class="col-6 ice-sugar">Ice</div>
+                                            <div class="col-6 ice-sugar">Sugar</div>
+                                        </div>
+                                        <div class="row percentage">
+                                            <div class="col-6 d-flex">
+                                                <div class="ice"><span>0%</span></div>
+                                                <div class="ice"><span>50%</span></div>
+                                                <div class="ice"><span>100%</span></div>
+                                            </div>
+                                            <div class="col-6 d-flex">
+                                                <div class="sugar"><span>0%</span></div>
+                                                <div class="sugar"><span>50%</span></div>
+                                                <div class="sugar"><span>100%</span></div>
+                                            </div>
+                                        </div> --}}
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,171 +169,103 @@
                     </div>
                 </div>
                 <div class="checkout-content mt-2">
-                    <div class="card-checkout mt-2">
-                        <div class="row" style="height: 120px;">
-                            <div class="col-4 d-flex justify-content-center align-items-center p-0">
-                                <div class="img-container d-flex justify-content-center align-items-center">
-                                    <img class="card-img-checkout" src="{{ asset('Image/Ice Coffee.png') }}">
-                                </div>
-                            </div>
-                            <div class="col-3 p-0">
-                                <div class="row pt-2">
-                                    <div class="checkout-title">Green Tea</div>
-                                    <div class="checkout-title item-price">$ 2.00</div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-5 icetitle">Ice</div>
-                                    <div class="col-5 sugartitle">Sugar</div>
-                                    {{-- <div class="col-2"></div> --}}
-                                </div>
-                                <div class="row percentage">
-                                    <div class="col-5 d-flex ">
-                                        <div class="iceactive">
-                                            <span>50%</span>
+                    <script>
+                        $(document).ready(function() {
+                            $('.cart-button').on('click', function() {
+                                // Extract data from the card
+                                var card = $(this).closest('.card-menu');
+                                var imageSrc = card.find('.card-img').attr('src');
+                                var menuName = card.find('.title-price').first().text().trim();
+                                var price = card.find('.title-price').last().text().trim();
+
+                                // Create the new checkout item HTML
+                                var checkoutItemHtml = `
+                                    <div class="card-checkout mt-2">
+                                        <div class="row" style="height: 120px;">
+                                            <div class="col-4 d-flex justify-content-center align-items-center p-0">
+                                                <div class="img-container d-flex justify-content-center align-items-center">
+                                                    <img class="card-img-checkout" src="${imageSrc}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3 p-0">
+                                                <div class="row pt-2">
+                                                    <div class="checkout-title">${menuName}</div>
+                                                    <div class="checkout-title item-price">${price}</div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col-5 icetitle">Ice</div>
+                                                    <div class="col-5 sugartitle">Sugar</div>
+                                                </div>
+                                                <div class="row percentage">
+                                                    <div class="col-5 d-flex ">
+                                                        <div class="iceactive">
+                                                            <span>50%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5 d-flex">
+                                                        <div class="sugaractive">
+                                                            <span>50%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 d-flex justify-content-center align-items-center p-0">
+                                                <div class="quantity">
+                                                    <button class="counter-btn minus">
+                                                        <i class="fa-solid fa fa-minus fa-3xs" style="color: #ffffff;"></i>
+                                                    </button>
+                                                    <input type="number" class="counter-value" value="1" min="0">
+                                                    <button class="counter-btn plus">
+                                                        <i class="fa-solid fa fa-plus fa-3xs" style="color: #ffffff;"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="row d-flex justify-content-end align-items-center p-2">
+                                                    <div class="col-auto">
+                                                        <button class="btn-delete d-flex justify-content-center align-items-center float-right">
+                                                            <i class="fa-solid fas fa-trash-alt fa-xs" style="color: #ffffff;"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="ineach pt-2">
+                                                        <span class="price">{{ config('settings.currency_symbol') }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-5 d-flex">
-                                        <div class="sugaractive">
-                                            <span>50%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-2"></div>
-                                </div>
-                            </div>
-                            <div class="col-2 d-flex justify-content-center align-items-center p-0">
-                                <div class="quantity">
-                                    <button class="counter-btn minus">
-                                        <i class="fa-solid fa fa-minus fa-3xs" style="color: #ffffff;"></i>
-                                    </button>
-                                    <input type="number" class="counter-value" value="0" min="0">
-                                    <button class="counter-btn plus">
-                                        <i class="fa-solid fa fa-plus fa-3xs" style="color: #ffffff;"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="row d-flex justify-content-end align-items-center p-2">
-                                    <div class="col-auto">
-                                        <button iii
-                                            class="btn-delete d-flex justify-content-center align-items-center float-right">
-                                            <i class="fa-solid fas fa-trash-alt fa-xs" style="color: #ffffff;"></i>
-                                        </button>
-                                    </div>
-                                    <div class="ineach pt-2"><span class="price">$ 0.00</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-checkout mt-2">
-                        <div class="row" style="height: 120px;">
-                            <div class="col-4 d-flex justify-content-center align-items-center p-0">
-                                <div class="img-container d-flex justify-content-center align-items-center">
-                                    <img class="card-img-checkout" src="{{ asset('Image/Ice Coffee.png') }}">
-                                </div>
-                            </div>
-                            <div class="col-3 p-0">
-                                <div class="row pt-2">
-                                    <div class="checkout-title">Green Tea</div>
-                                    <div class="checkout-title item-price">$ 2.00</div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-5 icetitle">Ice</div>
-                                    <div class="col-5 sugartitle">Sugar</div>
-                                    {{-- <div class="col-2"></div> --}}
-                                </div>
-                                <div class="row percentage">
-                                    <div class="col-5 d-flex ">
-                                        <div class="iceactive">
-                                            <span>50%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-5 d-flex">
-                                        <div class="sugaractive">
-                                            <span>50%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-2"></div>
-                                </div>
-                            </div>
-                            <div class="col-2 d-flex justify-content-center align-items-center p-0">
-                                <div class="quantity">
-                                    <button class="counter-btn minus">
-                                        <i class="fa-solid fa fa-minus fa-3xs" style="color: #ffffff;"></i>
-                                    </button>
-                                    <input type="number" class="counter-value" value="0" min="0">
-                                    <button class="counter-btn plus">
-                                        <i class="fa-solid fa fa-plus fa-3xs" style="color: #ffffff;"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="row d-flex justify-content-end align-items-center p-2">
-                                    <div class="col-auto">
-                                        <button iii
-                                            class="btn-delete d-flex justify-content-center align-items-center float-right">
-                                            <i class="fa-solid fas fa-trash-alt fa-xs" style="color: #ffffff;"></i>
-                                        </button>
-                                    </div>
-                                    <div class="ineach pt-2"><span class="price">$ 0.00</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-checkout mt-2">
-                        <div class="row" style="height: 120px;">
-                            <div class="col-4 d-flex justify-content-center align-items-center p-0">
-                                <div class="img-container d-flex justify-content-center align-items-center">
-                                    <img class="card-img-checkout" src="{{ asset('Image/Ice Coffee.png') }}">
-                                </div>
-                            </div>
-                            <div class="col-3 p-0">
-                                <div class="row pt-2">
-                                    <div class="checkout-title">Green Tea</div>
-                                    <div class="checkout-title item-price">$ 2.00</div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-5 icetitle">Ice</div>
-                                    <div class="col-5 sugartitle">Sugar</div>
-                                    {{-- <div class="col-2"></div> --}}
-                                </div>
-                                <div class="row percentage">
-                                    <div class="col-5 d-flex ">
-                                        <div class="iceactive">
-                                            <span>50%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-5 d-flex">
-                                        <div class="sugaractive">
-                                            <span>50%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-2"></div>
-                                </div>
-                            </div>
-                            <div class="col-2 d-flex justify-content-center align-items-center p-0">
-                                <div class="quantity">
-                                    <button class="counter-btn minus">
-                                        <i class="fa-solid fa fa-minus fa-3xs" style="color: #ffffff;"></i>
-                                    </button>
-                                    <input type="number" class="counter-value" value="0" min="0">
-                                    <button class="counter-btn plus">
-                                        <i class="fa-solid fa fa-plus fa-3xs" style="color: #ffffff;"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="row d-flex justify-content-end align-items-center p-2">
-                                    <div class="col-auto">
-                                        <button iii
-                                            class="btn-delete d-flex justify-content-center align-items-center float-right">
-                                            <i class="fa-solid fas fa-trash-alt fa-xs" style="color: #ffffff;"></i>
-                                        </button>
-                                    </div>
-                                    <div class="ineach pt-2"><span class="price">$ 0.00</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                `;
+
+                                // Append the new item to the checkout content
+                                $('.checkout-content').append(checkoutItemHtml);
+                            });
+
+                            // Handle delete button click
+                            $(document).on('click', '.btn-delete', function() {
+                                $(this).closest('.card-checkout').remove();
+                            });
+
+                            // Handle quantity change
+                            $(document).on('click', '.counter-btn', function() {
+                                var input = $(this).siblings('.counter-value');
+                                var currentValue = parseInt(input.val());
+
+                                if ($(this).hasClass('plus')) {
+                                    input.val(currentValue + 1);
+                                } else if ($(this).hasClass('minus')) {
+                                    if (currentValue > 0) {
+                                        input.val(currentValue - 1);
+                                    }
+                                }
+                            });
+
+                            // Trigger input change when plus or minus is clicked
+                            $(document).on('click', '.counter-btn', function() {
+                                $(this).siblings('.counter-value').trigger('change');
+                            });
+                        });
+                    </script>
                 </div>
                 <div class="checkout-bill">
                     <div class="row">
@@ -296,7 +273,7 @@
                             <span class="text-subtotal">Subtotal</span>
                         </div>
                         <div class="col-6 text-end">
-                            <span class="subtotal">$ 0.00</span>
+                            <span class="subtotal">{{ config('settings.currency_symbol') }} 0.00</span>
                         </div>
                     </div>
                     <div class="row mb-1">
@@ -304,7 +281,7 @@
                             <span class="text-tax">Tax</span>
                         </div>
                         <div class="col-6 text-end">
-                            <span class="tax">$ 0.00</span>
+                            <span class="tax">{{ config('settings.currency_symbol') }} 0.00</span>
                         </div>
                     </div>
                     <div class="row">
@@ -312,7 +289,7 @@
                             <span class="text-discount">Discount</span>
                         </div>
                         <div class="col-6 text-end">
-                            <span class="discount">$ 0.00</span>
+                            <span class="discount">{{ config('settings.currency_symbol') }} 0.00</span>
                         </div>
                     </div>
                     <hr>
@@ -321,7 +298,7 @@
                             <span class="text-total">Total</span>
                         </div>
                         <div class="col-6 text-end">
-                            <span class="total">$ 0.00</span>
+                            <span class="total">{{ config('settings.currency_symbol') }} 0.00</span>
                         </div>
                     </div>
                     <div class="row">
@@ -362,20 +339,20 @@
                     function updateTaxDiscountTotal(subtotal) {
                         const taxRate = 0.1;
                         const tax = subtotal * taxRate;
-                        document.querySelector('.tax').textContent = '$ ' + tax.toFixed(2);
+                        document.querySelector('.tax').textContent = '{{ config('settings.currency_symbol') }} ' + tax
+                            .toFixed(2);
 
                         const discountRate = 0.15;
                         const discount = subtotal * discountRate;
-                        document.querySelector('.discount').textContent = '$ ' + discount.toFixed(2);
+                        document.querySelector('.discount').textContent = '{{ config('settings.currency_symbol') }} ' +
+                            discount.toFixed(2);
 
                         const total = subtotal + tax - discount;
-                        document.querySelector('.total').textContent = '$ ' + total.toFixed(2);
+                        document.querySelector('.total').textContent = '{{ config('settings.currency_symbol') }} ' + total
+                            .toFixed(2);
                     }
 
                     const subtotalElement = document.querySelector('.subtotal');
-                    const initialSubtotal = parseFloat(subtotalElement.textContent.replace('$', ''));
-                    updateTaxDiscountTotal(initialSubtotal);
-
                     const minusBtns = document.querySelectorAll('.minus');
                     const plusBtns = document.querySelectorAll('.plus');
 
@@ -385,15 +362,24 @@
                         const itemPriceElement = element.closest('.card-checkout').querySelector('.item-price');
                         const priceElement = element.closest('.card-checkout').querySelector('.price');
 
-                        let price = parseFloat(counterValue.value) * parseFloat(itemPriceElement.textContent.replace(
-                            '$', ''));
-                        priceElement.textContent = '$ ' + price.toFixed(2);
+                        // Parse the counter value as a float, or default to 0 if it's not a valid number
+                        const quantity = parseFloat(counterValue.value) || 0;
+                        const itemPrice = parseFloat(itemPriceElement.textContent.replace(
+                            '{{ config('settings.currency_symbol') }}', '')) || 0;
 
+                        // Calculate the price and update the price element
+                        let price = quantity * itemPrice;
+                        priceElement.textContent = '{{ config('settings.currency_symbol') }} ' + price.toFixed(2);
+
+                        // Calculate the total by summing all prices
                         let total = 0;
                         document.querySelectorAll('.price').forEach(function(price) {
-                            total += parseFloat(price.textContent.replace('$', ''));
+                            total += parseFloat(price.textContent.replace(
+                                '{{ config('settings.currency_symbol') }}', '')) || 0;
                         });
-                        subtotalElement.textContent = '$ ' + total.toFixed(2);
+
+                        // Update the subtotal element and other totals
+                        subtotalElement.textContent = '{{ config('settings.currency_symbol') }} ' + total.toFixed(2);
                         updateTaxDiscountTotal(total);
                     }
 
@@ -414,6 +400,14 @@
                                 '.counter-value');
                             counterValue.value = parseInt(counterValue.value) + 1;
                             updatePriceAndSubtotal(button);
+                        });
+                    });
+
+                    // Listen for input event on number input field
+                    const counterValues = document.querySelectorAll('.counter-value');
+                    counterValues.forEach(function(input) {
+                        input.addEventListener('input', function() {
+                            updatePriceAndSubtotal(input);
                         });
                     });
                 });

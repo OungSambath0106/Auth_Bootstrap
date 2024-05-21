@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\Menutype;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
@@ -43,9 +46,15 @@ class MenuController extends Controller
 
     public function uploadImage($image)
     {
-        $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
-        $image->move(public_path('storage/uploads/menus_photo'), $imageName);
-        return $imageName;
+        if ($image) {
+            $imageName = Carbon::now()->toDateString() . "-" . uniqid() . "." . $image->getClientOriginalExtension();
+            // Store the image in the 'menus_photo' directory within the 'public' disk
+            Storage::disk('public')->put('uploads/menus_photo/' . $imageName, file_get_contents($image));
+            return $imageName;
+        } else {
+            // Return default image name
+            return 'default.png';
+        }
     }
 
     /**
@@ -69,10 +78,12 @@ class MenuController extends Controller
         $menu->description = $request->description;
 
         // Set ishidden attribute based on the request
-        $menu->ishidden = $request->has('ishidden') ? 1 : 0;
+        // $menu->ishidden = $request->has('ishidden') ? 1 : 0;
 
         if ($request->hasFile('image')) {
             $menu->image = $this->uploadImage($request->file('image'));
+        } else {
+            $menu->image = 'default.png';
         }
 
         // Save the user
@@ -118,7 +129,7 @@ class MenuController extends Controller
             'menutype_id' => $request->menutype_id,
             'price' => $request->price,
             'description' => $request->description,
-            'ishidden' => $request->ishidden == 'on' ? 1 : 0,
+            // 'ishidden' => $request->ishidden == 'on' ? 1 : 0,
         ];
 
         if ($request->hasFile('image')) {
@@ -171,5 +182,25 @@ class MenuController extends Controller
             $menu->delete();
             return redirect('/menus');
         }
+    }
+
+    public function updateIshidden(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $menu = Menu::findOrFail($request->id);
+            $menu->ishidden = $menu->ishidden == 1 ? 0 : 1;
+            $menu->save();
+
+            $output = ['status' => 1, 'message' => __('Status updated'), 'ishidden' => $menu->ishidden];
+
+            DB::commit();
+        } catch (Exception $e) {
+            $output = ['status' => 0, 'message' => __('Something went wrong')];
+            DB::rollBack();
+        }
+
+        return response()->json($output);
     }
 }

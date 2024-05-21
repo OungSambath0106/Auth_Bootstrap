@@ -19,7 +19,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-8 title-price">Jib Poch Coffee</div>
-                <div class="col-4 title-price d-flex justify-content-end"><span>$2.00</span></div>
+                <div class="col-4 title-price d-flex justify-content-end"><span>{{ config('settings.currency_symbol') }} 2.00</span></div>
             </div>
             <div class="row pt-2">
                 <div class="col-6 ice-sugar">Ice</div>
@@ -71,7 +71,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-8 title-price">Jib Poch Coffee</div>
-                <div class="col-4 title-price d-flex justify-content-end"><span>$2.00</span></div>
+                <div class="col-4 title-price d-flex justify-content-end"><span>{{ config('settings.currency_symbol') }} 2.00</span></div>
             </div>
             <div class="row pt-2">
                 <div class="col-6 ice-sugar">Ice</div>
@@ -123,7 +123,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-8 title-price">Jib Poch Coffee</div>
-                <div class="col-4 title-price d-flex justify-content-end"><span>$2.00</span></div>
+                <div class="col-4 title-price d-flex justify-content-end"><span>{{ config('settings.currency_symbol') }} 2.00</span></div>
             </div>
             <div class="row pt-2">
                 <div class="col-6 ice-sugar">Ice</div>

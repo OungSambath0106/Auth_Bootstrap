@@ -137,15 +137,17 @@
                                 <td class="px-3" style="padding-top: 12px;" scope="row">{{ $menu->menuname }}</td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     {{ $menu->menutype->name ?? 'None' }}</td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row">${{ $menu->price }}</td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">
+                                    {{ config('settings.currency_symbol') }} {{ $menu->price }}</td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     {{ Str::limit($menu->description, 15) }}</td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
-                                    @if ($menu->ishidden == 1)
-                                        <span class="badge bg-primary badge-xl mx-1">Active</span>
-                                    @else
-                                        <span class="badge bg-danger badge-xl mx-1">Inactive</span>
-                                    @endif
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" class="form-check-input ishidden" role="switch"
+                                            id="ishidden_{{ $menu->id }}" data-id="{{ $menu->id }}"
+                                            {{ $menu->ishidden == 1 ? 'checked' : '' }} name="ishidden">
+                                        <label class="custom-control-label" for="ishidden_{{ $menu->id }}"></label>
+                                    </div>
                                 </td>
                                 <td class="px-3" scope="row">
                                     @can('view menu')
@@ -208,6 +210,74 @@
                 }
             });
         }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(document).ready(function() {
+            $('.ishidden').change(function() {
+                var checkbox = $(this);
+                var menuId = checkbox.data('id');
+
+                $.ajax({
+                    url: '{{ route('menus.update_ishidden') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: menuId
+                    },
+                    success: function(response) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1800,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            },
+                            customClass: {
+                                popup: 'swal-toast'
+                            }
+                        });
+
+                        if (response.status == 1) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1800,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            },
+                            customClass: {
+                                popup: 'swal-toast'
+                            }
+                        });
+
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ __('An error occurred while updating the status.') }}'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @endsection
 

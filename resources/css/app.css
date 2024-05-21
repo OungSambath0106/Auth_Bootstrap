@@ -159,9 +159,6 @@ thead.sticky {
 .tbody td {
     color: #3559E0;
 }
-.dropdown-item:hover{
-    /* color: #3559E0; */
-}
 .table-permission::-webkit-scrollbar {
     display: none;
 }
@@ -226,7 +223,7 @@ thead.sticky {
 }
 
 .card-menu{
-    max-width: 220px;
+    min-width: 240px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values for the shadow */
     border-radius: 20px;
     margin-right: 20px;
@@ -448,4 +445,8 @@ thead.sticky {
     background: none;
     border: none;
     width: 18px;
+}
+
+.nav-text{
+    text-transform: uppercase;
 }

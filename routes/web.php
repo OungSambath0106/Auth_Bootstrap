@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,7 @@ Route::group(['middleware' => ['isAdmin']], function () {
 
     // (Menu)
     Route::resource('menus', App\Http\Controllers\MenuController::class);
+    Route::post('menus/update_ishidden', [MenuController::class, 'updateIshidden'])->name('menus.update_ishidden');
     Route::get('menus/{menuId}/delete', [App\Http\Controllers\MenuController::class, 'destroy']);
 
     // (MenuType)
