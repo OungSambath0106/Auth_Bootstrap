@@ -82,19 +82,19 @@
 
                 <div class="tab-content mt-4">
                     <div id="icecoffee" class="tab-pane fade show p-0 active">
-                        @include('menu-type.ice')
+                        @include('order.partial.ice')
                     </div>
                     <div id="hotcoffee" class="tab-pane fade show p-0">
-                        @include('menu-type.hot')
+                        @include('order.partial.hot')
                     </div>
                     <div id="tea" class="tab-pane fade show p-0">
-                        @include('menu-type.tea')
+                        @include('order.partial.tea')
                     </div>
                     <div id="smoothie" class="tab-pane fade show p-0">
-                        @include('menu-type.smoothie')
+                        @include('order.partial.smoothie')
                     </div>
                     <div id="dessert" class="tab-pane fade show p-0">
-                        @include('menu-type.dessert')
+                        @include('order.partial.dessert')
                     </div>
                 </div>
             </div>

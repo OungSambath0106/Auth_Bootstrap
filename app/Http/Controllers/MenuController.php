@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Menutype;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -11,11 +12,19 @@ class MenuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $menus = Menu::get();
-        $menu_types = Menu::distinct('menutype')->pluck('menutype');
-        // dd($menu_types);
+        $query = Menu::with('menutype');
+
+        if ($request->filled('menu_type')) {
+            $query->whereHas('menutype', function ($query) use ($request) {
+                $query->where('name', $request->menu_type);
+            });
+        }
+
+        $menus = $query->get();
+        $menu_types = Menutype::all(); // Fetch all menu types
+
         return view('menu.index', [
             'menus' => $menus,
             'menu_types' => $menu_types
@@ -28,7 +37,8 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return view('menu.create');
+        $menutypes = MenuType::all();
+        return view('menu.create', compact('menutypes'));
     }
 
     public function uploadImage($image)
@@ -45,13 +55,16 @@ class MenuController extends Controller
     {
         $request->validate([
             'menuname' => 'required|string|max:100',
-            'menutype' => 'required|string|max:50',
+            'menutype_id' => 'required|exists:menutypes,id',
+            'price' => 'nullable|numeric',
+            'description' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         // Create a new User instance
         $menu = new Menu();
         $menu->menuname = $request->menuname;
-        $menu->menutype = $request->menutype;
+        $menu->menutype_id = $request->menutype_id;
         $menu->price = $request->price;
         $menu->description = $request->description;
 
@@ -83,7 +96,8 @@ class MenuController extends Controller
     public function edit(string $id)
     {
         $menus = Menu::findOrFail($id);
-        return view('menu.edit', compact('menus'));
+        $menutypes = MenuType::all();
+        return view('menu.edit', compact('menus', 'menutypes'));
     }
 
     /**
@@ -93,13 +107,15 @@ class MenuController extends Controller
     {
         $request->validate([
             'menuname' => 'required|string|max:100',
-            'menutype' => 'required|string|max:50',
+            'menutype_id' => 'required|exists:menutypes,id',
+            'price' => 'nullable|numeric',
+            'description' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif', // Adjust validation rules for image uploads
         ]);
 
         $data = [
             'menuname' => $request->menuname,
-            'menutype' => $request->menutype,
+            'menutype_id' => $request->menutype_id,
             'price' => $request->price,
             'description' => $request->description,
             'ishidden' => $request->ishidden == 'on' ? 1 : 0,

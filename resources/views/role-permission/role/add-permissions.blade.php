@@ -18,8 +18,9 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            <h4 for="" class="form-label mx-5 mb-3"> Permissions : </h4>
-                            <div class="row gap__20 col-12 w-auto justify-content-evenly mx-5">
+                            <h4 class="form-label mx-5 mb-3">Permissions:</h4>
+                            <div class="row table-permission gap__20 col-12 w-auto justify-content-evenly mx-5"
+                                style="max-height: 300px; overflow-y: auto;">
                                 @foreach ($permissions as $per)
                                     <div class="col-md-2 form-check form-switch">
                                         <h5 class="form-label" for="flexSwitchCheckDefault">

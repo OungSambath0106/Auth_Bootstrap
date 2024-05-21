@@ -101,24 +101,24 @@
 
     <div class="list-group w-auto p-3 mt-1" style="border-radius: 10px">
         <div class="list-group-item d-flex justify-content-between" style="background-color: #3559E0" aria-current="true">
-            <h4 style="color: #FFFFFF;" class=" mt-2 col-0"><b>Menus List</b></h4>
+            <h4 style="color: #FFFFFF;" class="mt-2 col-0"><b>Menus List</b></h4>
             <div class="col-sm-3 filter mt-1">
-                <select id="catelog-filter" class="form-control">
-                    <option value="" {{ !request()->filled('menu_type') ? 'selected' : '' }}>All Catalog</option>
-                    @foreach ($menu_types as $type)
-                        <option value="{{ $type }}" {{ request('menu_type') == $type ? 'selected' : '' }}>
-                            {{ $type }}
-                        </option>
-                    @endforeach
-                </select>
+                <form method="GET" action="{{ url('menus') }}">
+                    <select id="catelog-filter" name="menu_type" class="form-control" onchange="this.form.submit()">
+                        <option value="" {{ !request()->filled('menu_type') ? 'selected' : '' }}>All Catalog</option>
+                        @foreach ($menu_types as $type)
+                            <option value="{{ $type->name }}" {{ request('menu_type') == $type->name ? 'selected' : '' }}>
+                                {{ $type->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
             </div>
-            <div class=" col-3"></div>
+            <div class="col-3"></div>
         </div>
         <div class="list-group-item">
             <div class="table-responsive">
-
                 <table id="example1" class="table">
-
                     <thead class="sticky">
                         <tr>
                             <th class="px-3 py-2 col-1" scope="col">#</th>
@@ -130,16 +130,16 @@
                             <th class="px-3 py-2 col-auto" scope="col">Action</th>
                         </tr>
                     </thead>
-
                     <tbody class="tbody">
                         @foreach ($menus as $menu)
                             <tr>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $menu->id }} </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $menu->menuname }} </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $menu->menutype }} </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row">$ {{ $menu->price }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">{{ $menu->id }}</td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">{{ $menu->menuname }}</td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
-                                    {{ Str::limit($menu->description, 15) }} </td>
+                                    {{ $menu->menutype->name ?? 'None' }}</td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">${{ $menu->price }}</td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">
+                                    {{ Str::limit($menu->description, 15) }}</td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     @if ($menu->ishidden == 1)
                                         <span class="badge bg-primary badge-xl mx-1">Active</span>
@@ -171,11 +171,8 @@
                             </tr>
                         @endforeach
                     </tbody>
-
                 </table>
-
             </div>
-
         </div>
     </div>
 

@@ -14,8 +14,19 @@ class Menu extends Model
     protected $fillable = [
         'ishidden',
         'menuname',
-        'menutype',
+        'menutype_id',
         'price',
         'description',
+        'image',
     ];
+
+    public function menutype()
+    {
+        return $this->belongsTo(MenuType::class, 'menutype_id');
+    }
+
+    public function invoiceDetails()
+    {
+        return $this->hasMany(InvoiceDetail::class, 'menuid');
+    }
 }

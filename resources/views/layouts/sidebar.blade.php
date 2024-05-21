@@ -9,6 +9,11 @@
     .dropdown-toggle::after {
         content: none !important;
     }
+    
+    .dropdown-item.active{
+        background: none !important;
+        color: #000000;
+    }
 </style>
 
 <div class="sidebar p-0">
@@ -32,14 +37,38 @@
                     <i class="fa-solid fas fa-chart-line fa-3x" style="color: #ffffff;"></i>
                 </a>
             </li>
-            @can('view menu')
+            {{-- @can('view menu')
                 <li>
                     <a href="{{ url('menus') }}" title="@lang('Menu')"
                         class="nav-link py-3 mb-2 icon{{ Request::is('menus') ? ' active' : '' }}">
                         <i class="fa-solid fas fa-book-open fa-3x" style="color: #ffffff;"></i>
                     </a>
                 </li>
-            @endcan
+            @endcan --}}
+            @canany(['view menu', 'view menutype'])
+                <li class="nav-item dropdown" onmouseover="showDropdownMenu('menuDropdown', 'menuDropdownMenu')"
+                    onmouseout="hideDropdownMenu('menuDropdown', 'menuDropdownMenu')">
+                    <a class="nav-link dropdown-toggle py-4 icon" href="#" id="menuDropdown" role="button"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fas fa-book-open fa-3x" style="color: #ffffff;"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="menuDropdown" id="menuDropdownMenu">
+                        <div class="container">
+                            @can('view menu')
+                                <a href="{{ url('menus') }}" class="dropdown-item{{ Request::is('menus') ? ' active' : '' }}">
+                                    <i class="fas fa-plus-square"></i> Menu
+                                </a>
+                            @endcan
+                            @can('view menutype')
+                                <a href="{{ url('menutypes') }}"
+                                    class="dropdown-item{{ Request::is('menutypes') ? ' active' : '' }}">
+                                    <i class="fas fa-plus-square"></i> MenuType
+                                </a>
+                            @endcan
+                        </div>
+                    </div>
+                </li>
+            @endcanany
             @can('view customer')
                 <li>
                     <a href="{{ url('customers') }}" title="@lang('Customer')"
@@ -49,13 +78,33 @@
                 </li>
             @endcan
             @canany(['view role', 'view permission', 'view user'])
-                <li class="nav-item dropdown" onmouseover="showDropdownMenu()" onmouseout="hideDropdownMenu()">
-                    <a class="nav-link dropdown-toggle py-4 icon" href="#" id="navbarDropdown" role="button"
+                <li class="nav-item dropdown" onmouseover="showDropdownMenu('roleDropdown', 'roleDropdownMenu')"
+                    onmouseout="hideDropdownMenu('roleDropdown', 'roleDropdownMenu')">
+                    <a class="nav-link dropdown-toggle py-4 icon" href="#" id="roleDropdown" role="button"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fas fa-address-book fa-3x" style="color: #ffffff;"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" id="dropdownMenu">
-                        @include('role-permission.nav-links')
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="roleDropdown" id="roleDropdownMenu">
+                        <div class="container">
+                            @can('view role')
+                                <a href="{{ url('roles') }}"
+                                    class="dropdown-item{{ Request::is('roles') ? ' active' : '' }}">
+                                    <i class="fas fa-user-cog"></i> Roles
+                                </a>
+                            @endcan
+                            @can('view permission')
+                                <a href="{{ url('permissions') }}"
+                                    class="dropdown-item{{ Request::is('permissions') ? ' active' : '' }}">
+                                    <i class="fas fa-tasks"></i> Permissions
+                                </a>
+                            @endcan
+                            @can('view user')
+                                <a href="{{ url('users') }}"
+                                    class="dropdown-item{{ Request::is('users') ? ' active' : '' }}">
+                                    <i class="fas fa-user-circle"></i> Users
+                                </a>
+                            @endcan
+                        </div>
                     </div>
                 </li>
             @endcanany
@@ -80,16 +129,24 @@
         </form>
     </div>
 </div>
-
 <script>
-    function showDropdownMenu() {
-        document.getElementById('navbarDropdown').classList.add('show');
-        document.getElementById('dropdownMenu').classList.add('show');
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown-item').forEach(link => {
+                link.classList.remove('active');
+            });
+            item.classList.add('active');
+        });
+    });
+
+    function showDropdownMenu(dropdownId, menuId) {
+        document.getElementById(dropdownId).classList.add('show');
+        document.getElementById(menuId).classList.add('show');
     }
 
-    function hideDropdownMenu() {
-        document.getElementById('navbarDropdown').classList.remove('show');
-        document.getElementById('dropdownMenu').classList.remove('show');
+    function hideDropdownMenu(dropdownId, menuId) {
+        document.getElementById(dropdownId).classList.remove('show');
+        document.getElementById(menuId).classList.remove('show');
     }
 </script>
 

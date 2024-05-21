@@ -22,17 +22,25 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="disabledTextInput" class="form-label"> Menu Type </label>
-                                            <input type="text" name="menutype" id="menutype" class="form-control"
-                                                style=" color: #3559E0;" placeholder="Enter MenuType">
-                                            @error('menutype')
-                                                <span class="text-danger"> {{ $message }}</span>
+                                            <label for="menutype" class="form-label">Menu Type</label>
+                                            <select name="menutype_id" id="menutype" class="form-control"
+                                                style="color: #3559E0;">
+                                                <option value="">Select Menu Type</option>
+                                                @foreach ($menutypes as $type)
+                                                    <option value="{{ $type->id }}"
+                                                        {{ old('menutype_id') == $type->id ? 'selected' : '' }}>
+                                                        {{ $type->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('menutype_id')
+                                                <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="mb-3">
                                             <label for="disabledTextInput" class="form-label"> Sale Price </label>
-                                            <input type="number" name="price" id="price" class="form-control"
-                                                style=" color: #3559E0;" placeholder="Enter Price">
+                                            <input type="number" name="price" id="price" step="0.01"
+                                                class="form-control" style=" color: #3559E0;" placeholder="Enter Price">
                                             @error('price')
                                                 <span class="text-danger"> {{ $message }}</span>
                                             @enderror

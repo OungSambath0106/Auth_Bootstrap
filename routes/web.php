@@ -44,6 +44,10 @@ Route::group(['middleware' => ['isAdmin']], function () {
     Route::resource('menus', App\Http\Controllers\MenuController::class);
     Route::get('menus/{menuId}/delete', [App\Http\Controllers\MenuController::class, 'destroy']);
 
+    // (MenuType)
+    Route::resource('menutypes', App\Http\Controllers\MenuTypeController::class);
+    Route::get('menutypes/{menutypeId}/delete', [App\Http\Controllers\MenuTypeController::class, 'destroy']);
+
     // (Customer)
     Route::resource('customers', App\Http\Controllers\CustomerController::class);
     Route::get('customers/{customerId}/delete', [App\Http\Controllers\CustomerController::class, 'destroy']);

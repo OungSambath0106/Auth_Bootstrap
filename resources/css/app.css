@@ -150,8 +150,6 @@ th{
 }
 thead.sticky {
     position: -webkit-sticky;
-    position: sticky;
-    top: 0;
     background-color: #FFFFFF;
     z-index: 1000; /* Ensure it's above other content */
 }
@@ -162,10 +160,17 @@ thead.sticky {
     color: #3559E0;
 }
 .dropdown-item:hover{
-    color: #3559E0;
+    /* color: #3559E0; */
+}
+.table-permission::-webkit-scrollbar {
+    display: none;
+}
+.table-permission {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 .gap__20{
-    gap: 38px;
+    gap: 36px;
 }
 .search-bar::placeholder{
     color: #3559E0;
