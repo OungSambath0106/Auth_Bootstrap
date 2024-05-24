@@ -134,7 +134,7 @@
                         @foreach ($menus as $menu)
                             <tr>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">{{ $menu->id }}</td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row">{{ $menu->menuname }}</td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">{{ Str::limit($menu->menuname,15) }}</td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     {{ $menu->menutype->name ?? 'None' }}</td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">

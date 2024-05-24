@@ -32,19 +32,11 @@
                 </a>
             </li>
             <li>
-                <a href="#" title="@lang('All Sale')"
+                <a href="{{ route('invoice.index') }}" title="@lang('All Sale')"
                     class="nav-link py-3 mb-2 mt-2 icon{{ Request::is('sale') ? ' active' : '' }}">
                     <i class="fa-solid fas fa-chart-line fa-3x" style="color: #ffffff;"></i>
                 </a>
             </li>
-            {{-- @can('view menu')
-                <li>
-                    <a href="{{ url('menus') }}" title="@lang('Menu')"
-                        class="nav-link py-3 mb-2 icon{{ Request::is('menus') ? ' active' : '' }}">
-                        <i class="fa-solid fas fa-book-open fa-3x" style="color: #ffffff;"></i>
-                    </a>
-                </li>
-            @endcan --}}
             @canany(['view menu', 'view menutype'])
                 <li class="nav-item dropdown" onmouseover="showDropdownMenu('menuDropdown', 'menuDropdownMenu')"
                     onmouseout="hideDropdownMenu('menuDropdown', 'menuDropdownMenu')">

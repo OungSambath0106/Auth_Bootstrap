@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->boolean('isdefault')->nullable();
-            $table->unsignedInteger('ishidden')->default(0);
+            $table->unsignedInteger('ishidden')->default(1);
             $table->string('menuname',100);
             $table->string('menutype',50)->nullable();
             $table->decimal('price',8, 2)->nullable();

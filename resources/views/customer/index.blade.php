@@ -126,15 +126,18 @@
                                 <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->id }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->customername }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->companyname }} </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ Str::limit($cus->email,15) }} </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->phone }} </td>
-                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ Str::limit($cus->address,10) }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
-                                    @if ($cus->ishidden == 1)
-                                        <span class="badge bg-primary badge-xl mx-1">Active</span>
-                                    @else
-                                        <span class="badge bg-danger badge-xl mx-1">Inactive</span>
-                                    @endif
+                                    {{ Str::limit($cus->email, 15) }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $cus->phone }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">
+                                    {{ Str::limit($cus->address, 10) }} </td>
+                                <td class="px-3" style="padding-top: 12px;" scope="row">
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" class="form-check-input ishidden" role="switch"
+                                            id="ishidden_{{ $cus->id }}" data-id="{{ $cus->id }}"
+                                            {{ $cus->ishidden == 1 ? 'checked' : '' }} name="ishidden">
+                                        <label class="custom-control-label" for="ishidden_{{ $cus->id }}"></label>
+                                    </div>
                                 </td>
                                 <td class="px-3" scope="row">
                                     @can('update customer')
@@ -194,6 +197,72 @@
                 }
             });
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.ishidden').change(function() {
+                var checkbox = $(this);
+                var menuId = checkbox.data('id');
+
+                $.ajax({
+                    url: '{{ route('customers.update_ishidden') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: menuId
+                    },
+                    success: function(response) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1800,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            },
+                            customClass: {
+                                popup: 'swal-toast'
+                            }
+                        });
+
+                        if (response.status == 1) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1800,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            },
+                            customClass: {
+                                popup: 'swal-toast'
+                            }
+                        });
+
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ __('An error occurred while updating the status.') }}'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @endsection
 

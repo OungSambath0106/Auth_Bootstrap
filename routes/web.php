@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +55,7 @@ Route::group(['middleware' => ['isAdmin']], function () {
 
     // (Customer)
     Route::resource('customers', App\Http\Controllers\CustomerController::class);
+    Route::post('customers/update_ishidden', [CustomerController::class, 'updateIshidden'])->name('customers.update_ishidden');
     Route::get('customers/{customerId}/delete', [App\Http\Controllers\CustomerController::class, 'destroy']);
 
     // (Home Page)
@@ -64,6 +68,9 @@ Route::group(['middleware' => ['isAdmin']], function () {
 
     // (Order Page)
     Route::get('/order', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
+    Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::resource('/invoice', InvoiceController::class);
+    Route::get('invoices/{invoiceId}/delete', [App\Http\Controllers\InvoiceController::class, 'destroy']);
 
     // (Settings Page)
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

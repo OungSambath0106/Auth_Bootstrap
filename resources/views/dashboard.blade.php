@@ -44,6 +44,11 @@
         left: 0;
         bottom: 0;
     }
+
+    .info {
+        background-color: #f3f3f3 !important;
+        border-top: none !important;
+    }
 </style>
 @section('content')
     <div class="container-fluid flex-container">
@@ -55,9 +60,9 @@
             <div class="row">
                 <!-- Total Users -->
                 <div class="col-xl-3 h_17 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2 home-dash">
+                    <div class="card border-left-primary shadow h-100 home-dash">
                         <div class="card-body">
-                            <div class="row no-gutters align-items-center">
+                            <div class="row no-gutters mb-1 align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Total Users</div>
@@ -68,13 +73,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('users.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
                 </div>
                 <!-- User Inactive -->
                 <div class="col-xl-3 h_17 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2 home-dash">
+                    <div class="card border-left-primary shadow h-100 home-dash">
                         <div class="card-body">
-                            <div class="row no-gutters align-items-center">
+                            <div class="row no-gutters mb-1 align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                         Users Inactive</div>
@@ -85,13 +94,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('users.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
                 </div>
                 <!-- Menu -->
                 <div class="col-xl-3 h_17 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2 home-dash">
+                    <div class="card border-left-success shadow h-100 home-dash">
                         <div class="card-body">
-                            <div class="row no-gutters align-items-center">
+                            <div class="row no-gutters mb-1 align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                         Menus</div>
@@ -102,13 +115,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('menus.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
                 </div>
                 <!-- Customers -->
                 <div class="col-xl-3 h_17 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2 home-dash">
+                    <div class="card border-left-info shadow h-100 home-dash">
                         <div class="card-body">
-                            <div class="row no-gutters align-items-center">
+                            <div class="row no-gutters mb-1 align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                         Customers</div>
@@ -119,39 +136,77 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('customers.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
                 </div>
-                <!-- Deposite Amount -->
+                <!-- Total Sale -->
                 <div class="col-xl-3 h_17 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2 home-dash">
+                    <div class="card border-left-info shadow h-100 home-dash">
                         <div class="card-body">
-                            <div class="row no-gutters align-items-center">
+                            <div class="row no-gutters mb-1 align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                        Deposite Amount</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                                        Total Sale
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ config('settings.currency_symbol') }} {{ $total_amount, 2 }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('invoice.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total Paid -->
+                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 home-dash">
+                        <div class="card-body">
+                            <div class="row no-gutters mb-1 align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Paid
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ config('settings.currency_symbol') }} {{ $total_paid, 2 }}</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fa-solid fas fa-hand-holding-usd fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('invoice.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
                 </div>
-                <!-- Find Amount -->
+                <!-- Total Invoice -->
                 <div class="col-xl-3 h_17 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2 home-dash">
+                    <div class="card border-left-info shadow h-100 home-dash">
                         <div class="card-body">
-                            <div class="row no-gutters align-items-center">
+                            <div class="row mb-1 no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Find Amount</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">10</div>
+                                        Total Invoice
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"> {{ $invoices }} </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fa-solid fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    <i class="fa-solid fas fa-receipt fa-2x text-gray-300"></i>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('invoice.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -159,9 +214,12 @@
         </div>
     </div>
     <footer class="footer card-footer text-center d-flex justify-content-around">
-        <h6 class=" m-0 py-2" style="font-weight: 700; color: #F5F5F5;"><i class="fa-solid fas fa-phone-volume fa-2xs"></i> {{ config('phone.number') }}</h6>
+        <h6 class=" m-0 py-2" style="font-weight: 700; color: #F5F5F5;"><i
+                class="fa-solid fas fa-phone-volume fa-2xs"></i>
+            {{ config('phone.number') }}</h6>
         <h6 class=" m-0 py-2" style="font-weight: 700; color: #F5F5F5;">{{ config('copyright.text') }}</h6>
-        <h6 class=" m-0 py-2" style="font-weight: 700; color: #F5F5F5;"><i class="fa-solid fas fa-map-marker-alt fa-2xs"></i> {{ config('location') }}</h6>
+        <h6 class=" m-0 py-2" style="font-weight: 700; color: #F5F5F5;"><i
+                class="fa-solid fas fa-map-marker-alt fa-2xs"></i> {{ config('location') }}</h6>
     </footer>
 @endsection
 @push('script')

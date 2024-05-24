@@ -15,9 +15,12 @@ class Invoice extends Model
         'ishidden',
         'customerid',
         'orderdate',
+        'total_qty',
+        'subtotal',
         'vat',
-        'memo',
-        'ispaid',
+        'discount',
+        'total',
+        'status',
     ];
 
     /**

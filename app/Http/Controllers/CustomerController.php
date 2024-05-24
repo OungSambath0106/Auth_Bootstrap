@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -105,5 +107,25 @@ class CustomerController extends Controller
         $customer->delete();
 
         return redirect('/customers');
+    }
+
+    public function updateIshidden(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $customer = Customer::findOrFail($request->id);
+            $customer->ishidden = $customer->ishidden == 1 ? 0 : 1;
+            $customer->save();
+
+            $output = ['status' => 1, 'message' => __('Status updated'), 'ishidden' => $customer->ishidden];
+
+            DB::commit();
+        } catch (Exception $e) {
+            $output = ['status' => 0, 'message' => __('Something went wrong')];
+            DB::rollBack();
+        }
+
+        return response()->json($output);
     }
 }

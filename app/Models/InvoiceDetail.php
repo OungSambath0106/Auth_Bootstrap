@@ -11,13 +11,8 @@ class InvoiceDetail extends Model
 
     protected $table = 'invoicedetails';
 
-    protected $fillable = [
-        'invoiceid',
-        'menuid',
-        'orderquantity',
-        'orderprice',
-        'discount',
-    ];
+    protected $guarded = [];
+    // protected $casts = ['menus'=>'array'];
 
     /**
      * Get the invoice that owns the invoice detail.

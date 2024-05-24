@@ -80,6 +80,9 @@ th{
     color: #3559E0;
     text-transform: uppercase;
 }
+tfoot th{
+    color: #3559E0 !important;
+}
 .edit{
     background-color: #3559E0;
     border: none;
@@ -223,7 +226,8 @@ thead.sticky {
 }
 
 .card-menu{
-    min-width: 240px;
+    max-width: 205px;
+    min-width: 200px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values for the shadow */
     border-radius: 20px;
     margin-right: 20px;
@@ -240,7 +244,7 @@ thead.sticky {
 }
 
 .card-img{
-    max-width: 75px;
+    max-width: 100px;
 }
 
 .title-price{
@@ -377,12 +381,13 @@ thead.sticky {
     height: 75px;
     background-color: #F5F5F5;
     z-index: 1000;
-    margin-top: 25px;
+    margin-top: 18px;
 }
 
 .checkout-content {
     position: fixed;
-    height: 280px;
+    height: 246px;
+    margin-top: 38px;;
     padding-left: 5px;
     overflow-x: hidden; /* Hide the horizontal scrollbar */
     overflow-y: auto; /* Hide the vertical scrollbar */
@@ -449,4 +454,10 @@ thead.sticky {
 
 .nav-text{
     text-transform: uppercase;
+}
+
+.modal-title{
+    font-weight: 700;
+    color: #3559E0;
+    font-size: 1.3rem;
 }
