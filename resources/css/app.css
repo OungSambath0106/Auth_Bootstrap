@@ -113,13 +113,24 @@ tfoot th{
     max-width: 45vw;
 }
 .table-responsive{
-    max-height: 45vh;
+    max-height: 68vh;
     overflow: auto;
 }
 .table-responsive::-webkit-scrollbar {
     display: none;
 }
 .table-responsive {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.table-sale{
+    max-height: 45vh;
+    overflow: auto;
+}
+.table-sale::-webkit-scrollbar {
+    display: none;
+}
+.table-sale {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }

@@ -171,7 +171,7 @@
             </div>
             <br>
 
-            <div class="table-responsive">
+            <div class="table-sale">
 
                 <table class="table m-0">
 
