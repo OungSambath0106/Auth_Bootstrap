@@ -149,8 +149,8 @@
                             <label for="" class=" form-label m-0">Status</label>
                             <select id="status-filter" name="status" class="form-control" style="color: #3559E0">
                                 <option value="" {{ request('status') == '' ? 'selected' : '' }}>All</option>
-                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Unpaid</option>
                                 <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Paid</option>
+                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Unpaid</option>
                             </select>
                         </div>
                         <div class="col-md-5">
@@ -177,7 +177,7 @@
 
                     <thead class="sticky thead">
                         <tr>
-                            {{-- <th class="px-3 py-2" scope="col">#</th> --}}
+                            <th class="px-3 py-2" scope="col">#</th>
                             <th class="px-3 py-2" scope="col">Customer Name</th>
                             <th class="px-3 py-2" scope="col">Total Paid</th>
                             <th class="px-3 py-2" scope="col">Status</th>
@@ -197,7 +197,7 @@
                         @else
                             @foreach ($invoices as $inv)
                                 <tr>
-                                    {{-- <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $inv->id }} </td> --}}
+                                    <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $inv->id }} </td>
                                     <td class="px-3" style="padding-top: 12px;" scope="row">
                                         {{ @$inv->customer->customername }}
                                     </td>
@@ -254,14 +254,14 @@
 
                     <tfoot class="sticky footer">
                         <tr>
-                            {{-- <th></th> --}}
                             <th></th>
-                            <th>Total Paid: {{ config('settings.currency_symbol') }} {{ $totalpaid, 2 }}</th>
                             <th></th>
-                            <th>Subtotal: {{ config('settings.currency_symbol') }} {{ $subtotal, 2 }}</th>
-                            <th>Total Tax: {{ config('settings.currency_symbol') }} {{ $totalvat, 2 }}</th>
-                            <th>Total Discount: {{ config('settings.currency_symbol') }} {{ $discount, 2 }}</th>
-                            <th>Total Amount: {{ config('settings.currency_symbol') }} {{ $total_amount, 2 }}</th>
+                            <th>Total Paid: {{ config('settings.currency_symbol') }} {{ $totalpaid, 2 }} </th>
+                            <th></th>
+                            <th>Subtotal: {{ config('settings.currency_symbol') }} {{ $subtotal, 2 }} </th>
+                            <th>Total Tax: {{ config('settings.currency_symbol') }} {{ $totalvat, 2 }} </th>
+                            <th>Total Discount: {{ config('settings.currency_symbol') }} {{ $discount, 2 }} </th>
+                            <th>Total Amount: {{ config('settings.currency_symbol') }} {{ $total_amount, 2 }} </th>
                             <th></th>
                         </tr>
                     </tfoot>

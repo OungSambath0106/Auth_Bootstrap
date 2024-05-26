@@ -124,7 +124,7 @@
                                         <option value="{{ $customer->id }}">{{ $customer->customername }}</option>
                                     @endforeach
                                 </select>
-                                <span class="col-4">Order #1</span>
+                                <span class="col-4">Order #{{ $nextInvoiceId }}</span>
                             </div>
                             <div class="row ordernum">
                                 <div class="col-3">

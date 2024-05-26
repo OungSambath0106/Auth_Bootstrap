@@ -19,8 +19,13 @@ class OrderController extends Controller
         $menuTypes = Menutype::all();
         $customers = Customer::where('ishidden', 1)->get();
 
+        // Get the highest existing invoice ID
+        $maxInvoiceId = Invoice::max('id');
+        // Calculate the next invoice ID
+        $nextInvoiceId = $maxInvoiceId ? $maxInvoiceId + 1 : 1; // Handle case where there are no invoices
+
         // Pass menus and menu types to the view
-        return view('order.index', compact('menus', 'menuTypes', 'customers'));
+        return view('order.index', compact('menus', 'menuTypes', 'customers', 'nextInvoiceId'));
     }
 
     public function checkout(Request $request)
