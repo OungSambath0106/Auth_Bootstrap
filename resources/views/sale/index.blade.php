@@ -60,6 +60,14 @@
         .reset {
             height: 35px !important;
         }
+
+        .thead{
+            border-top: solid 1px #3559E0;
+        }
+
+        .footer{
+            border-bottom-color: #3559E0;
+        }
     </style>
     @if (session('status'))
         <script>
@@ -117,13 +125,13 @@
                     <form action="{{ route('invoice.index') }}" method="GET">
                         <div class="row">
                             <div class="col-md-5">
-                                <label for="start-date">Start Date</label>
-                                <input type="date" name="start_date" class="form-control"
+                                <label for="start-date" class=" form-label m-0">Start Date</label>
+                                <input type="date" name="start_date" class="form-control" style="color: #3559E0"
                                     value="{{ request('start_date') }}" />
                             </div>
                             <div class="col-md-5">
-                                <label for="end-date">End Date</label>
-                                <input type="date" name="end_date" class="form-control"
+                                <label for="end-date" class=" form-label m-0">End Date</label>
+                                <input type="date" name="end_date" class="form-control" style="color: #3559E0"
                                     value="{{ request('end_date') }}" />
                             </div>
                             <div class="col-md-1 p-0 btn-filter" style="margin-top: 24px">
@@ -136,18 +144,18 @@
                             </div>
                         </div>
                     </form>
-                    <div class="row">
+                    <div class="row mt-2">
                         <div class="col-md-5">
-                            <label for="">Status</label>
-                            <select id="status-filter" name="status" class="form-control">
+                            <label for="" class=" form-label m-0">Status</label>
+                            <select id="status-filter" name="status" class="form-control" style="color: #3559E0">
                                 <option value="" {{ request('status') == '' ? 'selected' : '' }}>All</option>
                                 <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Unpaid</option>
                                 <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Paid</option>
                             </select>
                         </div>
                         <div class="col-md-5">
-                            <label for="">Customer</label>
-                            <select name="customerid" id="customer-select" class="form-control">
+                            <label for="" class=" form-label m-0">Customer</label>
+                            <select name="customerid" id="customer-select" class="form-control" style="color: #3559E0">
                                 <option value="">All Customer</option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}"
@@ -167,7 +175,7 @@
 
                 <table class="table m-0">
 
-                    <thead class="sticky">
+                    <thead class="sticky thead">
                         <tr>
                             {{-- <th class="px-3 py-2" scope="col">#</th> --}}
                             <th class="px-3 py-2" scope="col">Customer Name</th>
@@ -244,7 +252,7 @@
                         @endif
                     </tbody>
 
-                    <tfoot class="sticky">
+                    <tfoot class="sticky footer">
                         <tr>
                             {{-- <th></th> --}}
                             <th></th>
