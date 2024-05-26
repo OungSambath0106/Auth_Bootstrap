@@ -55,14 +55,6 @@
                                     <textarea name="address" style="height: 150px; vertical-align: top; color: #3559E0;" id="address" class="form-control"
                                         placeholder="">{{ ($customers->address) }}</textarea>
                                 </div>
-                                <div class="form-check form-switch">
-                                    <input name="ishidden" class="form-check-input" type="checkbox"
-                                        role="switch flexSwitchCheckChecked" id="ishidden"
-                                        @if ($customers->ishidden) checked @endif>
-                                    <label class="form-check-label form-label" for="flexSwitchCheckChecked">
-                                        Active or InActive
-                                    </label>
-                                </div>
                                 <div class="d-grid gap-1 d-md-flex justify-content-md-end position-absolute bottom-0 end-0"
                                     style="padding:0 25px 25px 0">
                                     <button style="border-radius: 20px; width:110px;" type="submit"

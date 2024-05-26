@@ -63,12 +63,6 @@ class OrderController extends Controller
                     'menuid' => $detail['id'],
                     'orderquantity' => $detail['qty'],
                     'orderprice' => $detail['price'],
-                    // 'discount' => $detail['discount'],
-                    // 'unit_price' => $menu->price,
-                    // $detail->menu_id = $detail['menu_id'];
-                    // $detail->qty = $detail['qty'];
-                    // $detail->unit_price = $detail['unit_price'];
-                    // $detail->subtotal = $detail['subtotal'];
                 ]);
             }
 

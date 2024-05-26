@@ -36,6 +36,14 @@
 
     @stack('style')
 </head>
+<style>
+    @media (min-width: 768px) {
+        .col-md-11 {
+            flex: 0 0 auto;
+            width: 95%;
+        }
+    }
+</style>
 
 <body>
     <div id="app">
@@ -44,7 +52,7 @@
             <div class=" col-md-1 sidebar" style="padding: 0;">
                 @include('layouts.sidebar')
             </div>
-            <div class="col-md-11" style="padding-right: 0;">
+            <div class="col-md-11">
                 @include('layouts.navbar')
 
                 @yield('content')

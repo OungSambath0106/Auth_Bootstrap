@@ -14,7 +14,6 @@ class Invoice extends Model
     protected $fillable = [
         'ishidden',
         'customerid',
-        'orderdate',
         'total_qty',
         'subtotal',
         'vat',

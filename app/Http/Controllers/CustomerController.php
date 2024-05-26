@@ -45,9 +45,6 @@ class CustomerController extends Controller
         $customer->email = $request->email;
         $customer->address = $request->address;
 
-        // Set ishidden attribute based on the request
-        $customer->ishidden = $request->has('ishidden') ? 1 : 0;
-
         if ($request->hasFile('image')) {
             $customer->image = $this->uploadImage($request->file('image'));
         }
@@ -90,7 +87,6 @@ class CustomerController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'address' => $request->address,
-            'ishidden' => $request->ishidden == 'on' ? 1 : 0,
         ];
 
         $customer->update($data);

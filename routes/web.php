@@ -69,6 +69,8 @@ Route::group(['middleware' => ['isAdmin']], function () {
     // (Order Page)
     Route::get('/order', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
     Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
+
+    // (Sale Page)
     Route::resource('/invoice', InvoiceController::class);
     Route::get('invoices/{invoiceId}/delete', [App\Http\Controllers\InvoiceController::class, 'destroy']);
 

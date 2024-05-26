@@ -157,21 +157,23 @@
                                         <form id="deleteForm{{ $inv->id }}"
                                             action="{{ route('invoice.destroy', ['invoice' => $inv->id]) }}"
                                             method="post">
-                                            <a href="{{ url('menus/' . $inv->id) }}" type="button" class="btn view"
+                                            <a href="{{ route('invoice.show', $inv->id) }}" type="button" class="btn view"
                                                 title="@lang('Print')" style="background-color: #38E035;border: none;">
                                                 <i class="fas fa-print" style="color: #ffffff;"></i>
                                             </a>
-                                            <a href="{{ url('customers/' . $inv->id . '/edit') }}" type="button"
-                                                class="btn edit" title="@lang('Edit')"
-                                                style="background-color: #3559E0;border: none;">
-                                                <i class="fas fa-edit" style="color: #ffffff;"></i>
-                                            </a>
-                                            @csrf
-                                            @method('DELETE')
-                                            <a class="btn trash delete-button" type="button" title="@lang('Delete')"
-                                                style="background-color: #FF0000;border: none;"
-                                                data-invoice-id="{{ $inv->id }}">
-                                                <i class="fas fa-trash" style="color: #ffffff;"></i></a>
+                                            @role('super-admin|developer|admin')
+                                                <a href="{{ route('invoice.edit', $inv->id) }}" type="button"
+                                                    class="btn edit" title="@lang('Edit')"
+                                                    style="background-color: #3559E0; border: none;">
+                                                    <i class="fas fa-edit" style="color: #ffffff;"></i>
+                                                </a>
+                                                @csrf
+                                                @method('DELETE')
+                                                <a class="btn trash delete-button" type="button" title="@lang('Delete')"
+                                                    style="background-color: #FF0000;border: none;"
+                                                    data-invoice-id="{{ $inv->id }}">
+                                                    <i class="fas fa-trash" style="color: #ffffff;"></i></a>
+                                            @endrole
                                         </form>
                                     </td>
                                 </tr>

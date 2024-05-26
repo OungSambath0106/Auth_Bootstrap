@@ -19,12 +19,14 @@
 <div class="sidebar p-0">
     <div class="d-flex flex-column flex-shrink-0 text-white sidebar-container">
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            @role('super-admin|developer|admin')
             <li>
                 <a href="{{ route('dashboard') }}" title="@lang('Dashboard')"
                     class="nav-link py-3 mb-2 mt-2 icon{{ Request::is('dashboard') ? ' active' : '' }}">
                     <i class="fa-solid fas fa-tachometer-alt fa-3x" style="color: #ffffff;"></i>
                 </a>
             </li>
+            @endrole
             <li>
                 <a href="{{ route('order') }}" title="@lang('Order')"
                     class="nav-link py-3 mb-2 icon{{ Request::is('some_other_page') ? ' active' : '' }}">
@@ -102,12 +104,14 @@
             @endcanany
         </ul>
         <ul class="nav nav-pills nav-flush flex-column mb-auto mt-5 text-center">
+            @role('super-admin|developer|admin')
             <li>
                 <a href="{{ url('settings') }}" title="@lang('Setting')"
                     class="nav-link py-2 mb-2 mt-4 icon{{ Request::is('settings') ? ' active' : '' }}">
                     <i class="fa-solid fas fa-cog fa-3x" style="color: #ffffff;"></i>
                 </a>
             </li>
+            @endrole
             <li>
                 <a class="nav-link pt-3 d-flex justify-content-center align-items-center logout"
                     href="{{ route('logout') }}" onclick="event.preventDefault(); confirmLogout();">

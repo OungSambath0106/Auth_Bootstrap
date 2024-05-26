@@ -124,20 +124,20 @@
                                                 Add / Edit Role Permission
                                             </a>
                                         @endrole
-                                        @role('super-admin|developer')
+                                        @role('super-admin|developer|admin')
                                             <a href="{{ url('roles/' . $role->id . '/edit') }}" type="button" class="btn edit"
                                                 title="@lang('Edit')" style="background-color: #3559E0;border: none;">
                                                 <i class="fas fa-edit" style="color: #ffffff;"></i>
                                             </a>
                                         @endrole
 
-                                        @can('delete role')
+                                        @role('super-admin|developer|admin')
                                             <a class="btn trash" href="#"
                                                 onclick="event.preventDefault(); confirmDelete({{ $role->id }})"
                                                 title="@lang('Delete')" style="background-color: #FF0000; border: none;">
                                                 <i class="fas fa-trash" style="color: #ffffff;"></i>
                                             </a>
-                                        @endcan
+                                        @endrole
                                     </td>
                                 </tr>
                             @endforeach

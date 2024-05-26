@@ -36,9 +36,9 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="disabledTextInput" class="form-label">Phone Number</label>
-                                    <input type="number" name="phone" id="phone" class="form-control"
-                                        placeholder="Enter Phone Number" style=" color: #3559E0;">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="text" name="phone" id="phone" class="form-control"
+                                        placeholder="Enter Phone Number" style="color: #3559E0;">
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check">
@@ -51,15 +51,6 @@
                                 <label for="disabledTextInput" class="form-label">Address</label>
                                 <textarea name="address" style="height: 150px; vertical-align: top; color: #3559E0;" id="address" class="form-control"
                                     placeholder="Enter Address"></textarea>
-                            </div>
-
-
-                            <div class="form-check form-switch">
-                                <input name="ishidden" class="form-check-input" type="checkbox" role="switch"
-                                    id="ishidden flexSwitchCheckChecked" style=" border-color: #3559E0;" checked>
-                                <label class="form-check-label form-label" for="flexSwitchCheckChecked">
-                                    Active or InActive
-                                </label>
                             </div>
 
                             <div class="d-grid gap-1 d-md-flex justify-content-md-end position-absolute bottom-0 end-0"
@@ -75,5 +66,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInput = document.getElementById('phone');
+
+            phoneInput.addEventListener('input', function(e) {
+                // Remove invalid characters
+                this.value = this.value.replace(/[^0-9+ ]/g, '');
+            });
+        });
+    </script>
+
 
 @endsection

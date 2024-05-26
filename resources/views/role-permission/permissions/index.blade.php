@@ -118,18 +118,16 @@
                                 <td class="px-3" style="padding-top: 12px; scope="row"> {{ $per->id }} </td>
                                 <td class="px-3" style="padding-top: 12px; scope="row"> {{ $per->name }} </td>
                                 <td class="px-3" scope="row">
-                                    @can('update permission')
+                                    @role('super-admin|developer|admin')
                                         <a href="{{ url('permissions/' . $per->id . '/edit') }}" type="button" class="btn edit"
                                             title="@lang('Edit')" style="background-color: #3559E0;border: none;">
                                             <i class="fas fa-edit" style="color: #ffffff;"></i></a>
-                                    @endcan
-                                    @can('delete permission')
                                         <a class="btn trash" href="#"
                                             onclick="event.preventDefault(); confirmDelete({{ $per->id }})"
                                             title="@lang('Delete')" style="background-color: #FF0000; border: none;">
                                             <i class="fas fa-trash" style="color: #ffffff;"></i>
                                         </a>
-                                    @endcan
+                                    @endrole
                                 </td>
                             </tr>
                         @endforeach
