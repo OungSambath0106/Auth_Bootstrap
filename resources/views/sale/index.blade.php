@@ -162,11 +162,11 @@
                                                 <i class="fas fa-print" style="color: #ffffff;"></i>
                                             </a>
                                             @role('super-admin|developer|admin')
-                                                <a href="{{ route('invoice.edit', $inv->id) }}" type="button"
+                                                {{-- <a href="{{ route('invoice.edit', $inv->id) }}" type="button"
                                                     class="btn edit" title="@lang('Edit')"
                                                     style="background-color: #3559E0; border: none;">
                                                     <i class="fas fa-edit" style="color: #ffffff;"></i>
-                                                </a>
+                                                </a> --}}
                                                 @csrf
                                                 @method('DELETE')
                                                 <a class="btn trash delete-button" type="button" title="@lang('Delete')"
