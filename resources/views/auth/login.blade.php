@@ -44,9 +44,9 @@
                                 <div class="d-grid col-12 mx-auto">
                                     <button class="btn btn-primary" id="registerButton" type="submit">Login</button>
                                 </div>
-                                <p class="text-center pt-3">I don't have account?
+                                {{-- <p class="text-center pt-3">I don't have account?
                                     <a href="{{ route('register') }}" style="text-decoration: none;"> Register </a>
-                                </p>
+                                </p> --}}
                             </form>
                         </div>
                     </div>

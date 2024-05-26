@@ -18,11 +18,11 @@
 
 <div class="sidebar p-0">
     <div class="d-flex flex-column flex-shrink-0 text-white sidebar-container">
-        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+        <ul class="nav nav-pills nav-flush flex-column mb-auto py-3 text-center">
             @role('super-admin|developer|admin')
             <li>
                 <a href="{{ route('dashboard') }}" title="@lang('Dashboard')"
-                    class="nav-link py-3 mb-2 mt-2 icon{{ Request::is('dashboard') ? ' active' : '' }}">
+                    class="nav-link py-3 mb-2 icon{{ Request::is('dashboard') ? ' active' : '' }}">
                     <i class="fa-solid fas fa-tachometer-alt fa-3x" style="color: #ffffff;"></i>
                 </a>
             </li>
@@ -103,7 +103,7 @@
                 </li>
             @endcanany
         </ul>
-        <ul class="nav nav-pills nav-flush flex-column mb-auto mt-5 text-center">
+        <ul class="nav nav-pills nav-flush flex-column position-absolute text-center bottom-0 px-1">
             @role('super-admin|developer|admin')
             <li>
                 <a href="{{ url('settings') }}" title="@lang('Setting')"

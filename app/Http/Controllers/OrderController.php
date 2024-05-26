@@ -67,9 +67,9 @@ class OrderController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('order')->with('status', 'Checkout successfully !');
+            return redirect()->route('order')->with('status', 'Checkout successfully.');
         } catch (\Exception $e) {
-            dd($e);
+            // dd($e);
             DB::rollBack();
             return redirect()->route('order')->with('error', 'Something went wrong!');
         }

@@ -48,6 +48,18 @@
             background-color: #3559e0;
             border: none
         }
+
+        .btn-filter {
+            width: 80px !important;
+        }
+
+        .filter {
+            height: 35px !important;
+        }
+
+        .reset {
+            height: 35px !important;
+        }
     </style>
     @if (session('status'))
         <script>
@@ -100,6 +112,56 @@
             <h4 style="color: #FFFFFF;" class=" mt-2"><b>All Sale List</b></h4>
         </div>
         <div class="list-group-item">
+            <div class="row">
+                <div class="col-md-12" style="margin-left: 30px;">
+                    <form action="{{ route('invoice.index') }}" method="GET">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="start-date">Start Date</label>
+                                <input type="date" name="start_date" class="form-control"
+                                    value="{{ request('start_date') }}" />
+                            </div>
+                            <div class="col-md-5">
+                                <label for="end-date">End Date</label>
+                                <input type="date" name="end_date" class="form-control"
+                                    value="{{ request('end_date') }}" />
+                            </div>
+                            <div class="col-md-1 p-0 btn-filter" style="margin-top: 24px">
+                                <button class="btn btn-primary filter" type="submit"><i class="fas fa-filter"></i>
+                                    Filter</button>
+                            </div>
+                            <div class="col-md-1 p-0" style="margin-top: 24px">
+                                <button class="btn btn-danger reset" type="reset"><i class="fas fa-sync-alt"></i>
+                                    Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="">Status</label>
+                            <select id="status-filter" name="status" class="form-control">
+                                <option value="" {{ request('status') == '' ? 'selected' : '' }}>All</option>
+                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Unpaid</option>
+                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Paid</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="">Customer</label>
+                            <select name="customerid" id="customer-select" class="form-control">
+                                <option value="">All Customer</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}"
+                                        {{ request('customer') == $customer->id ? 'selected' : '' }}>
+                                        {{ $customer->customername }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <br>
 
             <div class="table-responsive">
 
@@ -157,8 +219,9 @@
                                         <form id="deleteForm{{ $inv->id }}"
                                             action="{{ route('invoice.destroy', ['invoice' => $inv->id]) }}"
                                             method="post">
-                                            <a href="{{ route('invoice.show', $inv->id) }}" type="button" class="btn view"
-                                                title="@lang('Print')" style="background-color: #38E035;border: none;">
+                                            <a href="{{ route('invoice.show', $inv->id) }}" type="button"
+                                                class="btn view" title="@lang('Print')"
+                                                style="background-color: #38E035;border: none;">
                                                 <i class="fas fa-print" style="color: #ffffff;"></i>
                                             </a>
                                             @role('super-admin|developer|admin')
@@ -202,6 +265,26 @@
         </div>
     </div>
 
+    <script>
+        document.getElementById('customer-select').addEventListener('change', function() {
+            var customer = this.value;
+            if (customer === '') {
+                window.location.href = "{{ route('invoice.index') }}";
+            } else {
+                window.location.href = "{{ route('invoice.index') }}?customer=" + customer;
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('status-filter').addEventListener('change', function() {
+            var status = this.value;
+            if (status === '') {
+                window.location.href = "{{ route('invoice.index') }}";
+            } else {
+                window.location.href = "{{ route('invoice.index') }}?status=" + status;
+            }
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             $('.delete-button').on('click', function(e) {

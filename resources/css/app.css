@@ -113,7 +113,7 @@ tfoot th{
     max-width: 45vw;
 }
 .table-responsive{
-    max-height: 68vh;
+    max-height: 45vh;
     overflow: auto;
 }
 .table-responsive::-webkit-scrollbar {
@@ -298,15 +298,16 @@ thead.sticky {
 }
 
 .img-container{
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values for the shadow */
     border-radius: 10px;
+    margin-left: 15px;
+    margin-top: 11px;
 }
 
 .card-img-checkout{
-    width: 40px;
-    height: 80px;
+    height: 65px;
 }
 
 .checkout-title{
@@ -365,6 +366,7 @@ thead.sticky {
     font-family: font-categories;
     color:#3559E0 ;
     font-size: 25px;
+    padding: 0 12px;
 }
 .ordernum{
     font-family: font-categories;
@@ -375,20 +377,11 @@ thead.sticky {
     border-bottom: 3px solid #3559E0;
 }
 
-.subnav-container {
-    top: 130px;
-    width: 437px;
-    height: 75px;
-    background-color: #F5F5F5;
-    z-index: 1000;
-    margin-top: 18px;
-}
-
 .checkout-content {
-    position: fixed;
-    height: 246px;
-    margin-top: 38px;;
+    height: 235px;
+    margin-top: 20px;;
     padding-left: 5px;
+    padding-right: 5px;
     overflow-x: hidden; /* Hide the horizontal scrollbar */
     overflow-y: auto; /* Hide the vertical scrollbar */
     max-height: 500px; /* Set your desired height */
@@ -415,12 +408,7 @@ thead.sticky {
 }
 
 .checkout-bill{
-    width: 437px;
-    margin-top: 280px;
-    position: fixed;
-    height: 480px;
     color:#3559E0;
-    padding: 15px;
     font-family: font-categories;
 }
 

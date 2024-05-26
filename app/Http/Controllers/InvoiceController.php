@@ -33,7 +33,7 @@ class InvoiceController extends Controller
         }
 
         if ($request->has('customer') && $request->customer !== '') {
-            $invoices->where('customer_id', $request->customer);
+            $invoices->where('customerid', $request->customer);
         }
         $total_amount = $invoices->sum('total');
         $invoices = $invoices->get();

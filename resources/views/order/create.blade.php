@@ -20,7 +20,7 @@
                         <input type="hidden" name="customer_id">
                         <input type="hidden" name="total">
                         <div>
-                            <button type="submit" class="btn mt-3 btn-primary">Finish</button>
+                            <button type="submit" class="btn mt-3 btn-primary">Checkout</button>
                             <button type="button" class="btn mt-3 btn-danger" data-bs-dismiss="modal"
                                 aria-label="Close">Close</button>
                         </div>

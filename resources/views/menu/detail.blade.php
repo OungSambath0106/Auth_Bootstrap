@@ -26,7 +26,7 @@
                                     <div class="mb-3">
                                         <label for="menutype" class="form-label"> Menu Type </label>
                                         <input type="text" name="menutype" id="menutype" class="form-control"
-                                            value="{{ optional($menus->menu_types)->name }}" style="color: #3559E0;"
+                                            value="{{ $menus->menutype->name }}" style="color: #3559E0;"
                                             placeholder="Enter UserName" readonly>
                                         @error('menutype')
                                             <span class="text-danger"> {{ $message }}</span>
