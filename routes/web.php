@@ -42,21 +42,31 @@ Route::group(['middleware' => ['isAdmin']], function () {
 
     // (User)
     Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::post('users/update_ishidden', [UserController::class, 'updateIshidden'])->name('users.update_ishidden');
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
     // (Menu)
     Route::resource('menus', App\Http\Controllers\MenuController::class);
     Route::post('menus/update_ishidden', [MenuController::class, 'updateIshidden'])->name('menus.update_ishidden');
     Route::get('menus/{menuId}/delete', [App\Http\Controllers\MenuController::class, 'destroy']);
+    Route::get('menus/create', [MenuController::class, 'create'])
+        ->name('menus.create')
+        ->middleware('can:create menu');
 
     // (MenuType)
     Route::resource('menutypes', App\Http\Controllers\MenuTypeController::class);
     Route::get('menutypes/{menutypeId}/delete', [App\Http\Controllers\MenuTypeController::class, 'destroy']);
+    Route::get('menutypes/create', [MenuController::class, 'create'])
+        ->name('menutypes.create')
+        ->middleware('can:create menutype');
 
     // (Customer)
     Route::resource('customers', App\Http\Controllers\CustomerController::class);
     Route::post('customers/update_ishidden', [CustomerController::class, 'updateIshidden'])->name('customers.update_ishidden');
     Route::get('customers/{customerId}/delete', [App\Http\Controllers\CustomerController::class, 'destroy']);
+    Route::get('customers/create', [CustomerController::class, 'create'])
+        ->name('customers.create')
+        ->middleware('can:create customer');
 
     // (Home Page)
     Route::get('/home', function () {
@@ -64,7 +74,9 @@ Route::group(['middleware' => ['isAdmin']], function () {
     });
 
     // (Dashboard Page)
-    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])
+        ->name('dashboard')
+        ->middleware('role:super-admin|developer|admin');
 
     // (Order Page)
     Route::resource('/order', OrderController::class);
@@ -77,6 +89,8 @@ Route::group(['middleware' => ['isAdmin']], function () {
     Route::get('invoices/{invoiceId}/delete', [App\Http\Controllers\InvoiceController::class, 'destroy']);
 
     // (Settings Page)
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings', [SettingController::class, 'index'])
+        ->name('settings.index')
+        ->middleware('role:super-admin|developer|admin');
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
 });

@@ -54,14 +54,6 @@
                                                 <span class="text-danger"> {{ $message }} </span>
                                             @enderror
                                         </div>
-                                        <div class="form-check form-switch">
-                                            <input name="ishidden" class="form-check-input" type="checkbox" role="switch"
-                                                style=" border-color: #3559E0;" id="ishidden flexSwitchCheckChecked"
-                                                @if ($user->ishidden) checked @endif>
-                                            <label class="form-check-label form-label" for="flexSwitchCheckChecked">
-                                                Active or InActive
-                                            </label>
-                                        </div>
                                     </fieldset>
                                 </div>
                             </div>

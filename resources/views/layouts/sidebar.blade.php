@@ -1,8 +1,6 @@
 <style>
     .dropdown-menu-right {
-        position: absolute;
-        inset: 0 auto 0 69px !important;
-        margin: 0px;
+        inset: 0px auto auto 69px !important;
     }
 
     .dropdown-toggle::after {

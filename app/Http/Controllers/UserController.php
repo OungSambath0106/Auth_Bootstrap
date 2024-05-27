@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -57,7 +59,7 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
 
         // Set ishidden attribute based on the request
-        $user->ishidden = $request->has('ishidden') ? 1 : 0;
+        // $user->ishidden = $request->has('ishidden') ? 1 : 0;
 
         if ($request->hasFile('image')) {
             $user->image = $this->uploadImage($request->file('image'));
@@ -95,7 +97,7 @@ class UserController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'ishidden' => $request->ishidden == 'on' ? 1 : 0,
+            // 'ishidden' => $request->ishidden == 'on' ? 1 : 0,
         ];
 
         if (!empty($request->password)) {
@@ -148,5 +150,25 @@ class UserController extends Controller
             $user->delete();
             return redirect('/users');
         }
+    }
+
+    public function updateIshidden(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = User::findOrFail($request->id);
+            $user->ishidden = $user->ishidden == 1 ? 0 : 1;
+            $user->save();
+
+            $output = ['status' => 1, 'message' => __('Status updated'), 'ishidden' => $user->ishidden];
+
+            DB::commit();
+        } catch (Exception $e) {
+            $output = ['status' => 0, 'message' => __('Something went wrong')];
+            DB::rollBack();
+        }
+
+        return response()->json($output);
     }
 }
