@@ -181,7 +181,7 @@ thead.sticky {
     scrollbar-width: none;  /* Firefox */
 }
 .gap__20{
-    gap: 36px;
+    gap: 38px;
 }
 .search-bar::placeholder{
     color: #3559E0;

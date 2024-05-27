@@ -197,7 +197,7 @@
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": [ // Custom button configuration
-                        @can('create role')
+                        @can('create menutype')
                             {
                                 text: 'Create New MenuType',
                                 className: 'btn btn-primary btn-default',

@@ -20,7 +20,7 @@
 
                             <h4 class="form-label mx-5 mb-3">Permissions:</h4>
                             <div class="row table-permission gap__20 col-12 w-auto justify-content-evenly mx-5"
-                                style="max-height: 300px; overflow-y: auto;">
+                                style="max-height: 310px; overflow-y: auto;">
                                 @foreach ($permissions as $per)
                                     <div class="col-md-2 form-check form-switch">
                                         <h5 class="form-label" for="flexSwitchCheckDefault">
@@ -33,11 +33,11 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="d-grid gap-1 d-md-flex justify-content-md-end" style="padding:0 25px 25px 0">
+                        <div class="d-grid gap-1 d-md-flex justify-content-md-end" style="padding:0 25px 10px 0">
                             <button style="border-radius: 20px; width:110px;" type="submit"
-                                class="btn btn-primary">Create</button>
+                                class="btn btn-primary">Update</button>
                             <a href="{{ url('roles') }}" style="border-radius: 20px; width:110px;" class="btn btn-primary"
-                                type="button">Cancel</a>
+                                type="button">Back</a>
                         </div>
                     </form>
                 </div>

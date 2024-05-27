@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MenuTypeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -56,7 +57,7 @@ Route::group(['middleware' => ['isAdmin']], function () {
     // (MenuType)
     Route::resource('menutypes', App\Http\Controllers\MenuTypeController::class);
     Route::get('menutypes/{menutypeId}/delete', [App\Http\Controllers\MenuTypeController::class, 'destroy']);
-    Route::get('menutypes/create', [MenuController::class, 'create'])
+    Route::get('menutypes/create', [MenuTypeController::class, 'create'])
         ->name('menutypes.create')
         ->middleware('can:create menutype');
 

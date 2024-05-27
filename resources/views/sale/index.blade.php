@@ -182,7 +182,7 @@
                             <th class="px-3 py-2" scope="col">Total Paid</th>
                             <th class="px-3 py-2" scope="col">Status</th>
                             <th class="px-3 py-2" scope="col">Sub Total</th>
-                            <th class="px-3 py-2" scope="col">Tax</th>
+                            <th class="px-3 py-2" scope="col">VAT</th>
                             <th class="px-3 py-2" scope="col">Discount</th>
                             <th class="px-3 py-2" scope="col">Total Amount</th>
                             <th class="px-3 py-2" scope="col">Action</th>
@@ -267,7 +267,7 @@
                             <th>Total Paid: {{ config('settings.currency_symbol') }} {{ $totalpaid, 2 }} </th>
                             <th></th>
                             <th>Subtotal: {{ config('settings.currency_symbol') }} {{ $subtotal, 2 }} </th>
-                            <th>Total Tax: {{ config('settings.currency_symbol') }} {{ $totalvat, 2 }} </th>
+                            <th>Total VAT: {{ config('settings.currency_symbol') }} {{ $totalvat, 2 }} </th>
                             <th>Total Discount: {{ config('settings.currency_symbol') }} {{ $discount, 2 }} </th>
                             <th>Total Amount: {{ config('settings.currency_symbol') }} {{ $total_amount, 2 }} </th>
                             <th></th>

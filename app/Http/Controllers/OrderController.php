@@ -80,23 +80,16 @@ class OrderController extends Controller
         }
     }
 
-
     public function edit($id)
     {
-        $invoice = Invoice::findOrFail($id);
-
+        $invoice = Invoice::with('invoiceDetails')->findOrFail($id);
         $customer = Customer::find($invoice->customerid);
-
         $menuTypes = Menutype::all();
         $menus = Menu::all();
-
-        $invoiceDetails = $invoice->invoiceDetails;
+        $invoiceDetails = $invoice->invoiceDetails; // Correctly assign invoice details
 
         return view('order.edit', compact('invoice', 'customer', 'menus', 'invoiceDetails', 'menuTypes'));
     }
-
-
-
 
     public function update(Request $request, $id)
     {

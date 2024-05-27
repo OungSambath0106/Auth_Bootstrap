@@ -111,8 +111,8 @@
                                                     <label for="total" class="form-label">Grand Total ( KHR )</label>
                                                 </div>
                                                 <div class="col-6 text-end">
-                                                    <label for="total" class="form-label" style="margin-top: -10px;">
-                                                        <span style="font-size: 1.2rem; margin-top: 15px;">៛</span>
+                                                    <label for="total" class="form-label">
+                                                        <span style="font-size: 1rem">៛</span>  
                                                         {{ number_format($inv->total * 4000, 0, '', ',') }}
                                                     </label>
                                                 </div>

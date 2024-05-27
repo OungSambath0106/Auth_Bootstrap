@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="col-md-4 p-0 pt-3">
-                <form action="{{ route('order.edit', ['order' => $invoice->id]) }}" method="POST" id="frmCh">
+                <form action="{{ route('order.update', $invoice->id) }}" method="POST" id="frmCh">
                     @csrf
                     @method('PUT')
                     <div class="subnav-container">
