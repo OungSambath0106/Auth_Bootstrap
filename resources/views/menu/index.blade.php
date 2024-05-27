@@ -103,7 +103,7 @@
         <div class="list-group-item d-flex justify-content-between" style="background-color: #3559E0" aria-current="true">
             <h4 style="color: #FFFFFF;" class="mt-2 col-0"><b>Menus List</b></h4>
             <div class="col-sm-3 filter mt-1">
-                <form method="GET" action="{{ url('menus') }}">
+                {{-- <form method="GET" action="{{ url('menus') }}">
                     <select id="catelog-filter" name="menu_type" class="form-control" onchange="this.form.submit()">
                         <option value="" {{ !request()->filled('menu_type') ? 'selected' : '' }}>All Catalog</option>
                         @foreach ($menu_types as $type)
@@ -112,7 +112,7 @@
                             </option>
                         @endforeach
                     </select>
-                </form>
+                </form> --}}
             </div>
             <div class="col-3"></div>
         </div>

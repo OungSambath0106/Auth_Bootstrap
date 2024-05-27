@@ -1,62 +1,33 @@
-@extends('layouts.master')
+<style>
+    hr {
+        border: solid 1px #3559E0;
+    }
 
-@section('content')
-    <style>
-        .border-0 {
-            background: none;
-        }
+    .scrollable {
+        overflow-y: auto;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 
-        .card-header {
-            background: none;
-        }
+    .scrollable::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
 
-        hr {
-            color: #3559E0;
-        }
+    .scrollable::-webkit-scrollbar {
+        display: none;
+    }
+</style>
 
-        .center-container {
-            display: flex;
-            justify-content: center;
-            height: 100vh;
-            /* Set the height to full viewport height */
-        }
-
-        .scrollable-list-group {
-            max-height: 80vh;
-            /* Set a maximum height for the list group */
-            overflow-y: auto;
-            /* Enable vertical scrolling */
-            overflow-y: scroll;
-            -ms-overflow-style: none;
-            /* Internet Explorer 10+ */
-            scrollbar-width: none;
-            /* Firefox */
-        }
-
-        .scrollable-list-group::-webkit-scrollbar-thumb {
-            background-color: darkgrey;
-            border-radius: 10px;
-        }
-
-        .scrollable-list-group::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        .scrollable-list-group::-webkit-scrollbar {
-            display: none;
-            /* Safari and Chrome */
-        }
-    </style>
-
-    <div class="center-container scrollable-list-group">
-        <div class="list-group p-3 mt-2 col-md-4">
-            <form id="invoiceSection" action="{{ route('invoice.show', $invoice->id) }}" method="POST">
-                @csrf
-                @method('PUT')
+<div class="modal fade scrollable" id="invoice-{{ $inv->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="invoiceSection-{{ $inv->id }}">
                 <div class="list-group-item card">
                     <div class="card-header border-bottom-0">
-                        <h5 class="mt-2 form-label"><b>INVOICE #{{ $invoice->id }}</b></h5>
-                        <h6 class="mt-2 form-label"><b>Date {{ $invoice->created_at->format('M / d / Y') }}</b></h6>
+                        <h5 class="mt-2 form-label"><b>INVOICE #{{ $inv->id }}</b></h5>
+                        <h6 class="mt-2 form-label"><b>Date {{ $inv->created_at->format('M / d / Y') }}</b></h6>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -78,26 +49,27 @@
                                             <hr>
                                         </div>
                                         <div class="body-container mb-5">
-                                            @foreach ($menus as $menu)
-                                                @php
-                                                    $menuDetail = $invoiceDetails->firstWhere('menuid', $menu->id);
-                                                @endphp
-                                                @if ($menuDetail && $menuDetail->orderquantity !== null && $menuDetail->orderprice !== null)
+                                            @if ($inv->invoiceDetails->isNotEmpty())
+                                                @foreach ($inv->invoiceDetails as $detail)
                                                     <div class="row">
                                                         <div class="col-6 mb-1">
-                                                            <span class="form-label">{{ $menu->menuname }}</span>
+                                                            <span
+                                                                class="form-label">{{ $detail->menu->menuname }}</span>
                                                         </div>
                                                         <div class="col-2 mb-1 text-center">
-                                                            <span class="form-label">{{ $menuDetail->orderquantity }}</span>
+                                                            <span class="form-label">{{ $detail->orderquantity }}</span>
                                                         </div>
                                                         <div class="col-4 mb-1 text-end">
-                                                            <span
-                                                                class="form-label">{{ config('settings.currency_symbol') }}
-                                                                {{ $menuDetail->orderprice }}</span>
+                                                            <span class="form-label">
+                                                                {{ config('settings.currency_symbol') }}
+                                                                {{ number_format($detail->orderprice * $detail->orderquantity, 2) }}
+                                                            </span>
                                                         </div>
                                                     </div>
-                                                @endif
-                                            @endforeach
+                                                @endforeach
+                                            @else
+                                                <p>No details found for this invoice.</p>
+                                            @endif
                                         </div>
                                         <div class="body-container">
                                             <div class="row">
@@ -107,32 +79,42 @@
                                                 <div class="col-6 text-end">
                                                     <label for="subtotal"
                                                         class="form-label">{{ config('settings.currency_symbol') }}
-                                                        {{ $invoice->subtotal }}</label>
+                                                        {{ $inv->subtotal }}</label>
                                                 </div>
                                                 <div class="col-6 text-start">
-                                                    <label for="vat_amount" class="form-label">VAT</label>
+                                                    <label for="vat_amount" class="form-label">VAT Amount</label>
                                                 </div>
                                                 <div class="col-6 text-end">
                                                     <label for="vat_amount"
                                                         class="form-label">{{ config('settings.currency_symbol') }}
-                                                        {{ $invoice->vat_amount }}</label>
+                                                        {{ $inv->vat_amount }}</label>
                                                 </div>
                                                 <div class="col-6 text-start">
-                                                    <label for="discount_amount" class="form-label">Discount</label>
+                                                    <label for="discount_amount" class="form-label">Discount
+                                                        Amount</label>
                                                 </div>
                                                 <div class="col-6 text-end">
                                                     <label for="discount_amount"
                                                         class="form-label">{{ config('settings.currency_symbol') }}
-                                                        {{ $invoice->discount_amount }}</label>
+                                                        {{ $inv->discount_amount }}</label>
                                                 </div>
                                                 <hr class="w-100">
                                                 <div class="col-6">
-                                                    <label for="total" class="form-label">Total</label>
+                                                    <label for="total" class="form-label">Grand Total ( USD )</label>
                                                 </div>
                                                 <div class="col-6 text-end">
                                                     <label for="total"
                                                         class="form-label">{{ config('settings.currency_symbol') }}
-                                                        {{ $invoice->total }}</label>
+                                                        {{ $inv->total }}</label>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="total" class="form-label">Grand Total ( KHR )</label>
+                                                </div>
+                                                <div class="col-6 text-end">
+                                                    <label for="total" class="form-label" style="margin-top: -10px;">
+                                                        <span style="font-size: 1.2rem; margin-top: 15px;">៛</span>
+                                                        {{ number_format($inv->total * 4000, 0, '', ',') }}
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -142,29 +124,27 @@
                         </div>
                     </div>
                 </div>
-            </form>
-            <div class="row">
-                <div class="col-12 gap-2 d-flex pt-3">
-                    <button type="button" class="btn btn-custom d-block w-100 pose finish text-all print"
-                        onclick="printInvoice()">Print</button>
-                    <a type="button" href="{{ route('invoice.index') }}"
-                        class="btn btn-custom d-block w-100 pose finish text-all">Back</a>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary print"
+                    onclick="printInvoice('{{ $inv->id }}')">Print</button>
+                <a href="{{ route('invoice.index') }}" type="button" class="btn btn-danger"
+                    data-dismiss="modal">Close</a>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        function printInvoice() {
-            var printContents = document.getElementById('invoiceSection').innerHTML;
-            var originalContents = document.body.innerHTML;
+<script>
+    function printInvoice(invoiceId) {
+        var printContents = document.getElementById('invoiceSection-' + invoiceId).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-            document.body.innerHTML = printContents;
+        document.body.innerHTML = printContents;
 
-            window.print();
+        window.print();
 
-            document.body.innerHTML = originalContents;
-            window.location.reload();
-        }
-    </script>
-@endsection
+        document.body.innerHTML = originalContents;
+        // window.location.reload();
+    }
+</script>

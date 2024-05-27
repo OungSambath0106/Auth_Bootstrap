@@ -113,36 +113,32 @@
                     @endforeach
                 </div>
             </div>
-            <div class="col-md-4 p-0">
-                {{-- <form action="{{ route('checkout') }}" method="POST" id="frmCh"> --}}
-                <form action="{{ route('invoice.update', $invoice->id) }}" method="POST" id="frmCh">
+            <div class="col-md-4 p-0 pt-3">
+                <form action="{{ route('order.edit', ['order' => $invoice->id]) }}" method="POST" id="frmCh">
                     @csrf
                     @method('PUT')
                     <div class="subnav-container">
                         <div class="subnav">
                             <div class="invoicenum row d-flex">
-                                <select name="customerid" class="form-control selected-customer" style="color: #3559E0;">
-                                    <option value="">Select Customer</option>
-                                    @foreach ($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->customername }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="col-4">Order #1</span>
+                                <input type="text" class="form-control" value="{{ $customer->customername }}" readonly
+                                    style="color: #3559E0;">
+                                <input type="hidden" name="customerid" value="{{ $customer->id }}">
+                                <span class="col-4">Order #{{ $invoice->id }}</span>
                             </div>
                             <div class="row ordernum">
-                                <div class="col-4">
+                                <div class="col-3">
                                 </div>
-                                <div class="col-3 p-0">
+                                <div class="col-3 px-2">
                                     <span class="checkouttitle">
                                         Title
                                     </span>
                                 </div>
-                                <div class="col-2 p-0">
+                                <div class="col-3 pr-0 text-center">
                                     <Span class="checkouttitle">
                                         Quantity
                                     </Span>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-3 px-4">
                                     <span class="checkouttitle">
                                         Price
                                     </span>
@@ -153,7 +149,7 @@
                     <div class="checkout-content">
 
                     </div>
-                    <div class="checkout-bill">
+                    <div class="checkout-bill p-3 mt-1">
                         <div class="row">
                             <div class="col-6 mb-1">
                                 <span class="text-subtotal">Subtotal</span>
@@ -193,10 +189,10 @@
                         </div>
                         <div class="row">
                             <div class="col-12 gap-2 d-flex pt-3">
-                                <button type="button" class="btn btn-custom d-block w-100 pose finish text-all clear"
-                                    data-bs-target="#clear">Clear All</button>
                                 <button type="button" class="btn btn-custom d-block w-100 pose finish text-all checkout"
                                     data-bs-toggle="modal" data-bs-target="#checkout">Checkout</button>
+                                <button type="button" class="btn btn-custom d-block w-100 pose finish text-all clear"
+                                    data-bs-target="#clear">Clear All</button>
                             </div>
                         </div>
                     </div>
@@ -291,10 +287,10 @@
                 } else {
                     var checkoutItemHtml = `
             <div class="card-checkout" id="menu_${id}">
-                <div class="row" style="height: 120px;">
-                    <div class="col-4 d-flex justify-content-center align-items-center p-0">
+                <div class="row" style="height: 95px;">
+                    <div class="col-3 d-flex justify-content-start align-items-start">
                         <div class="img-container d-flex justify-content-center align-items-center">
-                            <img class="card-img-checkout" src="${imageSrc}">
+                            <img class="card-img-checkout" src="${imageSrc}" height="20">
                         </div>
                     </div>
                     <div class="col-3 p-0">
@@ -307,7 +303,7 @@
                         </div>
                         
                     </div>
-                    <div class="col-2 d-flex justify-content-center align-items-center p-0">
+                    <div class="col-3 d-flex justify-content-center align-items-center p-0">
                         <div class="quantity">
                             <button class="counter-btn minus" type="button">
                                 <i class="fa-solid fa fa-minus fa-3xs" style="color: #ffffff;"></i>
@@ -413,6 +409,14 @@
                 var total = parseFloat($('.total').text().replace(currencySymbol, '').trim());
 
                 if (totalInput > total) {
+                    $('#max-value').removeClass('d-none').text(
+                        'Total paid amount cannot exceed the total!');
+                    $(this).val(total.toFixed(2));
+                } else {
+                    $('#max-value').addClass('d-none').text('');
+                }
+
+                if (totalInput > 0) {
                     $('#max-value').removeClass('d-none').text(
                         'Total paid amount cannot exceed the total!');
                     $(this).val(total.toFixed(2));

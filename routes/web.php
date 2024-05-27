@@ -67,7 +67,9 @@ Route::group(['middleware' => ['isAdmin']], function () {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     // (Order Page)
+    Route::resource('/order', OrderController::class);
     Route::get('/order', [App\Http\Controllers\OrderController::class, 'index'])->name('order');
+    Route::get('/order/{order}/edit', [OrderController::class, 'edit'])->name('order.edit');
     Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
 
     // (Sale Page)

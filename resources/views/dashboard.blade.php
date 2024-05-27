@@ -40,8 +40,8 @@
         text-align: center;
         padding: 10px 0 0 0;
         background-color: #3559E0 !important;
-        width: 95vw;
-        left: 76;
+        width: 96vw;
+        left: 61;
         bottom: 0;
     }
 

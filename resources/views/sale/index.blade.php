@@ -61,11 +61,11 @@
             height: 35px !important;
         }
 
-        .thead{
+        .thead {
             border-top: solid 1px #3559E0;
         }
 
-        .footer{
+        .footer {
             border-bottom-color: #3559E0;
         }
     </style>
@@ -177,7 +177,7 @@
 
                     <thead class="sticky thead">
                         <tr>
-                            <th class="px-3 py-2" scope="col">#</th>
+                            {{-- <th class="px-3 py-2" scope="col">#</th> --}}
                             <th class="px-3 py-2" scope="col">Customer Name</th>
                             <th class="px-3 py-2" scope="col">Total Paid</th>
                             <th class="px-3 py-2" scope="col">Status</th>
@@ -197,7 +197,7 @@
                         @else
                             @foreach ($invoices as $inv)
                                 <tr>
-                                    <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $inv->id }} </td>
+                                    {{-- <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $inv->id }} </td> --}}
                                     <td class="px-3" style="padding-top: 12px;" scope="row">
                                         {{ @$inv->customer->customername }}
                                     </td>
@@ -224,28 +224,36 @@
                                         {{ config('settings.currency_symbol') }} {{ $inv->total }}
                                     </td>
                                     <td class="px-3" scope="row">
-                                        <form id="deleteForm{{ $inv->id }}"
-                                            action="{{ route('invoice.destroy', ['invoice' => $inv->id]) }}"
-                                            method="post">
-                                            <a href="{{ route('invoice.show', $inv->id) }}" type="button"
-                                                class="btn view" title="@lang('Print')"
-                                                style="background-color: #38E035;border: none;">
+                                        <div class="d-flex gap-1">
+                                            <a type="button" data-bs-toggle="modal"
+                                                data-bs-target="#invoice-{{ $inv->id }}" class="btn view"
+                                                title="@lang('Print')"
+                                                style="background-color: #38E035; border: none;">
                                                 <i class="fas fa-print" style="color: #ffffff;"></i>
                                             </a>
+                                            @include('sale.invoice')
                                             @role('super-admin|developer|admin')
-                                                {{-- <a href="{{ route('invoice.edit', $inv->id) }}" type="button"
+                                                <a href="{{ route('order.edit', $inv->id) }}" type="button"
                                                     class="btn edit" title="@lang('Edit')"
                                                     style="background-color: #3559E0; border: none;">
                                                     <i class="fas fa-edit" style="color: #ffffff;"></i>
-                                                </a> --}}
-                                                @csrf
-                                                @method('DELETE')
-                                                <a class="btn trash delete-button" type="button" title="@lang('Delete')"
-                                                    style="background-color: #FF0000;border: none;"
-                                                    data-invoice-id="{{ $inv->id }}">
-                                                    <i class="fas fa-trash" style="color: #ffffff;"></i></a>
+                                                </a>
                                             @endrole
-                                        </form>
+                                            @role('super-admin|developer|admin')
+                                                <form id="deleteForm{{ $inv->id }}"
+                                                    action="{{ route('invoice.destroy', ['invoice' => $inv->id]) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn trash delete-button" type="button"
+                                                        title="@lang('Delete')"
+                                                        style="background-color: #FF0000;border: none;"
+                                                        data-invoice-id="{{ $inv->id }}">
+                                                        <i class="fas fa-trash" style="color: #ffffff;"></i>
+                                                    </button>
+                                                </form>
+                                            @endrole
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -254,7 +262,7 @@
 
                     <tfoot class="sticky footer">
                         <tr>
-                            <th></th>
+                            {{-- <th></th> --}}
                             <th></th>
                             <th>Total Paid: {{ config('settings.currency_symbol') }} {{ $totalpaid, 2 }} </th>
                             <th></th>

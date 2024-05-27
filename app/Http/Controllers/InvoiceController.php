@@ -19,6 +19,7 @@ class InvoiceController extends Controller
     {
         $customers = Customer::all();
         $invoices = Invoice::query();
+        $menus = Menu::all();
         $invoicess = Invoice::count();
         if ($request->start_date) {
             $invoices->where('created_at', '>=', $request->start_date);
@@ -35,54 +36,14 @@ class InvoiceController extends Controller
         if ($request->has('customer') && $request->customer !== '') {
             $invoices->where('customerid', $request->customer);
         }
+
         $total_amount = $invoices->sum('total');
         $invoices = $invoices->get();
         $totalpaid = $invoices->sum('total_paid');
         $subtotal = $invoices->sum('subtotal');
         $totalvat = $invoices->sum('vat_amount');
         $discount = $invoices->sum('discount_amount');
-        return view('sale.index', compact('invoices', 'customers', 'totalpaid', 'totalvat', 'subtotal', 'total_amount', 'discount', 'invoicess'));
-    }
-
-    public function show(string $id)
-    {
-        $invoice = Invoice::with('invoiceDetails')->findOrFail($id);
-        $menus = Menu::all();
-        $invoiceDetails = $invoice->invoiceDetails;
-
-        return view('sale.invoice', compact('invoice', 'menus', 'invoiceDetails'));
-    }
-
-    public function edit($id)
-    {
-        $invoice = Invoice::findOrFail($id);
-        $customers = Customer::all();
-        $menus = Menu::all();
-        $invoiceDetails = $invoice->invoiceDetails;
-
-        // Pass data to the edit view
-        return view('sale.edit', compact('invoice', 'customers', 'menus', 'invoiceDetails'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $invoice = Invoice::findOrFail($id);
-        $invoice->update($request->all());
-
-        // Delete existing details
-        InvoiceDetail::where('invoiceid', $id)->delete();
-
-        // Insert new details
-        foreach ($request->menus as $menu) {
-            InvoiceDetail::create([
-                'invoiceid' => $invoice->id,
-                'menuid' => $menu['id'],
-                'orderquantity' => $menu['quantity'],
-                'orderprice' => $menu['price'],
-            ]);
-        }
-
-        return redirect()->route('invoices.index')->with('status', 'Invoice updated successfully.');
+        return view('sale.index', compact('invoices', 'menus', 'customers', 'totalpaid', 'totalvat', 'subtotal', 'total_amount', 'discount', 'invoicess'));
     }
 
     /**

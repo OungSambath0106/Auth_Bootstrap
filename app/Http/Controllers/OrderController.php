@@ -79,4 +79,43 @@ class OrderController extends Controller
             return redirect()->route('order')->with('error', 'Something went wrong!');
         }
     }
+
+
+    public function edit($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+
+        $customer = Customer::find($invoice->customerid);
+
+        $menuTypes = Menutype::all();
+        $menus = Menu::all();
+
+        $invoiceDetails = $invoice->invoiceDetails;
+
+        return view('order.edit', compact('invoice', 'customer', 'menus', 'invoiceDetails', 'menuTypes'));
+    }
+
+
+
+
+    public function update(Request $request, $id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->update($request->all());
+
+        // Delete existing details
+        InvoiceDetail::where('invoiceid', $id)->delete();
+
+        // Insert new details
+        foreach ($request->menus as $menu) {
+            InvoiceDetail::create([
+                'invoiceid' => $invoice->id,
+                'menuid' => $menu['id'],
+                'orderquantity' => $menu['quantity'],
+                'orderprice' => $menu['price'],
+            ]);
+        }
+
+        return redirect()->route('invoice.index')->with('status', 'Invoice updated successfully.');
+    }
 }
