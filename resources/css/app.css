@@ -49,6 +49,11 @@ body{
     font-size: 50px;
     color:#3559E0 ;
 }
+.title-invoice{
+    font-family: font-title;
+    font-size: 1.4rem;
+    color:#3559E0 ;
+}
 .date,.positions,.name{
     color:#3559E0 ;
 }

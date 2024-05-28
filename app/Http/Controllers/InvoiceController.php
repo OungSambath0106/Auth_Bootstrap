@@ -63,4 +63,27 @@ class InvoiceController extends Controller
             return redirect()->route('invoice.index')->with('error', 'Failed to delete transaction!');
         }
     }
+
+    public function updateStatus(Request $request)
+    {
+        $invoiceId = $request->input('invoiceId');
+        $status = $request->input('status');
+
+        try {
+            $invoice = Invoice::findOrFail($invoiceId);
+
+            if ($status == '0') {
+                $invoice->total_paid = 0;
+            } else {
+                $invoice->total_paid = $invoice->total;
+            }
+
+            $invoice->status = $status;
+            $invoice->save();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update invoice status.'], 500);
+        }
+    }
 }

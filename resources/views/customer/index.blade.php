@@ -286,7 +286,8 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": [ // Custom button configuration
+                // "buntton" : false,
+                "buttons": [
                     @can('create customer')
                         {
                             text: 'Create New Customer',

@@ -118,7 +118,7 @@ class RoleController extends Controller
     public function givePermissionToRole(Request $request, $roleId)
     {
         $request->validate([
-            'permission' => 'required'
+            'permission' => 'nullable'
         ]);
 
         $role = Role::findOrFail($roleId);

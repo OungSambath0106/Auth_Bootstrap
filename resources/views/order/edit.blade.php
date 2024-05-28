@@ -237,27 +237,69 @@
             $('.checkout-bill').find('input[name="discount_amount"]').val(0);
         });
     </script>
-
-
-
+    
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const updateTotalPrice = (id) => {
+                const card = document.getElementById(`menu_${id}`);
+                const qtyInput = card.querySelector(`input[name="menus[${id}][qty]"]`);
+                const price = parseFloat(card.querySelector('.item-price').dataset.price);
+                const totalPriceElem = card.querySelector('.total-price');
+                const newTotal = qtyInput.value * price;
+                totalPriceElem.textContent = newTotal.toFixed(2);
+            };
+
+            document.querySelectorAll('.counter-value').forEach(input => {
+                input.addEventListener('change', (event) => {
+                    const id = event.target.name.match(/\d+/)[0];
+                    updateTotalPrice(id);
+                });
+            });
+
+            document.querySelectorAll('.counter-btn.plus').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const card = event.target.closest('.card-checkout');
+                    const qtyInput = card.querySelector('.counter-value');
+                    qtyInput.value = parseInt(qtyInput.value) + 1;
+                    const id = qtyInput.name.match(/\d+/)[0];
+                    updateTotalPrice(id);
+                });
+            });
+
+            document.querySelectorAll('.counter-btn.minus').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const card = event.target.closest('.card-checkout');
+                    const qtyInput = card.querySelector('.counter-value');
+                    if (qtyInput.value > 0) {
+                        qtyInput.value = parseInt(qtyInput.value) - 1;
+                        const id = qtyInput.name.match(/\d+/)[0];
+                        updateTotalPrice(id);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const card = event.target.closest('.card-checkout');
+                    card.remove();
+                });
+            });
+        });
+
         $(document).ready(function() {
-            const currencySymbol = "{{ config('settings.currency_symbol') }}"; // Store the currency symbol
+            const currencySymbol = "{{ config('settings.currency_symbol') }}";
 
             function recalculateAll() {
                 let subtotal = 0.00;
 
-                // Calculate subtotal by summing up all the item total prices
                 $('.total-price').each(function() {
                     subtotal += parseFloat($(this).text());
                 });
 
-                // Calculate vat and discount
                 let vat = subtotal * 0.1;
                 let discount = subtotal * 0.15;
                 let total = subtotal + vat - discount;
 
-                // Update the values in the checkout bill section with currency symbol
                 $('.subtotal').text(currencySymbol + subtotal.toFixed(2));
                 $('.vat').text(currencySymbol + vat.toFixed(2));
                 $('input[name=vat_amount]').val(vat.toFixed(2));
@@ -267,90 +309,80 @@
             }
 
             $('.cart-button').on('click', function() {
-                // Extract data from the card
                 var id = $(this).data('id');
                 var card = $(this).closest('.card-menu');
                 var imageSrc = card.find('.card-img').attr('src');
                 var menuName = card.find('.title-price').first().text().trim();
-                var truncatedMenuName = menuName.substring(0, 10); // Get the first 10 characters
+                var truncatedMenuName = menuName.substring(0, 10);
                 var price = parseFloat(card.find('.title-price').last().text().trim().replace(/[^0-9.-]+/g,
                     ""));
 
                 if ($('.checkout-content').find(`#menu_${id}`).length == 1) {
-                    console.log('hwllo');
                     var current_qty = $('.checkout-content').find(`#menu_${id} .counter-value`).val();
-                    // .counter-value
-                    console.log(current_qty);
                     var newqty = parseInt(current_qty) + 1;
                     $('.checkout-content').find(`#menu_${id} .counter-value`).val(newqty);
                     $('.checkout-content').find(`#menu_${id} .counter-value`).trigger('input');
                 } else {
                     var checkoutItemHtml = `
-            <div class="card-checkout" id="menu_${id}">
-                <div class="row" style="height: 95px;">
-                    <div class="col-3 d-flex justify-content-start align-items-start">
-                        <div class="img-container d-flex justify-content-center align-items-center">
-                            <img class="card-img-checkout" src="${imageSrc}" height="20">
+                <div class="card-checkout" id="menu_${id}">
+                    <div class="row" style="height: 95px;">
+                        <div class="col-3 d-flex justify-content-start align-items-start">
+                            <div class="img-container d-flex justify-content-center align-items-center">
+                                <img class="card-img-checkout" src="${imageSrc}" height="20">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-3 p-0">
-                        <div class="row pt-3">
-                            <input type="hidden" name="menus[${id}][id]" class="" value="${id}">
-                            <div class="checkout-title">${truncatedMenuName}</div>
-                            <input type="hidden" name="menus[${id}][name]" class="" value="${truncatedMenuName}" min="0">
-                            <div class="checkout-title item-price" data-price="${price}">${currencySymbol} ${price.toFixed(2)}</div>
-                            <input type="hidden" name="menus[${id}][price]" class="" value="${price}" min="0">
+                        <div class="col-3 p-0">
+                            <div class="row pt-3">
+                                <input type="hidden" name="menus[${id}][id]" value="${id}">
+                                <div class="checkout-title">${truncatedMenuName}</div>
+                                <input type="hidden" name="menus[${id}][name]" value="${truncatedMenuName}">
+                                <div class="checkout-title item-price" data-price="${price}">
+                                    ${currencySymbol} ${price.toFixed(2)}
+                                </div>
+                                <input type="hidden" name="menus[${id}][price]" value="${price}">
+                            </div>
                         </div>
-                        
-                    </div>
-                    <div class="col-3 d-flex justify-content-center align-items-center p-0">
-                        <div class="quantity">
-                            <button class="counter-btn minus" type="button">
-                                <i class="fa-solid fa fa-minus fa-3xs" style="color: #ffffff;"></i>
-                            </button>
-                            <input type="number" name="menus[${id}][qty]" class="counter-value" value="1" min="0">
-                            <button class="counter-btn plus" type="button">
-                                <i class="fa-solid fa fa-plus fa-3xs" style="color: #ffffff;"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="row d-flex justify-content-end align-items-center p-2">
-                            <div class="col-auto">
-                                <button class="btn-delete d-flex justify-content-center align-items-center float-right">
-                                    <i class="fa-solid fas fa-trash-alt fa-xs" style="color: #ffffff;"></i>
+                        <div class="col-3 d-flex justify-content-center align-items-center p-0">
+                            <div class="quantity">
+                                <button class="counter-btn minus" type="button">
+                                    <i class="fa-solid fa fa-minus fa-3xs" style="color: #ffffff;"></i>
+                                </button>
+                                <input type="number" name="menus[${id}][qty]" class="counter-value" value="1" min="0">
+                                <button class="counter-btn plus" type="button">
+                                    <i class="fa-solid fa fa-plus fa-3xs" style="color: #ffffff;"></i>
                                 </button>
                             </div>
-                            <div class="ineach pt-2">
-                                <span class="price">${currencySymbol}</span>
-                                <span class="total-price">${price.toFixed(2)}</span>
+                        </div>
+                        <div class="col-3">
+                            <div class="row d-flex justify-content-end align-items-center p-2">
+                                <div class="col-auto">
+                                    <button class="btn-delete d-flex justify-content-center align-items-center float-right">
+                                        <i class="fa-solid fas fa-trash-alt fa-xs" style="color: #ffffff;"></i>
+                                    </button>
+                                </div>
+                                <div class="ineach pt-2">
+                                    <span class="price">${currencySymbol}</span>
+                                    <span class="total-price">${(price * 1).toFixed(2)}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
 
-                    // Append the new item to the checkout content
                     $('.checkout-content').append(checkoutItemHtml);
                 }
 
-                // Create the new checkout item HTML
-
-
-                // Recalculate all values
                 recalculateAll();
             });
 
-            // Handle delete button click
             $(document).on('click', '.btn-delete', function() {
                 $(this).closest('.card-checkout').remove();
                 recalculateAll();
             });
 
-            // Handle quantity change on button click
             $(document).on('click', '.counter-btn', function(event) {
-                event.stopPropagation(); // Stop event propagation to prevent triggering the checkout action
+                event.stopPropagation();
 
                 var input = $(this).siblings('.counter-value');
                 var currentValue = parseInt(input.val());
@@ -363,11 +395,9 @@
                     }
                 }
 
-                // Trigger input change
                 input.trigger('input');
             });
 
-            // Recalculate total on direct input change
             $(document).on('input', '.counter-value', function() {
                 var input = $(this);
                 var cardCheckout = input.closest('.card-checkout');
@@ -383,7 +413,6 @@
                 recalculateAll();
             });
 
-            // Handle checkout button click
             $(document).on('click', '.checkout', function() {
                 var customer = $('.select2').val();
                 var subtotal = parseFloat($('.subtotal').text().replace(currencySymbol, '').trim());

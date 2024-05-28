@@ -25,9 +25,14 @@
         <div class="modal-content">
             <div class="modal-body" id="invoiceSection-{{ $inv->id }}">
                 <div class="list-group-item card">
-                    <div class="card-header border-bottom-0">
-                        <h5 class="mt-2 form-label"><b>INVOICE #{{ $inv->id }}</b></h5>
-                        <h6 class="mt-2 form-label"><b>Date {{ $inv->created_at->format('M / d / Y') }}</b></h6>
+                    <div class="card-header d-flex justify-content-between border-bottom-0">
+                        <div class="left-header">
+                            <h5 class="mt-2 form-label"><b>INVOICE #{{ $inv->id }}</b></h5>
+                            <h6 class="mt-2 form-label"><b>Date {{ $inv->created_at->format('M / d / Y') }}</b></h6>
+                        </div>
+                        <div class="right-header col-md-4 text-center justify-content-end mt-1">
+                                <h5 class="title-invoice">{{config('app.name')}}</h5>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -112,7 +117,7 @@
                                                 </div>
                                                 <div class="col-6 text-end">
                                                     <label for="total" class="form-label">
-                                                        <span style="font-size: 1rem">៛</span>  
+                                                        <span style="font-size: 1rem">៛</span>
                                                         {{ number_format($inv->total * 4000, 0, '', ',') }}
                                                     </label>
                                                 </div>

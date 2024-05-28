@@ -26,16 +26,18 @@
             @endrole
             <li>
                 <a href="{{ route('order') }}" title="@lang('Order')"
-                    class="nav-link py-3 mb-2 icon{{ Request::is('some_other_page') ? ' active' : '' }}">
+                    class="nav-link py-3 mb-2 icon{{ Request::is('order') ? ' active' : '' }}">
                     <i class="fa-solid fas fa-shopping-cart fa-3x" style="color: #ffffff;"></i>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('invoice.index') }}" title="@lang('All Sale')"
-                    class="nav-link py-3 mb-2 icon{{ Request::is('sale') ? ' active' : '' }}">
-                    <i class="fa-solid fas fa-chart-line fa-3x" style="color: #ffffff;"></i>
-                </a>
-            </li>
+            @can('view invoice')
+                <li>
+                    <a href="{{ route('invoice.index') }}" title="@lang('All Sale')"
+                        class="nav-link py-3 mb-2 icon{{ Request::is('invoice') ? ' active' : '' }}">
+                        <i class="fa-solid fas fa-chart-line fa-3x" style="color: #ffffff;"></i>
+                    </a>
+                </li>
+            @endcan
             @canany(['view menu', 'view menutype'])
                 <li class="nav-item dropdown" onmouseover="showDropdownMenu('menuDropdown', 'menuDropdownMenu')"
                     onmouseout="hideDropdownMenu('menuDropdown', 'menuDropdownMenu')">

@@ -14,17 +14,13 @@ class OrderController extends Controller
 {
     public function index()
     {
-        // Retrieve menus that are not hidden and all menu types
         $menus = Menu::where('ishidden', 1)->get();
         $menuTypes = Menutype::all();
         $customers = Customer::where('ishidden', 1)->get();
 
-        // Get the highest existing invoice ID
         $maxInvoiceId = Invoice::max('id');
-        // Calculate the next invoice ID
         $nextInvoiceId = $maxInvoiceId ? $maxInvoiceId + 1 : 1; // Handle case where there are no invoices
 
-        // Pass menus and menu types to the view
         return view('order.index', compact('menus', 'menuTypes', 'customers', 'nextInvoiceId'));
     }
 
@@ -83,32 +79,38 @@ class OrderController extends Controller
     public function edit($id)
     {
         $invoice = Invoice::with('invoiceDetails')->findOrFail($id);
-        $customer = Customer::find($invoice->customerid);
+        $customer = Customer::findOrFail($invoice->customerid);
         $menuTypes = Menutype::all();
         $menus = Menu::all();
-        $invoiceDetails = $invoice->invoiceDetails; // Correctly assign invoice details
+        $invoiceDetails = $invoice->invoiceDetails;
 
         return view('order.edit', compact('invoice', 'customer', 'menus', 'invoiceDetails', 'menuTypes'));
     }
 
+
     public function update(Request $request, $id)
     {
-        $invoice = Invoice::findOrFail($id);
-        $invoice->update($request->all());
+        DB::beginTransaction();
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice->update($request->except('menus'));
 
-        // Delete existing details
-        InvoiceDetail::where('invoiceid', $id)->delete();
+            InvoiceDetail::where('invoiceid', $id)->delete();
 
-        // Insert new details
-        foreach ($request->menus as $menu) {
-            InvoiceDetail::create([
-                'invoiceid' => $invoice->id,
-                'menuid' => $menu['id'],
-                'orderquantity' => $menu['quantity'],
-                'orderprice' => $menu['price'],
-            ]);
+            foreach ($request->menus as $menu) {
+                InvoiceDetail::create([
+                    'invoiceid' => $invoice->id,
+                    'menuid' => $menu['id'],
+                    'orderquantity' => $menu['qty'],
+                    'orderprice' => $menu['price'],
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('order.index')->with('status', 'Invoice updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('order.index')->with('error', 'Something went wrong!');
         }
-
-        return redirect()->route('invoice.index')->with('status', 'Invoice updated successfully.');
     }
 }

@@ -21,8 +21,8 @@
         transform: translateY(15px);
     }
 
-    .h_17 {
-        height: 17vh !important;
+    .h_18 {
+        height: 18vh !important;
     }
 
     .flex-container {
@@ -59,7 +59,7 @@
             <!-- Content Row -->
             <div class="row">
                 <!-- Total Users -->
-                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 home-dash">
                         <div class="card-body">
                             <div class="row no-gutters mb-1 align-items-center">
@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <!-- User Inactive -->
-                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 home-dash">
                         <div class="card-body">
                             <div class="row no-gutters mb-1 align-items-center">
@@ -101,7 +101,7 @@
                     </div>
                 </div>
                 <!-- Menu -->
-                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
                     <div class="card border-left-success shadow h-100 home-dash">
                         <div class="card-body">
                             <div class="row no-gutters mb-1 align-items-center">
@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <!-- Customers -->
-                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 home-dash">
                         <div class="card-body">
                             <div class="row no-gutters mb-1 align-items-center">
@@ -143,13 +143,13 @@
                     </div>
                 </div>
                 <!-- Total Sale -->
-                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 home-dash">
                         <div class="card-body">
                             <div class="row no-gutters mb-1 align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                        Total Sale
+                                        Total Amount
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                         {{ config('settings.currency_symbol') }} {{ $total_amount, 2 }}</div>
@@ -166,7 +166,7 @@
                     </div>
                 </div>
                 <!-- Total Paid -->
-                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 home-dash">
                         <div class="card-body">
                             <div class="row no-gutters mb-1 align-items-center">
@@ -188,8 +188,34 @@
                         </div>
                     </div>
                 </div>
+                <!-- Total Unpaid -->
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 home-dash">
+                        <div class="card-body">
+                            <div class="row no-gutters mb-1 align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Unpaid
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ config('settings.currency_symbol') }} {{ number_format($total_amount - $total_paid, 2) }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    {{-- <i class="fa-solid fas fa-hand-holding-usd fa-2x text-gray-300"></i> --}}
+                                    <div class="col-auto">
+                                        <img src="{{ asset('Image/unpaid.png') }}" alt="" height="42" width="38">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer info py-1 text-center">
+                            <a href="{{ route('invoice.index') }}" class=" text-decoration-none">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
                 <!-- Total Invoice -->
-                <div class="col-xl-3 h_17 col-md-6 mb-4">
+                <div class="col-xl-3 h_18 col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 home-dash">
                         <div class="card-body">
                             <div class="row mb-1 no-gutters align-items-center">

@@ -32,22 +32,22 @@ Auth::routes();
 Route::group(['middleware' => ['isAdmin']], function () {
     // For Spatie Permission 
     // (Permission)
-    Route::resource('permissions', App\Http\Controllers\PermissionController::class);
+    Route::resource('permissions', App\Http\Controllers\PermissionController::class)->middleware('can:view permission');
     Route::get('permissions/{permissionId}/delete', [App\Http\Controllers\PermissionController::class, 'destroy']);
 
     // (Role)
-    Route::resource('roles', App\Http\Controllers\RoleController::class);
+    Route::resource('roles', App\Http\Controllers\RoleController::class)->middleware('can:view role');
     Route::get('roles/{roleId}/delete', [App\Http\Controllers\RoleController::class, 'destroy']);
     Route::get('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'addPermissionToRole']);
     Route::put('roles/{roleId}/give-permissions', [App\Http\Controllers\RoleController::class, 'givePermissionToRole']);
 
     // (User)
-    Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::resource('users', App\Http\Controllers\UserController::class)->middleware('can:view user');
     Route::post('users/update_ishidden', [UserController::class, 'updateIshidden'])->name('users.update_ishidden');
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
     // (Menu)
-    Route::resource('menus', App\Http\Controllers\MenuController::class);
+    Route::resource('menus', App\Http\Controllers\MenuController::class)->middleware('can:view menu');
     Route::post('menus/update_ishidden', [MenuController::class, 'updateIshidden'])->name('menus.update_ishidden');
     Route::get('menus/{menuId}/delete', [App\Http\Controllers\MenuController::class, 'destroy']);
     Route::get('menus/create', [MenuController::class, 'create'])
@@ -55,7 +55,7 @@ Route::group(['middleware' => ['isAdmin']], function () {
         ->middleware('can:create menu');
 
     // (MenuType)
-    Route::resource('menutypes', App\Http\Controllers\MenuTypeController::class);
+    Route::resource('menutypes', App\Http\Controllers\MenuTypeController::class)->middleware('can:view menutype');
     Route::get('menutypes/{menutypeId}/delete', [App\Http\Controllers\MenuTypeController::class, 'destroy']);
     Route::get('menutypes/create', [MenuTypeController::class, 'create'])
         ->name('menutypes.create')
@@ -86,8 +86,9 @@ Route::group(['middleware' => ['isAdmin']], function () {
     Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
 
     // (Sale Page)
-    Route::resource('/invoice', InvoiceController::class);
+    Route::resource('/invoice', InvoiceController::class)->middleware('can:view invoice');
     Route::get('invoices/{invoiceId}/delete', [App\Http\Controllers\InvoiceController::class, 'destroy']);
+    Route::post('/update-invoice-status', [InvoiceController::class, 'updateStatus'])->name('update-invoice-status');
 
     // (Settings Page)
     Route::get('/settings', [SettingController::class, 'index'])

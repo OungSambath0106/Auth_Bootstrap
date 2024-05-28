@@ -68,6 +68,10 @@
         .footer {
             border-bottom-color: #3559E0;
         }
+
+        .btn-sm {
+            height: 28px;
+        }
     </style>
     @if (session('status'))
         <script>
@@ -177,7 +181,7 @@
 
                     <thead class="sticky thead">
                         <tr>
-                            {{-- <th class="px-3 py-2" scope="col">#</th> --}}
+                            <th class="px-3 py-2" scope="col">#</th>
                             <th class="px-3 py-2" scope="col">Customer Name</th>
                             <th class="px-3 py-2" scope="col">Total Paid</th>
                             <th class="px-3 py-2" scope="col">Status</th>
@@ -197,7 +201,7 @@
                         @else
                             @foreach ($invoices as $inv)
                                 <tr>
-                                    {{-- <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $inv->id }} </td> --}}
+                                    <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $inv->id }} </td>
                                     <td class="px-3" style="padding-top: 12px;" scope="row">
                                         {{ @$inv->customer->customername }}
                                     </td>
@@ -205,11 +209,11 @@
                                         {{ config('settings.currency_symbol') }} {{ $inv->total_paid }}
                                     </td>
                                     <td class="px-3" style="padding-top: 12px;" scope="row">
-                                        @if ($inv->status == '1')
-                                            <span class=" btn btn-sm btn-primary">Paid</span>
-                                        @else
-                                            <span class=" btn btn-sm btn-warning">Unpaid</span>
-                                        @endif
+                                        <button
+                                            class="status-toggle btn btn-sm {{ $inv->status == '1' ? 'btn-primary' : 'btn-danger' }}"
+                                            data-invoice-id="{{ $inv->id }}">
+                                            {{ $inv->status == '1' ? 'Paid' : 'Unpaid' }}
+                                        </button>
                                     </td>
                                     <td class="px-3" style="padding-top: 12px;" scope="row">
                                         {{ config('settings.currency_symbol') }} {{ $inv->subtotal }}
@@ -225,20 +229,22 @@
                                     </td>
                                     <td class="px-3" scope="row">
                                         <div class="d-flex gap-1">
-                                            <a type="button" data-bs-toggle="modal"
-                                                data-bs-target="#invoice-{{ $inv->id }}" class="btn view"
-                                                title="@lang('Print')"
-                                                style="background-color: #38E035; border: none;">
-                                                <i class="fas fa-print" style="color: #ffffff;"></i>
-                                            </a>
+                                            @can('print invoice')
+                                                <a type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#invoice-{{ $inv->id }}" class="btn view"
+                                                    title="@lang('Print')"
+                                                    style="background-color: #38E035; border: none;">
+                                                    <i class="fas fa-print" style="color: #ffffff;"></i>
+                                                </a>
+                                            @endcan
                                             @include('sale.invoice')
-                                            @role('super-admin|developer|admin')
+                                            {{-- @role('super-admin|developer|admin')
                                                 <a href="{{ route('order.edit', $inv->id) }}" type="button"
                                                     class="btn edit" title="@lang('Edit')"
                                                     style="background-color: #3559E0; border: none;">
                                                     <i class="fas fa-edit" style="color: #ffffff;"></i>
                                                 </a>
-                                            @endrole
+                                            @endrole --}}
                                             @role('super-admin|developer|admin')
                                                 <form id="deleteForm{{ $inv->id }}"
                                                     action="{{ route('invoice.destroy', ['invoice' => $inv->id]) }}"
@@ -262,7 +268,7 @@
 
                     <tfoot class="sticky footer">
                         <tr>
-                            {{-- <th></th> --}}
+                            <th></th>
                             <th></th>
                             <th>Total Paid: {{ config('settings.currency_symbol') }} {{ $totalpaid, 2 }} </th>
                             <th></th>
@@ -280,7 +286,84 @@
 
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(document).ready(function() {
+            $('.status-toggle').click(function() {
+                var button = $(this);
+                var invoiceId = button.data('invoice-id');
+                var status = button.hasClass('btn-primary') ? '0' : '1'; // toggle status
 
+                $.ajax({
+                    url: '{{ route('update-invoice-status') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        invoiceId: invoiceId,
+                        status: status
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Invoice status updated successfully.',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            button.toggleClass('btn-primary btn-danger');
+                            button.text(status == '1' ? 'Paid' : 'Unpaid');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed to update invoice status.'
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'An error occurred while updating the status.'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.status-toggle')) {
+                var button = event.target;
+                var status = button.textContent.trim() === 'Paid' ? 0 : 1;
+                var invoiceId = button.dataset.invoiceId;
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '{{ route('update-invoice-status') }}', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        if (status === 1) {
+                            button.textContent = 'Paid';
+                            button.classList.remove('btn-danger');
+                            button.classList.add('btn-primary');
+                        } else {
+                            button.textContent = 'Unpaid';
+                            button.classList.remove('btn-primary');
+                            button.classList.add('btn-danger');
+                        }
+                        console.log('Invoice status updated successfully.');
+                        location.reload();
+                    } else {
+                        console.error('Error updating invoice status.');
+                    }
+                };
+                xhr.send(JSON.stringify({
+                    invoiceId: invoiceId,
+                    status: status
+                }));
+            }
+        });
+    </script>
     <script>
         document.getElementById('customer-select').addEventListener('change', function() {
             var customer = this.value;
@@ -323,30 +406,3 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @endsection
-
-@push('script')
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/jszip/jszip.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "pageLength": 7,
-
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        });
-    </script>
-@endpush
