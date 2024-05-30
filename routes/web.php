@@ -43,6 +43,7 @@ Route::group(['middleware' => ['isAdmin']], function () {
 
     // (User)
     Route::resource('users', App\Http\Controllers\UserController::class)->middleware('can:view user');
+    Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::post('users/update_ishidden', [UserController::class, 'updateIshidden'])->name('users.update_ishidden');
     Route::get('users/{userId}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 

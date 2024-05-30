@@ -30,8 +30,8 @@
                             <h5 class="mt-2 form-label"><b>INVOICE #{{ $inv->id }}</b></h5>
                             <h6 class="mt-2 form-label"><b>Date {{ $inv->created_at->format('M / d / Y') }}</b></h6>
                         </div>
-                        <div class="right-header col-md-4 text-center justify-content-end mt-1">
-                                <h5 class="title-invoice">{{config('app.name')}}</h5>
+                        <div class="right-header col-md-4 text-center justify-content-end mt-2">
+                            <h5 class="title-invoice">{{ config('app.name') }}</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -133,13 +133,13 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary print"
                     onclick="printInvoice('{{ $inv->id }}')">Print</button>
-                <a href="{{ route('invoice.index') }}" type="button" class="btn btn-danger"
-                    data-dismiss="modal">Close</a>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function printInvoice(invoiceId) {
         var printContents = document.getElementById('invoiceSection-' + invoiceId).innerHTML;

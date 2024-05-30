@@ -47,19 +47,20 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:25',
+            'sex' => 'nullable',
             'email' => 'required|string|max:100|unique:users,email',
             'password' => 'required|string|min:4|max:20',
+            'phone' => 'nullable',
             'roles' => 'nullable',
         ]);
 
         // Create a new User instance
         $user = new User();
         $user->name = $request->name;
+        $user->sex = $request->sex;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-
-        // Set ishidden attribute based on the request
-        // $user->ishidden = $request->has('ishidden') ? 1 : 0;
+        $user->phone = $request->phone;
 
         if ($request->hasFile('image')) {
             $user->image = $this->uploadImage($request->file('image'));
@@ -73,6 +74,18 @@ class UserController extends Controller
 
         return redirect('/users')->with('status', 'User Created Successfully.');
     }
+
+    public function show($id)
+    {
+        $user = User::with('roles')->find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        return response()->json($user);
+    }
+
 
     public function edit(User $user)
     {
@@ -89,15 +102,18 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|min:4|max:25',
+            'sex' => 'nullable',
             'password' => 'nullable|string|min:4|max:20',
             'roles' => 'nullable',
+            'phone' => 'nullable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif', // Adjust validation rules for image uploads
         ]);
 
         $data = [
             'name' => $request->name,
+            'sex' => $request->sex,
             'email' => $request->email,
-            // 'ishidden' => $request->ishidden == 'on' ? 1 : 0,
+            'phone' => $request->phone,
         ];
 
         if (!empty($request->password)) {

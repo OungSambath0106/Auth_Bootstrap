@@ -15,7 +15,7 @@
                             <div class="card-body">
                                 <div class="col-12">
                                     <fieldset>
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label for="disabledTextInput" class="form-label"> User Name </label>
                                             <input type="text" name="name" id="name" value="{{ $user->name }}"
                                                 class="form-control" style=" color: #3559E0;" placeholder="Enter UserName">
@@ -23,12 +23,28 @@
                                                 <span class="text-danger"> {{ $message }} </span>
                                             @enderror
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-2">
+                                            <label for="sex" class="form-label">Sex</label>
+                                            <select class="form-control" name="sex" style=" color: #3559E0;">
+                                                <option value="Male" style=" color: #3559E0;"
+                                                    {{ old('sex', $user->sex) === 'Male' ? 'selected' : '' }}>
+                                                    {{ __('Male') }}
+                                                </option>
+                                                <option value="Female" style=" color: #3559E0;"
+                                                    {{ old('sex', $user->sex) === 'Female' ? 'selected' : '' }}>
+                                                    {{ __('Female') }}
+                                                </option>
+                                            </select>
+                                            @error('sex')
+                                                <span class="text-danger"> {{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-2">
                                             <label for="disabledTextInput" class="form-label"> Email </label>
                                             <input type="email" name="email" id="email" value="{{ $user->email }}"
                                                 class="form-control" style=" color: #3559E0;" readonly>
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label for="disabledTextInput" class="form-label"> Password </label>
                                             <input type="password" name="password" class="form-control"
                                                 style=" color: #3559E0;">
@@ -36,7 +52,16 @@
                                                 <span class="text-danger"> {{ $message }} </span>
                                             @enderror
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-2">
+                                            <label for="phone" class="form-label">Phone Number</label>
+                                            <input type="text" name="phone" id="phone" value="{{ $user->phone }}"
+                                                class="form-control" placeholder="Enter Phone Number"
+                                                style="color: #3559E0;">
+                                            @error('phone')
+                                                <span class="text-danger"> {{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-2">
                                             <label for="disabledTextInput" class="form-label"> Role </label>
                                             <select name="roles[]" class="form-control role-form" style="color: #3559E0;"
                                                 @if (!auth()->user()->hasRole('super-admin') || !auth()->user()->hasRole('developer')) readonly @endif>
@@ -121,6 +146,16 @@
                 };
                 reader.readAsDataURL(event.target.files[0]);
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInput = document.getElementById('phone');
+
+            phoneInput.addEventListener('input', function(e) {
+                // Remove invalid characters
+                this.value = this.value.replace(/[^0-9+ ]/g, '');
+            });
         });
     </script>
 @endsection

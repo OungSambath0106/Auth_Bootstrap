@@ -97,7 +97,7 @@
             });
         </script>
     @endif
-
+    @include('role-permission.user.viewprofile')
     <div class="list-group w-auto p-3 mt-1" style="border-radius: 10px">
         <div class="list-group-item" style="background-color: #3559E0" aria-current="true">
             <h4 style="color: #FFFFFF;" class="mt-2"><b>Users List</b></h4>
@@ -143,16 +143,18 @@
                             <tr>
                                 <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->id }} </td>
                                 <td class="px-3" scope="row">
-                                    @if ($user->image)
-                                        <img src="{{ asset('storage/uploads/users_photo/' . $user->image) }}" width="30"
-                                            height="30" class="img rounded-circle" alt="">
-                                    @else
-                                        <img src="{{ asset('Image/default-image.png') }}" width="30" height="30"
-                                            class="img rounded-circle" alt="Default Image">
-                                    @endif
+                                    <a type="button" data-bs-toggle="modal" data-bs-target="#viewprofile"
+                                        data-id="{{ $user->id }}">
+                                        @if ($user->image)
+                                            <img src="{{ asset('storage/uploads/users_photo/' . $user->image) }}"
+                                                width="30" height="30" class="img rounded-circle" alt="">
+                                        @else
+                                            <img src="{{ asset('Image/default-image.png') }}" width="30" height="30"
+                                                class="img rounded-circle" alt="Default Image">
+                                        @endif
+                                    </a>
                                     <span class="px-2">{{ $user->name }}</span>
                                 </td>
-
                                 <td class="px-3" style="padding-top: 12px;" scope="row"> {{ $user->email }} </td>
                                 <td class="px-3" style="padding-top: 12px;" scope="row">
                                     @if (!empty($user->getRoleNames()))
@@ -183,7 +185,8 @@
                                     @if (auth()->user()->hasRole('super-admin') ||
                                             auth()->user()->hasRole('admin') ||
                                             auth()->user()->hasRole('developer') ||
-                                            (auth()->user()->hasRole('user') && auth()->user()->id === $user->id))
+                                            (auth()->user()->hasRole('user') && auth()->user()->id === $user->id) ||
+                                            (auth()->user()->hasRole('staff') && auth()->user()->id === $user->id))
                                         <a href="{{ url('users/' . $user->id . '/edit') }}" type="button" class="btn edit"
                                             title="@lang('Edit')" style="background-color: #3559E0;border: none;">
                                             <i class="fas fa-edit" style="color: #ffffff;"></i>
@@ -330,7 +333,7 @@
                 "buttons": [ // Custom button configuration
                     @can('create user')
                         {
-                            text: 'Create New Customer',
+                            text: 'Create New User',
                             className: 'btn btn-primary btn-default',
                             action: function() {
                                 window.location.href = "{{ url('users/create') }}";

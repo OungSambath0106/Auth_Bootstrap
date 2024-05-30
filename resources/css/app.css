@@ -15,7 +15,7 @@ body{
 .sidebar-container {
     height: 100vh;
     border-radius: 0 30px 0 0;
-    background-color: #3559e0;
+    background-color: #3559E0;
     position: static;
 }
 
@@ -51,7 +51,7 @@ body{
 }
 .title-invoice{
     font-family: font-title;
-    font-size: 1.4rem;
+    font-size: 1rem;
     color:#3559E0 ;
 }
 .date,.positions,.name{

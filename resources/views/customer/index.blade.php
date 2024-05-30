@@ -192,7 +192,7 @@
                         showConfirmButton: true
                     }).then(() => {
                         // Submit the form
-                        document.getElementById('deleteForm_' + customerId).submit();
+                        window.location.href = "{{ url('customers') }}/" + customerId + "/delete";
                     });
                 }
             });

@@ -203,7 +203,7 @@
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": [ // Custom button configuration
-                        @can('create role')
+                        @can('create roles')
                             {
                                 text: 'Create New Role',
                                 className: 'btn btn-primary btn-default',
